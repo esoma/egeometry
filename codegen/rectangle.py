@@ -1,6 +1,7 @@
 __all__ = ["generate_rectangle_files"]
 
 # codegen
+# egeometry
 from codegen.template import get_template
 
 # python
@@ -14,10 +15,8 @@ def generate_rectangle_files(build_dir: Path) -> Generator[str, None, None]:
     yield generate_rectangle_file(b, "D")
     yield generate_rectangle_file(b, "F")
 
-def generate_rectangle_file(
-    build_dir: Path,
-    data_type: str
-) -> str:
+
+def generate_rectangle_file(build_dir: Path, data_type: str) -> str:
     template = get_template("_rectangle.py")
     name = f"{data_type}Rectangle"
     with open(build_dir / f"_{name.lower()}.py", "w") as f:

@@ -7,5 +7,8 @@ __all__ = [
 ]
 
 {% for type in types %}
-from ._{{ type.lower() }} import {{ type }}
-{% endfor %}
+# egeometry
+from ._{{type.lower}} import %}
+from ._{{type.lower}} import endfor
+from ._{{type.lower}} import {%
+from ._{{type.lower}} import {{ type }}
