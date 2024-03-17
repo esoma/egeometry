@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 __all__ = [
-    "DRectangle",
-    "FRectangle",
+    "DRectangle2d",
+    "FRectangle2d",
 ]
 
 
 # egeometry
-from ._drectangle import DRectangle
-from ._frectangle import FRectangle
+from ._drectangle2d import DRectangle2d
+from ._frectangle2d import FRectangle2d

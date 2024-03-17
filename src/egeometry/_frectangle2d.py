@@ -1,38 +1,40 @@
+# generated from codegen/templates/_rectangle_2d.cpp
+
 from __future__ import annotations
 
-__all__ = ["DRectangle"]
+__all__ = ["FRectangle2d"]
 
 # emath
-from emath import DVector2
+from emath import FVector2
 
 
-class DRectangle:
+class FRectangle2d:
     __slots__ = ["_extent", "_position", "_size"]
 
-    def __init__(self, position: DVector2, size: DVector2):
-        if size <= DVector2(0):
+    def __init__(self, position: FVector2, size: FVector2):
+        if size <= FVector2(0):
             raise ValueError("each size dimension must be > 0")
         self._position = position
         self._size = size
         self._extent = self._position + self._size
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, DRectangle):
+        if not isinstance(other, FRectangle2d):
             return False
         return self._position == other._position and self._size == other._size
 
     @property
-    def bounding_box(self) -> DRectangle:
+    def bounding_box(self) -> FRectangle2d:
         return self
 
     @property
-    def extent(self) -> DVector2:
+    def extent(self) -> FVector2:
         return self._extent
 
     @property
-    def position(self) -> DVector2:
+    def position(self) -> FVector2:
         return self._position
 
     @property
-    def size(self) -> DVector2:
+    def size(self) -> FVector2:
         return self._size

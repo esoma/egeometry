@@ -1,8 +1,9 @@
+# generated from codegen/templates/_rectangle2d.py
+
 from __future__ import annotations
 
 __all__ = ["{{ name }}"]
 
-# emath
 from emath import {{ data_type }}Vector2
 
 
