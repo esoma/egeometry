@@ -39,6 +39,8 @@ jobs:
     - name: Build
       run: |
         poetry build
+      env:
+        EGEOMETRY_GENERATE_GEOMETRY_FILES: 0
 
     - name: Upload Github Release Artifact
       uses: svenstaro/upload-release-action@v2
