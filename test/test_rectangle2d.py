@@ -15,7 +15,7 @@ def data_type(request):
 
 @pytest.fixture
 def rectangle_cls(data_type):
-    return getattr(egeometry, f"{data_type}Rectangle")
+    return getattr(egeometry, f"{data_type}Rectangle2d")
 
 
 @pytest.fixture
