@@ -1,6 +1,5 @@
 __all__ = ["generate_rectangle_2d_files"]
 
-# codegen
 # egeometry
 from codegen.template import get_template
 

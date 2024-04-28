@@ -5,6 +5,15 @@ from __future__ import annotations
 __all__ = ["{{ name }}"]
 
 from emath import {{ data_type }}Vector2
+from typing import Protocol
+
+class {{ name }}Overlappable(Protocol):
+
+    def overlaps_{{ data_type.lower() }}_rectangle(
+        self,
+        other: {{ name }}
+    ) -> bool:
+        ...
 
 
 class {{ name }}:
@@ -21,6 +30,41 @@ class {{ name }}:
         if not isinstance(other, {{name}}):
             return False
         return self._position == other._position and self._size == other._size
+
+    def overlaps(
+        self,
+        other: {{ data_type }}Vector2 |
+               {{ name }}Overlappable
+   ) -> bool:
+        if isinstance(other, {{ data_type }}Vector2):
+            return self.overlaps_{{ data_type.lower() }}_vector_2(other)
+        try:
+            other_overlaps = other.overlaps_{{ data_type.lower() }}_rectangle
+        except AttributeError:
+            raise TypeError(other)
+        return other_overlaps(self)
+
+    def overlaps_{{ data_type.lower() }}_rectangle(
+        self,
+        other: {{ name }}
+    ) -> bool:
+        return not (
+            self._position.x >= other._extent.x or
+            self._extent.x <= other._position.x or
+            self._position.y >= other._extent.y or
+            self._extent.y <= other._position.y
+        )
+
+    def overlaps_{{ data_type.lower() }}_vector_2(
+        self,
+        other: {{ data_type }}Vector2
+    ) -> bool:
+        return (
+            other.x >= self._position.x
+            and other.x < self._extent.x
+            and other.y >= self._position.y
+            and other.y < self._extent.y
+        )
 
     @property
     def bounding_box(self) -> {{name}}:
