@@ -77,15 +77,19 @@ toml = ["tomli"]
 
 [[package]]
 name = "emath"
-version = "0.1.10"
+version = "0.1.12"
 description = "Fast immutable math primitives."
 optional = false
-python-versions = ">=3.12,<4.0"
+python-versions = "<4.0,>=3.12"
 files = [
-    {file = "emath-0.1.10-cp312-cp312-macosx_12_0_x86_64.whl", hash = "sha256:1968d3651afeb0d242848f2b01bc01dd908a447c5cd4ffc518c16925bf337386"},
-    {file = "emath-0.1.10-cp312-cp312-manylinux_2_35_x86_64.whl", hash = "sha256:4b047d4c2e099b7306d624e0774af2ae5ab7b8ea82a07329b54bc2189dd99d49"},
-    {file = "emath-0.1.10-cp312-cp312-win_amd64.whl", hash = "sha256:1f1ee04528bc9bb29324e9f8d4e063d8661aa0241f00effb934ac94e8fd7ed75"},
-    {file = "emath-0.1.10.tar.gz", hash = "sha256:aa551f0dd2413d06feddfb853ddcc63c2860404028f5a3c0dc826d8a0c33fb2c"},
+    {file = "emath-0.1.12-cp312-cp312-macosx_13_0_x86_64.whl", hash = "sha256:0f3625c020687f508fb17bd3b60c90b23d390dba2bdc087f056514a9b485a18f"},
+    {file = "emath-0.1.12-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:90e155527c5d4d95cc83aec5a3d6703b47e832f87cd7063b6f2bd02cbb065a2a"},
+    {file = "emath-0.1.12-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e0e5bf7839e28992033214ece7246923dae12bc16d47289980b6f4413373427c"},
+    {file = "emath-0.1.12-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3c2034e6a8f0a908da8d84c5cc846635892a690bcc14b6215573848cb266ec19"},
+    {file = "emath-0.1.12-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:8945c93bd9fd46e7852c092af32c2bf21c7129533085f1c7fe3c8a56ee9d3422"},
+    {file = "emath-0.1.12-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:b2e9f4515bddebe523a32fee207f1a0439cf8e338ac3af2d2d9607fb83f6a295"},
+    {file = "emath-0.1.12-cp312-cp312-win32.whl", hash = "sha256:0b82db2f975f3366160e44881934562fd0c7dca5695ce0905630d4895dca42b7"},
+    {file = "emath-0.1.12-cp312-cp312-win_amd64.whl", hash = "sha256:9cfc3442e480e4a5cd8fd6523b0a931e148eb4fccb585c21fdabd394142f32d2"},
 ]
 
 [[package]]
@@ -166,4 +170,4 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "1d750102284128dcec4e1cb59542e84778ea669ec544f480c86423f7df211fcd"
+content-hash = "268f6dba523a773b6e0e3c75c4b6e90a9a69d29ac44284c1324111fed64df1df"

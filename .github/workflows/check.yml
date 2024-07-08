@@ -38,8 +38,6 @@ jobs:
     - name: Install
       run: |
         poetry install
-      env:
-        EGEOMETRY_GENERATE_GEOMETRY_FILES: 0
 
     - name: Test
       run: |
