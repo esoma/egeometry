@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 __all__ = [
-{% for type in types %}
+{% for _, type in types %}
     "{{ type }}",
 {% endfor %}
 ]
 
-{% for type in types %}
-from ._{{ type.lower() }} import {{ type }}
+{% for module, type in types %}
+from .{{ module }} import {{ type }}
 {% endfor %}

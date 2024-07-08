@@ -9,13 +9,15 @@ from pathlib import Path
 from typing import Generator
 
 
-def generate_rectangle_2d_files(build_dir: Path) -> Generator[str, None, None]:
+def generate_rectangle_2d_files(build_dir: Path) -> Generator[tuple[str, str], None, None]:
     b = build_dir
-    yield generate_rectangle_2d_file(b, "D")
-    yield generate_rectangle_2d_file(b, "F")
+    yield from generate_rectangle_2d_file(b, "D")
+    yield from generate_rectangle_2d_file(b, "F")
 
 
-def generate_rectangle_2d_file(build_dir: Path, data_type: str) -> str:
+def generate_rectangle_2d_file(
+    build_dir: Path, data_type: str
+) -> Generator[tuple[str, str], None, None]:
     template = get_template("_rectangle2d.py")
     name = f"{data_type}Rectangle2d"
     with open(build_dir / f"_{name.lower()}.py", "w") as f:
@@ -26,4 +28,5 @@ def generate_rectangle_2d_file(build_dir: Path, data_type: str) -> str:
                 when=datetime.utcnow(),
             )
         )
-    return name
+    yield (f"_{name.lower()}", name)
+    yield (f"_{name.lower()}", f"{name}Overlappable")

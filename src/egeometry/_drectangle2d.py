@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = ["DRectangle2d"]
+__all__ = ["DRectangle2d", "DRectangle2dOverlappable"]
 
 # emath
 from emath import DVector2

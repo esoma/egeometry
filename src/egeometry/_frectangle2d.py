@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = ["FRectangle2d"]
+__all__ = ["FRectangle2d", "FRectangle2dOverlappable"]
 
 # emath
 from emath import FVector2

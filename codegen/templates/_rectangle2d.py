@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = ["{{ name }}"]
+__all__ = ["{{ name }}", "{{ name }}Overlappable"]
 
 from emath import {{ data_type }}Vector2
 from typing import Protocol

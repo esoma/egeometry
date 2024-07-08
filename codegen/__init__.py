@@ -16,7 +16,7 @@ def generate_geometry_files(build_dir: Path) -> None:
     generate_init_file(build_dir, rectangle_2d_types)
 
 
-def generate_init_file(build_dir: Path, types: Sequence[str]) -> None:
+def generate_init_file(build_dir: Path, types: Sequence[tuple[str, str]]) -> None:
     template = get_template("__init__.py")
     with open(build_dir / f"__init__.py", "w") as f:
         f.write(
