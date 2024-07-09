@@ -13,6 +13,7 @@ def generate_rectangle_2d_files(build_dir: Path) -> Generator[tuple[str, str], N
     b = build_dir
     yield from generate_rectangle_2d_file(b, "D")
     yield from generate_rectangle_2d_file(b, "F")
+    yield from generate_rectangle_2d_file(b, "I")
 
 
 def generate_rectangle_2d_file(

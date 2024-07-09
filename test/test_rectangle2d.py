@@ -8,7 +8,7 @@ import emath
 import pytest
 
 
-@pytest.fixture(params=["D", "F"])
+@pytest.fixture(params=["D", "F", "I"])
 def data_type(request):
     return request.param
 

@@ -7,6 +7,8 @@ __all__ = [
     "DRectangle2dOverlappable",
     "FRectangle2d",
     "FRectangle2dOverlappable",
+    "IRectangle2d",
+    "IRectangle2dOverlappable",
 ]
 
 
@@ -15,3 +17,5 @@ from ._drectangle2d import DRectangle2d
 from ._drectangle2d import DRectangle2dOverlappable
 from ._frectangle2d import FRectangle2d
 from ._frectangle2d import FRectangle2dOverlappable
+from ._irectangle2d import IRectangle2d
+from ._irectangle2d import IRectangle2dOverlappable
