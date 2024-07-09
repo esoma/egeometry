@@ -92,3 +92,11 @@ def test_overlaps_rectangle(
 
     b_overlaps = getattr(b, f"overlaps_{data_type.lower()}_rectangle")
     assert b_overlaps(a) == expected_result
+
+
+@pytest.mark.parametrize("rect_args", [((0,), (1,)), ((4, 5), (3, 6))])
+@pytest.mark.parametrize("translation_args", [(0,), (1, -1)])
+def test_translate(rectangle_cls, vector_2_cls, rect_args, translation_args):
+    rect = rectangle_cls(vector_2_cls(*rect_args[0]), vector_2_cls(*rect_args[1]))
+    translation = vector_2_cls(*translation_args)
+    assert rect.translate(translation) == rectangle_cls(rect.position + translation, rect.size)

@@ -56,6 +56,9 @@ class DRectangle2d:
             and other.y < self._extent.y
         )
 
+    def translate(self, translation: DVector2) -> DRectangle2d:
+        return DRectangle2d(self._position + translation, self._size)
+
     @property
     def bounding_box(self) -> DRectangle2d:
         return self

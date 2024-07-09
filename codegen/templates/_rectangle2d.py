@@ -66,6 +66,9 @@ class {{ name }}:
             and other.y < self._extent.y
         )
 
+    def translate(self, translation: {{ data_type }}Vector2) -> {{ name }}:
+        return {{ name }}(self._position + translation, self._size)
+
     @property
     def bounding_box(self) -> {{name}}:
         return self

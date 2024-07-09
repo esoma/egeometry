@@ -56,6 +56,9 @@ class FRectangle2d:
             and other.y < self._extent.y
         )
 
+    def translate(self, translation: FVector2) -> FRectangle2d:
+        return FRectangle2d(self._position + translation, self._size)
+
     @property
     def bounding_box(self) -> FRectangle2d:
         return self
