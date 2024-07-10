@@ -22,6 +22,11 @@ def test_invalid_size(rectangle_cls, vector_2_cls, w, h):
     assert str(excinfo.value) == "each size dimension must be > 0"
 
 
+def test_not_equal(rectangle_cls, vector_2_cls):
+    rectangle = rectangle_cls(vector_2_cls(0), vector_2_cls(1))
+    assert rectangle != object()
+
+
 @pytest.mark.parametrize(
     "a_args, b_args, expected_result",
     [
@@ -79,3 +84,9 @@ def test_translate(rectangle_cls, vector_2_cls, rect_args, translation_args):
     rect = rectangle_cls(vector_2_cls(*rect_args[0]), vector_2_cls(*rect_args[1]))
     translation = vector_2_cls(*translation_args)
     assert rect.translate(translation) == rectangle_cls(rect.position + translation, rect.size)
+
+
+def test_not_overlaps(rectangle_cls, vector_2_cls):
+    rectangle = rectangle_cls(vector_2_cls(0), vector_2_cls(1))
+    with pytest.raises(TypeError):
+        rectangle.overlaps(object())

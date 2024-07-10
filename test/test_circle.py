@@ -19,6 +19,11 @@ def test_invalid_radius(circle_cls, vector_2_cls, r):
     assert str(excinfo.value) == "radius must be > 0"
 
 
+def test_not_equal(circle_cls, vector_2_cls):
+    circle = circle_cls(vector_2_cls(0), 1)
+    assert circle != object()
+
+
 @pytest.mark.parametrize(
     "a_args, b_args, expected_result",
     [
@@ -77,3 +82,9 @@ def test_translate(circle_cls, vector_2_cls, circle_args, translation_args):
     assert circle.translate(translation) == circle_cls(
         circle.position + translation, circle.radius
     )
+
+
+def test_not_overlaps(circle_cls, vector_2_cls):
+    circle = circle_cls(vector_2_cls(0), 1)
+    with pytest.raises(TypeError):
+        circle.overlaps(object())
