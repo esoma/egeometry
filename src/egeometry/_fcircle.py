@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["FCircle", "FCircleOverlappable"]
 
 # egeometry
-from ._frectangle2d import FRectangle2d
+from ._frectangle import FRectangle
 
 # emath
 from emath import DVector2
@@ -28,7 +28,7 @@ class FCircle:
             raise ValueError("radius must be > 0")
         self._position = position
         self._radius = radius
-        self._bounding_box = FRectangle2d(position - radius, FVector2(radius * 2))
+        self._bounding_box = FRectangle(position - radius, FVector2(radius * 2))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, FCircle):
@@ -49,7 +49,7 @@ class FCircle:
         distance = round(DVector2(*self._position).distance(DVector2(*other._position)))
         return distance < min_distance
 
-    def overlaps_f_rectangle(self, other: FRectangle2d) -> bool:
+    def overlaps_f_rectangle(self, other: FRectangle) -> bool:
         rect_center = DVector2(*other.position) + (DVector2(*other.size) * 0.5)
         f_position = DVector2(*self._position)
         diff = f_position - rect_center
@@ -68,7 +68,7 @@ class FCircle:
         return FCircle(self._position + translation, self._radius)
 
     @property
-    def bounding_box(self) -> FRectangle2d:
+    def bounding_box(self) -> FRectangle:
         return self._bounding_box
 
     @property

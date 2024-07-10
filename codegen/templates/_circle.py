@@ -7,7 +7,7 @@ __all__ = ["{{ name }}", "{{ name }}Overlappable"]
 from emath import {{ data_type }}Vector2
 from emath import DVector2
 from typing import Protocol
-from ._{{ data_type.lower() }}rectangle2d import {{ data_type }}Rectangle2d
+from ._{{ data_type.lower() }}rectangle import {{ data_type }}Rectangle
 
 class {{ name }}Overlappable(Protocol):
 
@@ -26,7 +26,7 @@ class {{ name }}:
             raise ValueError("radius must be > 0")
         self._position = position
         self._radius = radius
-        self._bounding_box = {{ data_type }}Rectangle2d(
+        self._bounding_box = {{ data_type }}Rectangle(
             position - radius,
             {{ data_type }}Vector2(radius * 2)
         )
@@ -54,7 +54,7 @@ class {{ name }}:
         distance = round(DVector2(*self._position).distance(DVector2(*other._position)))
         return distance < min_distance
 
-    def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ data_type}}Rectangle2d) -> bool:
+    def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ data_type}}Rectangle) -> bool:
         rect_center = DVector2(*other.position) + (DVector2(*other.size) * 0.5)
         f_position = DVector2(*self._position)
         diff = f_position - rect_center
@@ -76,7 +76,7 @@ class {{ name }}:
         return {{ name }}(self._position + translation, self._radius)
 
     @property
-    def bounding_box(self) -> {{ data_type }}Rectangle2d:
+    def bounding_box(self) -> {{ data_type }}Rectangle:
         return self._bounding_box
 
     @property

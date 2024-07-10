@@ -1,4 +1,4 @@
-# generated from codegen/templates/_rectangle2d.py
+# generated from codegen/templates/_rectangle.py
 
 from __future__ import annotations
 

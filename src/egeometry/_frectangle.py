@@ -1,11 +1,11 @@
-# generated from codegen/templates/_rectangle2d.py
+# generated from codegen/templates/_rectangle.py
 
 from __future__ import annotations
 
-__all__ = ["DRectangle2d", "DRectangle2dOverlappable"]
+__all__ = ["FRectangle", "FRectangleOverlappable"]
 
 # emath
-from emath import DVector2
+from emath import FVector2
 
 # python
 from typing import Protocol
@@ -13,42 +13,42 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     # egeometry
-    from ._dcircle import DCircle
+    from ._fcircle import FCircle
 
 
-class DRectangle2dOverlappable(Protocol):
-    def overlaps_d_rectangle(self, other: DRectangle2d) -> bool:
+class FRectangleOverlappable(Protocol):
+    def overlaps_f_rectangle(self, other: FRectangle) -> bool:
         ...
 
 
-class DRectangle2d:
+class FRectangle:
     __slots__ = ["_extent", "_position", "_size"]
 
-    def __init__(self, position: DVector2, size: DVector2):
-        if size <= DVector2(0):
+    def __init__(self, position: FVector2, size: FVector2):
+        if size <= FVector2(0):
             raise ValueError("each size dimension must be > 0")
         self._position = position
         self._size = size
         self._extent = self._position + self._size
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, DRectangle2d):
+        if not isinstance(other, FRectangle):
             return False
         return self._position == other._position and self._size == other._size
 
-    def overlaps(self, other: DVector2 | DRectangle2dOverlappable) -> bool:
-        if isinstance(other, DVector2):
-            return self.overlaps_d_vector_2(other)
+    def overlaps(self, other: FVector2 | FRectangleOverlappable) -> bool:
+        if isinstance(other, FVector2):
+            return self.overlaps_f_vector_2(other)
         try:
-            other_overlaps = other.overlaps_d_rectangle
+            other_overlaps = other.overlaps_f_rectangle
         except AttributeError:
             raise TypeError(other)
         return other_overlaps(self)
 
-    def overlaps_d_circle(self, other: DCircle) -> bool:
-        return other.overlaps_d_rectangle(self)
+    def overlaps_f_circle(self, other: FCircle) -> bool:
+        return other.overlaps_f_rectangle(self)
 
-    def overlaps_d_rectangle(self, other: DRectangle2d) -> bool:
+    def overlaps_f_rectangle(self, other: FRectangle) -> bool:
         return not (
             self._position.x >= other._extent.x
             or self._extent.x <= other._position.x
@@ -56,7 +56,7 @@ class DRectangle2d:
             or self._extent.y <= other._position.y
         )
 
-    def overlaps_d_vector_2(self, other: DVector2) -> bool:
+    def overlaps_f_vector_2(self, other: FVector2) -> bool:
         return (
             other.x >= self._position.x
             and other.x < self._extent.x
@@ -64,21 +64,21 @@ class DRectangle2d:
             and other.y < self._extent.y
         )
 
-    def translate(self, translation: DVector2) -> DRectangle2d:
-        return DRectangle2d(self._position + translation, self._size)
+    def translate(self, translation: FVector2) -> FRectangle:
+        return FRectangle(self._position + translation, self._size)
 
     @property
-    def bounding_box(self) -> DRectangle2d:
+    def bounding_box(self) -> FRectangle:
         return self
 
     @property
-    def extent(self) -> DVector2:
+    def extent(self) -> FVector2:
         return self._extent
 
     @property
-    def position(self) -> DVector2:
+    def position(self) -> FVector2:
         return self._position
 
     @property
-    def size(self) -> DVector2:
+    def size(self) -> FVector2:
         return self._size

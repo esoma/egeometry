@@ -5,7 +5,7 @@ from __future__ import annotations
 __all__ = ["ICircle", "ICircleOverlappable"]
 
 # egeometry
-from ._irectangle2d import IRectangle2d
+from ._irectangle import IRectangle
 
 # emath
 from emath import DVector2
@@ -28,7 +28,7 @@ class ICircle:
             raise ValueError("radius must be > 0")
         self._position = position
         self._radius = radius
-        self._bounding_box = IRectangle2d(position - radius, IVector2(radius * 2))
+        self._bounding_box = IRectangle(position - radius, IVector2(radius * 2))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, ICircle):
@@ -49,7 +49,7 @@ class ICircle:
         distance = round(DVector2(*self._position).distance(DVector2(*other._position)))
         return distance < min_distance
 
-    def overlaps_i_rectangle(self, other: IRectangle2d) -> bool:
+    def overlaps_i_rectangle(self, other: IRectangle) -> bool:
         rect_center = DVector2(*other.position) + (DVector2(*other.size) * 0.5)
         f_position = DVector2(*self._position)
         diff = f_position - rect_center
@@ -68,7 +68,7 @@ class ICircle:
         return ICircle(self._position + translation, self._radius)
 
     @property
-    def bounding_box(self) -> IRectangle2d:
+    def bounding_box(self) -> IRectangle:
         return self._bounding_box
 
     @property

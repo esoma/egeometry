@@ -20,7 +20,7 @@ def circle_cls(data_type):
 
 @pytest.fixture
 def rectangle_cls(data_type):
-    return getattr(egeometry, f"{data_type}Rectangle2d")
+    return getattr(egeometry, f"{data_type}Rectangle")
 
 
 @pytest.fixture
