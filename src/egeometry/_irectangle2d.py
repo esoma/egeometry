@@ -9,6 +9,11 @@ from emath import IVector2
 
 # python
 from typing import Protocol
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # egeometry
+    from ._icircle import ICircle
 
 
 class IRectangle2dOverlappable(Protocol):
@@ -39,6 +44,9 @@ class IRectangle2d:
         except AttributeError:
             raise TypeError(other)
         return other_overlaps(self)
+
+    def overlaps_i_circle(self, other: ICircle) -> bool:
+        return other.overlaps_i_rectangle(self)
 
     def overlaps_i_rectangle(self, other: IRectangle2d) -> bool:
         return not (

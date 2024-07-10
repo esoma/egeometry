@@ -1,7 +1,7 @@
 __all__ = ["generate_geometry_files"]
 
-# codegen
 # egeometry
+from codegen.circle import generate_circle_files
 from codegen.rectangle2d import generate_rectangle_2d_files
 from codegen.template import get_template
 
@@ -13,7 +13,8 @@ from typing import Sequence
 
 def generate_geometry_files(build_dir: Path) -> None:
     rectangle_2d_types = list(generate_rectangle_2d_files(build_dir))
-    generate_init_file(build_dir, rectangle_2d_types)
+    circle_types = list(generate_circle_files(build_dir))
+    generate_init_file(build_dir, (*rectangle_2d_types, *circle_types))
 
 
 def generate_init_file(build_dir: Path, types: Sequence[tuple[str, str]]) -> None:

@@ -9,6 +9,11 @@ from emath import DVector2
 
 # python
 from typing import Protocol
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # egeometry
+    from ._dcircle import DCircle
 
 
 class DRectangle2dOverlappable(Protocol):
@@ -39,6 +44,9 @@ class DRectangle2d:
         except AttributeError:
             raise TypeError(other)
         return other_overlaps(self)
+
+    def overlaps_d_circle(self, other: DCircle) -> bool:
+        return other.overlaps_d_rectangle(self)
 
     def overlaps_d_rectangle(self, other: DRectangle2d) -> bool:
         return not (

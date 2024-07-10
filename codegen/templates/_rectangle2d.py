@@ -5,7 +5,10 @@ from __future__ import annotations
 __all__ = ["{{ name }}", "{{ name }}Overlappable"]
 
 from emath import {{ data_type }}Vector2
-from typing import Protocol
+from typing import Protocol, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
 
 class {{ name }}Overlappable(Protocol):
 
@@ -27,7 +30,7 @@ class {{ name }}:
         self._extent = self._position + self._size
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, {{name}}):
+        if not isinstance(other, {{ name }}):
             return False
         return self._position == other._position and self._size == other._size
 
@@ -43,6 +46,12 @@ class {{ name }}:
         except AttributeError:
             raise TypeError(other)
         return other_overlaps(self)
+
+    def overlaps_{{ data_type.lower() }}_circle(
+        self,
+        other: {{ data_type }}Circle
+    ) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_rectangle(self)
 
     def overlaps_{{ data_type.lower() }}_rectangle(
         self,
@@ -70,7 +79,7 @@ class {{ name }}:
         return {{ name }}(self._position + translation, self._size)
 
     @property
-    def bounding_box(self) -> {{name}}:
+    def bounding_box(self) -> {{ name }}:
         return self
 
     @property

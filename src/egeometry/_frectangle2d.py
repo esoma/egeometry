@@ -9,6 +9,11 @@ from emath import FVector2
 
 # python
 from typing import Protocol
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # egeometry
+    from ._fcircle import FCircle
 
 
 class FRectangle2dOverlappable(Protocol):
@@ -39,6 +44,9 @@ class FRectangle2d:
         except AttributeError:
             raise TypeError(other)
         return other_overlaps(self)
+
+    def overlaps_f_circle(self, other: FCircle) -> bool:
+        return other.overlaps_f_rectangle(self)
 
     def overlaps_f_rectangle(self, other: FRectangle2d) -> bool:
         return not (

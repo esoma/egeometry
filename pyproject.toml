@@ -10,7 +10,7 @@ script = "buildscript.py"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-emath = "^0.1.12"
+emath = "^0.1.13"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "7.4.3"
