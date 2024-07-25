@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "egeometry"
-version = "0.3.0"
+version = "0.4.0"
 description = "Python geometry library."
 authors = ["Erik Soma <stillusingirc@gmail.com>"]
 
