@@ -35,6 +35,9 @@ class ICircle:
             return False
         return self._position == other._position and self._radius == other._radius
 
+    def __repr__(self) -> str:
+        return f"<Circle position={self._position} radius={self._radius}>"
+
     def overlaps(self, other: IVector2 | ICircleOverlappable) -> bool:
         if isinstance(other, IVector2):
             return self.overlaps_i_vector_2(other)

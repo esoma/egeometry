@@ -36,6 +36,9 @@ class {{ name }}:
             return False
         return self._position == other._position and self._radius == other._radius
 
+    def __repr__(self) -> str:
+        return f"<Circle position={self._position} radius={self._radius}>"
+
     def overlaps(
         self,
         other: {{ data_type }}Vector2 |

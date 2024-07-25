@@ -34,6 +34,9 @@ class {{ name }}:
             return False
         return self._position == other._position and self._size == other._size
 
+    def __repr__(self) -> str:
+        return f"<Rectangle position={self._position} size={self._size}>"
+
     def overlaps(
         self,
         other: {{ data_type }}Vector2 |

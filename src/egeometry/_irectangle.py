@@ -36,6 +36,9 @@ class IRectangle:
             return False
         return self._position == other._position and self._size == other._size
 
+    def __repr__(self) -> str:
+        return f"<Rectangle position={self._position} size={self._size}>"
+
     def overlaps(self, other: IVector2 | IRectangleOverlappable) -> bool:
         if isinstance(other, IVector2):
             return self.overlaps_i_vector_2(other)

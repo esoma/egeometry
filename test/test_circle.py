@@ -10,6 +10,7 @@ def test_attrs(circle_cls, rectangle_cls, vector_2_cls, x, y, r):
     assert circle.position == vector_2_cls(x, y)
     assert circle.radius == r
     assert circle.bounding_box == rectangle_cls(circle.position - r, vector_2_cls(r * 2))
+    assert repr(circle) == f"<Circle position={circle.position} radius={circle.radius}>"
 
 
 @pytest.mark.parametrize("r", [-1, 0])

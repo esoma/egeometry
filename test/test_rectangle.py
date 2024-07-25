@@ -12,6 +12,7 @@ def test_attrs(rectangle_cls, vector_2_cls, x, y, w, h):
     assert rect.size == vector_2_cls(w, h)
     assert rect.extent == rect.position + rect.size
     assert rect.bounding_box == rect
+    assert repr(rect) == f"<Rectangle position={rect.position} size={rect.size}>"
 
 
 @pytest.mark.parametrize("w", [-1, 0])

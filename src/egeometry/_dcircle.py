@@ -34,6 +34,9 @@ class DCircle:
             return False
         return self._position == other._position and self._radius == other._radius
 
+    def __repr__(self) -> str:
+        return f"<Circle position={self._position} radius={self._radius}>"
+
     def overlaps(self, other: DVector2 | DCircleOverlappable) -> bool:
         if isinstance(other, DVector2):
             return self.overlaps_d_vector_2(other)
