@@ -5,11 +5,11 @@ import pytest
 @pytest.mark.parametrize("x", [-1, 0, 1])
 @pytest.mark.parametrize("y", [-1, 0, 1])
 @pytest.mark.parametrize("r", [1, 100])
-def test_attrs(circle_cls, rectangle_cls, vector_2_cls, x, y, r):
+def test_attrs(circle_cls, bounding_box_2d_cls, rectangle_cls, vector_2_cls, x, y, r):
     circle = circle_cls(vector_2_cls(x, y), r)
     assert circle.position == vector_2_cls(x, y)
     assert circle.radius == r
-    assert circle.bounding_box == rectangle_cls(circle.position - r, vector_2_cls(r * 2))
+    assert circle.bounding_box == bounding_box_2d_cls(circle.position - r, vector_2_cls(r * 2))
     assert repr(circle) == f"<Circle position={circle.position} radius={circle.radius}>"
 
 

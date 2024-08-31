@@ -6,8 +6,11 @@ __all__ = ["{{ name }}", "{{ name }}Overlappable"]
 
 from emath import {{ data_type }}Vector2
 from emath import DVector2
-from typing import Protocol
-from ._{{ data_type.lower() }}rectangle import {{ data_type }}Rectangle
+from typing import Protocol, TYPE_CHECKING
+from ._{{ data_type.lower() }}boundingbox2d import {{ data_type }}BoundingBox2d
+
+if TYPE_CHECKING:
+    from ._{{ data_type.lower() }}rectangle import {{ data_type }}Rectangle
 
 class {{ name }}Overlappable(Protocol):
 
@@ -26,7 +29,7 @@ class {{ name }}:
             raise ValueError("radius must be > 0")
         self._position = position
         self._radius = radius
-        self._bounding_box = {{ data_type }}Rectangle(
+        self._bounding_box = {{ data_type }}BoundingBox2d(
             position - radius,
             {{ data_type }}Vector2(radius * 2)
         )
@@ -52,21 +55,30 @@ class {{ name }}:
             raise TypeError(other)
         return other_overlaps(self)
 
+    def _overlaps_rect_like(self, other: {{ data_type }}BoundingBox2d | {{ data_type }}Rectangle) -> bool:
+        assert other.size != {{ data_type }}Vector2(0)
+        o_center = DVector2(*other.position) + (DVector2(*other.size) * 0.5)
+        f_position = DVector2(*self._position)
+        diff = f_position - o_center
+        closest_o_point = DVector2(
+            min(max(diff.x, other.position.x), other.extent.x),
+            min(max(diff.y, other.position.y), other.extent.y),
+        )
+        closest_o_point_distance = round(f_position.distance(closest_o_point))
+        return closest_o_point_distance < self._radius
+
+    def overlaps_{{ data_type.lower() }}_bounding_box_2d(self, other: {{ data_type }}BoundingBox2d) -> bool:
+        if other.size == {{ data_type }}Vector2(0):
+            return False
+        return self._overlaps_rect_like(other)
+
     def overlaps_{{ data_type.lower() }}_circle(self, other: {{ data_type }}Circle) -> bool:
         min_distance = self._radius + other._radius
         distance = round(DVector2(*self._position).distance(DVector2(*other._position)))
         return distance < min_distance
 
     def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ data_type}}Rectangle) -> bool:
-        rect_center = DVector2(*other.position) + (DVector2(*other.size) * 0.5)
-        f_position = DVector2(*self._position)
-        diff = f_position - rect_center
-        closest_rect_point = DVector2(
-            min(max(diff.x, other.position.x), other.extent.x),
-            min(max(diff.y, other.position.y), other.extent.y),
-        )
-        closest_rect_point_distance = round(f_position.distance(closest_rect_point))
-        return closest_rect_point_distance < self._radius
+        return self._overlaps_rect_like(other)
 
     def overlaps_{{ data_type.lower() }}_vector_2(
         self,
@@ -79,7 +91,7 @@ class {{ name }}:
         return {{ name }}(self._position + translation, self._radius)
 
     @property
-    def bounding_box(self) -> {{ data_type }}Rectangle:
+    def bounding_box(self) -> {{ data_type }}BoundingBox2d:
         return self._bounding_box
 
     @property

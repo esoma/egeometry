@@ -1,4 +1,4 @@
-# generated from codegen/templates/_rectangle.py
+# generated from codegen/templates/_boundingbox2d.py
 
 from __future__ import annotations
 
@@ -6,14 +6,14 @@ __all__ = ["{{ name }}", "{{ name }}Overlappable"]
 
 from emath import {{ data_type }}Vector2
 from typing import Protocol, TYPE_CHECKING
-from ._{{ data_type.lower() }}boundingbox2d import {{ data_type }}BoundingBox2d
 
 if TYPE_CHECKING:
     from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
+    from ._{{ data_type.lower() }}rectangle import {{ data_type}}Rectangle
 
 class {{ name }}Overlappable(Protocol):
 
-    def overlaps_{{ data_type.lower() }}_rectangle(
+    def overlaps_{{ data_type.lower() }}_bounding_box_2d(
         self,
         other: {{ name }}
     ) -> bool:
@@ -21,16 +21,14 @@ class {{ name }}Overlappable(Protocol):
 
 
 class {{ name }}:
-    __slots__ = ["_bounding_box", "_extent", "_position", "_size"]
+    __slots__ = ["_extent", "_position", "_size"]
 
     def __init__(self, position: {{ data_type }}Vector2, size: {{ data_type }}Vector2):
-        if size <= {{ data_type }}Vector2(0):
-            raise ValueError("each size dimension must be > 0")
-        self._bounding_box = {{ data_type }}BoundingBox2d(position, size)
+        if size < {{ data_type }}Vector2(0):
+            raise ValueError("each size dimension must be >= 0")
         self._position = position
         self._size = size
         self._extent = self._position + self._size
-
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, {{ name }}):
@@ -38,7 +36,7 @@ class {{ name }}:
         return self._position == other._position and self._size == other._size
 
     def __repr__(self) -> str:
-        return f"<Rectangle position={self._position} size={self._size}>"
+        return f"<BoundingBox2d position={self._position} size={self._size}>"
 
     def overlaps(
         self,
@@ -48,33 +46,33 @@ class {{ name }}:
         if isinstance(other, {{ data_type }}Vector2):
             return self.overlaps_{{ data_type.lower() }}_vector_2(other)
         try:
-            other_overlaps = other.overlaps_{{ data_type.lower() }}_rectangle
+            other_overlaps = other.overlaps_{{ data_type.lower() }}_bounding_box_2d
         except AttributeError:
             raise TypeError(other)
         return other_overlaps(self)
 
-    def _overlaps_rect_like(self, other: {{ name }} | {{ data_type }}BoundingBox2d) -> bool:
+    def overlaps_{{ data_type.lower() }}_circle(
+        self,
+        other: {{ data_type }}Circle
+    ) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_bounding_box_2d(self)
+
+    def overlaps_{{ data_type.lower() }}_rectangle(
+        self,
+        other: {{ data_type }}Rectangle
+    ) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_bounding_box_2d(self)
+
+    def overlaps_{{ data_type.lower() }}_bounding_box_2d(
+        self,
+        other: {{ name }}
+    ) -> bool:
         return not (
             self._position.x >= other._extent.x or
             self._extent.x <= other._position.x or
             self._position.y >= other._extent.y or
             self._extent.y <= other._position.y
         )
-
-    def overlaps_{{ data_type.lower() }}_bounding_box_2d(
-        self,
-        other: {{ data_type }}BoundingBox2d
-    ) -> bool:
-        return self._overlaps_rect_like(other)
-
-    def overlaps_{{ data_type.lower() }}_circle(
-        self,
-        other: {{ data_type }}Circle
-    ) -> bool:
-        return other.overlaps_{{ data_type.lower() }}_rectangle(self)
-
-    def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ name }}) -> bool:
-        return self._overlaps_rect_like(other)
 
     def overlaps_{{ data_type.lower() }}_vector_2(
         self,
@@ -91,8 +89,8 @@ class {{ name }}:
         return {{ name }}(self._position + translation, self._size)
 
     @property
-    def bounding_box(self) -> {{ data_type }}BoundingBox2d:
-        return self._bounding_box
+    def bounding_box(self) -> {{ name }}:
+        return self
 
     @property
     def extent(self) -> {{ data_type }}Vector2:

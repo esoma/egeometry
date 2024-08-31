@@ -14,6 +14,11 @@ def data_type(request):
 
 
 @pytest.fixture
+def bounding_box_2d_cls(data_type):
+    return getattr(egeometry, f"{data_type}BoundingBox2d")
+
+
+@pytest.fixture
 def circle_cls(data_type):
     return getattr(egeometry, f"{data_type}Circle")
 

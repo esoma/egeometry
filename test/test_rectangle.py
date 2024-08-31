@@ -6,12 +6,12 @@ import pytest
 @pytest.mark.parametrize("y", [-1, 0, 1])
 @pytest.mark.parametrize("w", [1, 100])
 @pytest.mark.parametrize("h", [2, 200])
-def test_attrs(rectangle_cls, vector_2_cls, x, y, w, h):
+def test_attrs(rectangle_cls, bounding_box_2d_cls, vector_2_cls, x, y, w, h):
     rect = rectangle_cls(vector_2_cls(x, y), vector_2_cls(w, h))
     assert rect.position == vector_2_cls(x, y)
     assert rect.size == vector_2_cls(w, h)
     assert rect.extent == rect.position + rect.size
-    assert rect.bounding_box == rect
+    assert rect.bounding_box == bounding_box_2d_cls(rect.position, rect.size)
     assert repr(rect) == f"<Rectangle position={rect.position} size={rect.size}>"
 
 

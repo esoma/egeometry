@@ -3,7 +3,13 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "circle_args, rectangle_args, expected_result", [(((0,), 1), ((0,), (1,)), True)]
+    "circle_args, rectangle_args, expected_result",
+    [
+        (((0,), 1), ((0,), (1,)), True),
+        (((0,), 1), ((1,), (1,)), False),
+        (((0,), 1), ((1,), (2,)), False),
+        (((0,), 1), ((-1,), (2,)), True),
+    ],
 )
 def test_overlaps(
     data_type,
@@ -23,5 +29,5 @@ def test_overlaps(
     circle_overlaps = getattr(circle, f"overlaps_{data_type.lower()}_rectangle")
     assert circle_overlaps(rectangle) == expected_result
 
-    rectangle_overlaps = getattr(circle, f"overlaps_{data_type.lower()}_circle")
+    rectangle_overlaps = getattr(rectangle, f"overlaps_{data_type.lower()}_circle")
     assert rectangle_overlaps(circle) == expected_result
