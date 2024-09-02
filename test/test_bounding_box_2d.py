@@ -23,6 +23,30 @@ def test_invalid_size(bounding_box_2d_cls, vector_2_cls, w, h):
     assert str(excinfo.value) == "each size dimension must be >= 0"
 
 
+def test_shapes_extra(bounding_box_2d_cls, vector_2_cls):
+    with pytest.raises(TypeError):
+        bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(0), shapes=[])
+    with pytest.raises(TypeError):
+        bounding_box_2d_cls(vector_2_cls(0), shapes=[])
+    with pytest.raises(TypeError):
+        bounding_box_2d_cls(position=vector_2_cls(0), shapes=[])
+    with pytest.raises(TypeError):
+        bounding_box_2d_cls(size=vector_2_cls(0), shapes=[])
+
+
+def test_shapes(vector_2_cls, bounding_box_2d_cls, rectangle_cls, circle_cls):
+    assert bounding_box_2d_cls(shapes=[]) == bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(0))
+    assert bounding_box_2d_cls(
+        shapes=[vector_2_cls(0), vector_2_cls(-1, 1), vector_2_cls(1, -1)]
+    ) == bounding_box_2d_cls(vector_2_cls(-1), vector_2_cls(2))
+    assert bounding_box_2d_cls(
+        shapes=[
+            rectangle_cls(vector_2_cls(-2, 3), vector_2_cls(4, 7)),
+            circle_cls(vector_2_cls(4, 0), 5),
+        ]
+    ) == bounding_box_2d_cls(vector_2_cls(-2, -5), vector_2_cls(11, 15))
+
+
 def test_not_equal(bounding_box_2d_cls, vector_2_cls):
     bb = bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(1))
     assert bb != object()

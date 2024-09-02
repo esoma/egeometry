@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
-__all__ = ["IBoundingBox2d", "IBoundingBox2dOverlappable"]
+__all__ = ["IBoundingBox2d", "IBoundingBox2dOverlappable", "HasIBoundingBox2d"]
 
 # emath
 from emath import IVector2
 
 # python
+from typing import Iterable
 from typing import Protocol
 from typing import TYPE_CHECKING
+from typing import overload
 
 if TYPE_CHECKING:
     # egeometry
@@ -22,10 +24,63 @@ class IBoundingBox2dOverlappable(Protocol):
         ...
 
 
+class HasIBoundingBox2d(Protocol):
+    @property
+    def bounding_box(self) -> IBoundingBox2d:
+        ...
+
+
 class IBoundingBox2d:
     __slots__ = ["_extent", "_position", "_size"]
 
-    def __init__(self, position: IVector2, size: IVector2):
+    @overload
+    def __init__(self, position: IVector2, size: IVector2) -> None:
+        ...
+
+    @overload
+    def __init__(self, *, shapes: Iterable[HasIBoundingBox2d | IVector2]) -> None:
+        ...
+
+    def __init__(
+        self,
+        position: IVector2 | None = None,
+        size: IVector2 | None = None,
+        *,
+        shapes: Iterable[HasIBoundingBox2d | IVector2] | None = None,
+    ):
+        if shapes is not None:
+            if position is not None:
+                raise TypeError("position cannot be supplied with shapes argument")
+            if size is not None:
+                raise TypeError("size cannot be supplied with shapes argument")
+            accum_position: IVector2 | None = None
+            accum_extent: IVector2 | None = None
+            for s in shapes:
+                if isinstance(s, IVector2):
+                    p = e = s
+                else:
+                    p = s.bounding_box.position
+                    e = s.bounding_box.extent
+                if accum_position is None:
+                    accum_position = p
+                else:
+                    accum_position = IVector2(
+                        min(p.x, accum_position.x), min(p.y, accum_position.y)
+                    )
+                if accum_extent is None:
+                    accum_extent = e
+                else:
+                    accum_extent = IVector2(max(e.x, accum_extent.x), max(e.y, accum_extent.y))
+            if accum_position is None:
+                position = IVector2(0)
+                size = IVector2(0)
+            else:
+                assert accum_extent is not None
+                position = accum_position
+                size = accum_extent - accum_position
+
+        assert position is not None
+        assert size is not None
         if size < IVector2(0):
             raise ValueError("each size dimension must be >= 0")
         self._position = position

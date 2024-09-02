@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-__all__ = ["{{ name }}", "{{ name }}Overlappable"]
+__all__ = ["{{ name }}", "{{ name }}Overlappable", "Has{{ name }}"]
 
 from emath import {{ data_type }}Vector2
-from typing import Protocol, TYPE_CHECKING
+from typing import Protocol, TYPE_CHECKING, overload, Iterable
 
 if TYPE_CHECKING:
     from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
@@ -20,15 +20,68 @@ class {{ name }}Overlappable(Protocol):
         ...
 
 
+class Has{{ name }}(Protocol):
+
+    @property
+    def bounding_box(self) -> {{ name }}:
+        ...
+
+
+
 class {{ name }}:
     __slots__ = ["_extent", "_position", "_size"]
 
-    def __init__(self, position: {{ data_type }}Vector2, size: {{ data_type }}Vector2):
+    @overload
+    def __init__(self, position: {{ data_type }}Vector2, size: {{ data_type }}Vector2) -> None:
+        ...
+
+    @overload
+    def __init__(self, *, shapes: Iterable[Has{{ name }} | {{ data_type }}Vector2]) -> None:
+        ...
+
+    def __init__(self,
+        position: {{ data_type }}Vector2 | None = None,
+        size: {{ data_type }}Vector2 | None = None,
+        *,
+        shapes: Iterable[Has{{ name }} | {{ data_type }}Vector2] | None = None,
+    ):
+        if shapes is not None:
+            if position is not None:
+                raise TypeError("position cannot be supplied with shapes argument")
+            if size is not None:
+                raise TypeError("size cannot be supplied with shapes argument")
+            accum_position: {{ data_type }}Vector2 | None = None
+            accum_extent: {{ data_type }}Vector2 | None = None
+            for s in shapes:
+                if isinstance(s, {{ data_type }}Vector2):
+                    p = e = s
+                else:
+                    p = s.bounding_box.position
+                    e = s.bounding_box.extent
+                if accum_position is None:
+                    accum_position = p
+                else:
+                    accum_position = {{ data_type }}Vector2(min(p.x, accum_position.x), min(p.y, accum_position.y))
+                if accum_extent is None:
+                    accum_extent = e
+                else:
+                    accum_extent = {{ data_type }}Vector2(max(e.x, accum_extent.x), max(e.y, accum_extent.y))
+            if accum_position is None:
+                position = {{ data_type }}Vector2(0)
+                size = {{ data_type }}Vector2(0)
+            else:
+                assert accum_extent is not None
+                position = accum_position
+                size = accum_extent - accum_position
+
+        assert position is not None
+        assert size is not None
         if size < {{ data_type }}Vector2(0):
             raise ValueError("each size dimension must be >= 0")
         self._position = position
         self._size = size
         self._extent = self._position + self._size
+
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, {{ name }}):
