@@ -31,7 +31,6 @@ class {{ name }}:
         self._size = size
         self._extent = self._position + self._size
 
-
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, {{ name }}):
             return False

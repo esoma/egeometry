@@ -5,7 +5,7 @@ __all__ = ()
 try:
     # egeometry
     from codegen import generate_geometry_files
-except ImportError:
+except ImportError as ex:
     generate_geometry_files = None  # type: ignore
 
 # python

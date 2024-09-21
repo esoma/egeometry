@@ -29,5 +29,10 @@ def rectangle_cls(data_type):
 
 
 @pytest.fixture
+def triangle_2d_cls(data_type):
+    return getattr(egeometry, f"{data_type}Triangle2d")
+
+
+@pytest.fixture
 def vector_2_cls(data_type):
     return getattr(emath, f"{data_type}Vector2")

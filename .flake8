@@ -21,7 +21,6 @@ select =
     W1   # indentation warning
     W2   # whitespace warning
     W3   # blank line warning
-    W504 # line break after binary operator
     W505 # doc line too long
     T100 # Fixme found
     T101 # Todo found
