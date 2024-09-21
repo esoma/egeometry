@@ -56,3 +56,31 @@ def test_translate(triangle_2d_cls, vector_2_cls, points_args, translation_args)
     tri = triangle_2d_cls(*points)
     translation = vector_2_cls(*translation_args)
     assert tri.translate(translation) == triangle_2d_cls(*(p + translation for p in points))
+
+
+@pytest.mark.parametrize(
+    "a_args, b_args, expected_result",
+    [
+        ([(0, 0), (5, 0), (0, 5)], (1, 1), True),
+        ([(0, 0), (5, 0), (0, 5)], (0, 0), True),
+        ([(0, 0), (5, 0), (0, 5)], (2, 3), True),
+        ([(0, 0), (5, 0), (0, 5)], (3, 3), False),
+        ([(0, 0), (5, 0), (0, 5)], (0, 5), True),
+        ([(0, 0), (5, 0), (0, 5)], (0, 6), False),
+        ([(0, 0), (5, 0), (0, 5)], (5, 0), True),
+        ([(0, 0), (5, 0), (0, 5)], (6, 0), False),
+        ([(0, 0), (5, 0), (0, 5)], (-1, 0), False),
+        ([(0, 0), (5, 0), (0, 5)], (-1, -1), False),
+        ([(0, 0), (5, 0), (0, 5)], (0, -1), False),
+    ],
+)
+def test_overlaps_vector_2(
+    data_type, triangle_2d_cls, vector_2_cls, a_args, b_args, expected_result
+):
+    a = triangle_2d_cls(*(vector_2_cls(*pa) for pa in a_args))
+    b = vector_2_cls(*b_args)
+
+    assert a.overlaps(b) == expected_result
+
+    a_overlaps = getattr(a, f"overlaps_{data_type.lower()}_vector_2")
+    assert a_overlaps(b) == expected_result

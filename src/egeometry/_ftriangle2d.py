@@ -8,6 +8,7 @@ __all__ = ["FTriangle2d", "FTriangle2dOverlappable"]
 from ._fboundingbox2d import FBoundingBox2d
 
 # emath
+from emath import DVector2
 from emath import FVector2
 
 # python
@@ -52,6 +53,35 @@ class FTriangle2d:
 
     def __repr__(self) -> str:
         return f"<Triangle2d vertices={self._vertices}>"
+
+    def overlaps(self, other: FVector2 | FTriangle2dOverlappable) -> bool:
+        if isinstance(other, FVector2):
+            return self.overlaps_f_vector_2(other)
+        try:
+            other_overlaps = other.overlaps_f_triangle_2d
+        except AttributeError:
+            raise TypeError(other)
+        return other_overlaps(self)
+
+    def overlaps_f_vector_2(self, other: FVector2) -> bool:
+        # solve for the point's barycentric coordinates
+        p0 = self._vertices[0]
+        v0 = DVector2(*(self._vertices[2] - p0))
+        v1 = DVector2(*(self._vertices[1] - p0))
+        v2 = DVector2(*(other - p0))
+        dot00 = v0 @ v0
+        dot01 = v0 @ v1
+        dot02 = v0 @ v2
+        dot11 = v1 @ v1
+        dot12 = v1 @ v2
+        inv_denom = 1.0 / (dot00 * dot11 - dot01 * dot01)
+        u = (dot11 * dot02 - dot01 * dot12) * inv_denom
+        if u < 0:
+            return False
+        v = (dot00 * dot12 - dot01 * dot02) * inv_denom
+        if v >= 0 and u + v <= 1:
+            return True
+        return False
 
     def translate(self, translation: FVector2) -> FTriangle2d:
         return FTriangle2d(*(v + translation for v in self._vertices))
