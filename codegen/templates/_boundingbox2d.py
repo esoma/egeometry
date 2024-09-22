@@ -10,6 +10,7 @@ from typing import Protocol, TYPE_CHECKING, overload, Iterable
 if TYPE_CHECKING:
     from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
     from ._{{ data_type.lower() }}rectangle import {{ data_type}}Rectangle
+    from ._{{ data_type.lower() }}triangle2d import {{ data_type}}Triangle2d
 
 class {{ name }}Overlappable(Protocol):
 
@@ -113,6 +114,12 @@ class {{ name }}:
     def overlaps_{{ data_type.lower() }}_rectangle(
         self,
         other: {{ data_type }}Rectangle
+    ) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_bounding_box_2d(self)
+
+    def overlaps_{{ data_type.lower() }}_triangle_2d(
+        self,
+        other: {{ data_type }}Triangle2d
     ) -> bool:
         return other.overlaps_{{ data_type.lower() }}_bounding_box_2d(self)
 

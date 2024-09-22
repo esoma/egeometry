@@ -5,15 +5,18 @@ from __future__ import annotations
 __all__ = ["{{ name }}", "{{ name }}Overlappable"]
 
 from emath import {{ data_type }}Vector2
-from typing import Protocol, TypeAlias
+from typing import Protocol, TypeAlias, TYPE_CHECKING
 from ._{{ data_type.lower() }}boundingbox2d import {{ data_type }}BoundingBox2d
 from ._separating_axis_theorem import separating_axis_theorem
+
+if TYPE_CHECKING:
+    from ._{{ data_type.lower() }}rectangle import {{ data_type}}Rectangle
 
 {% if data_type == "F" %}
 _FloatVector2: TypeAlias = {{ data_type }}Vector2
 def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
     return v
-def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, ...]) -> tuple[_FloatVector2, ...]:
     return vs
 {% else %}
 from emath import DVector2
@@ -21,13 +24,13 @@ _FloatVector2: TypeAlias = DVector2
 {% if data_type == "D" %}
 def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
     return v
-def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, ...]) -> tuple[_FloatVector2, ...]:
     return vs
 {% else %}
 def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
     return _FloatVector2(*v)
-def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
-    return tuple(_FloatVector2(*v) for v in vs) # type: ignore
+def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, ...]) -> tuple[_FloatVector2, ...]:
+    return tuple(_FloatVector2(*v) for v in vs)
 {% endif %}
 {% endif %}
 
@@ -51,7 +54,7 @@ class {{ name }}:
         # fmt: off
         double_area = (
             point_0.x * (point_1.y - point_2.y) +
-            point_1.x * (point_2.y - point_1.y) +
+            point_1.x * (point_2.y - point_0.y) +
             point_2.x * (point_0.y - point_1.y)
         )
         # fmt: on
@@ -118,6 +121,24 @@ class {{ name }}:
         if v >= 0 and u + v <= 1:
             return True
         return False
+
+    def _overlaps_rect_like(self, other: {{ data_type }}BoundingBox2d | {{ data_type }}Rectangle) -> bool:
+        return separating_axis_theorem(
+            {*self._axes, _FloatVector2(1, 0), _FloatVector2(0, 1)},
+            _to_float_vectors(self._vertices),
+            _to_float_vectors(tuple((
+                other._position,
+                other._position + other._size.xo,
+                other._extent,
+                other._position + other._size.oy,
+            )))
+        )
+
+    def overlaps_{{ data_type.lower() }}_bounding_box_2d(self, other: {{ data_type }}BoundingBox2d) -> bool:
+        return self._overlaps_rect_like(other)
+
+    def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ data_type }}Rectangle) -> bool:
+        return self._overlaps_rect_like(other)
 
     def overlaps_{{ data_type.lower() }}_triangle_2d(self, other: {{ name }}) -> bool:
         return separating_axis_theorem(

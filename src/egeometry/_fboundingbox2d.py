@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     # egeometry
     from ._fcircle import FCircle
     from ._frectangle import FRectangle
+    from ._ftriangle2d import FTriangle2d
 
 
 class FBoundingBox2dOverlappable(Protocol):
@@ -108,6 +109,9 @@ class FBoundingBox2d:
         return other.overlaps_f_bounding_box_2d(self)
 
     def overlaps_f_rectangle(self, other: FRectangle) -> bool:
+        return other.overlaps_f_bounding_box_2d(self)
+
+    def overlaps_f_triangle_2d(self, other: FTriangle2d) -> bool:
         return other.overlaps_f_bounding_box_2d(self)
 
     def overlaps_f_bounding_box_2d(self, other: FBoundingBox2d) -> bool:

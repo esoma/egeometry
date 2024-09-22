@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     # egeometry
     from ._icircle import ICircle
+    from ._itriangle2d import ITriangle2d
 
 
 class IRectangleOverlappable(Protocol):
@@ -68,6 +69,9 @@ class IRectangle:
 
     def overlaps_i_rectangle(self, other: IRectangle) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_i_triangle_2d(self, other: ITriangle2d) -> bool:
+        return other.overlaps_i_rectangle(self)
 
     def overlaps_i_vector_2(self, other: IVector2) -> bool:
         return (

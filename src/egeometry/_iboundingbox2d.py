@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     # egeometry
     from ._icircle import ICircle
     from ._irectangle import IRectangle
+    from ._itriangle2d import ITriangle2d
 
 
 class IBoundingBox2dOverlappable(Protocol):
@@ -108,6 +109,9 @@ class IBoundingBox2d:
         return other.overlaps_i_bounding_box_2d(self)
 
     def overlaps_i_rectangle(self, other: IRectangle) -> bool:
+        return other.overlaps_i_bounding_box_2d(self)
+
+    def overlaps_i_triangle_2d(self, other: ITriangle2d) -> bool:
         return other.overlaps_i_bounding_box_2d(self)
 
     def overlaps_i_bounding_box_2d(self, other: IBoundingBox2d) -> bool:

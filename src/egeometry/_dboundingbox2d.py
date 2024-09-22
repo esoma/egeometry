@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     # egeometry
     from ._dcircle import DCircle
     from ._drectangle import DRectangle
+    from ._dtriangle2d import DTriangle2d
 
 
 class DBoundingBox2dOverlappable(Protocol):
@@ -108,6 +109,9 @@ class DBoundingBox2d:
         return other.overlaps_d_bounding_box_2d(self)
 
     def overlaps_d_rectangle(self, other: DRectangle) -> bool:
+        return other.overlaps_d_bounding_box_2d(self)
+
+    def overlaps_d_triangle_2d(self, other: DTriangle2d) -> bool:
         return other.overlaps_d_bounding_box_2d(self)
 
     def overlaps_d_bounding_box_2d(self, other: DBoundingBox2d) -> bool:

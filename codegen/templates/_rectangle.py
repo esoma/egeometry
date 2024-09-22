@@ -10,6 +10,7 @@ from ._{{ data_type.lower() }}boundingbox2d import {{ data_type }}BoundingBox2d
 
 if TYPE_CHECKING:
     from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
+    from ._{{ data_type.lower() }}triangle2d import {{ data_type}}Triangle2d
 
 class {{ name }}Overlappable(Protocol):
 
@@ -74,6 +75,12 @@ class {{ name }}:
 
     def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ name }}) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_{{ data_type.lower() }}_triangle_2d(
+        self,
+        other: {{ data_type }}Triangle2d
+    ) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_rectangle(self)
 
     def overlaps_{{ data_type.lower() }}_vector_2(
         self,

@@ -13,7 +13,14 @@ from emath import DVector2
 
 # python
 from typing import Protocol
+from typing import TYPE_CHECKING
 from typing import TypeAlias
+
+if TYPE_CHECKING:
+    from ._drectangle import DRectangle
+
+# emath
+from emath import DVector2
 
 _FloatVector2: TypeAlias = DVector2
 
@@ -22,9 +29,7 @@ def _to_float_vector(v: DVector2) -> _FloatVector2:
     return v
 
 
-def _to_float_vectors(
-    vs: tuple[DVector2, DVector2, DVector2]
-) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+def _to_float_vectors(vs: tuple[DVector2, ...]) -> tuple[_FloatVector2, ...]:
     return vs
 
 
@@ -44,7 +49,7 @@ class DTriangle2d:
         # fmt: off
         double_area = (
             point_0.x * (point_1.y - point_2.y) +
-            point_1.x * (point_2.y - point_1.y) +
+            point_1.x * (point_2.y - point_0.y) +
             point_2.x * (point_0.y - point_1.y)
         )
         # fmt: on
@@ -104,6 +109,28 @@ class DTriangle2d:
         if v >= 0 and u + v <= 1:
             return True
         return False
+
+    def _overlaps_rect_like(self, other: DBoundingBox2d | DRectangle) -> bool:
+        return separating_axis_theorem(
+            {*self._axes, _FloatVector2(1, 0), _FloatVector2(0, 1)},
+            _to_float_vectors(self._vertices),
+            _to_float_vectors(
+                tuple(
+                    (
+                        other._position,
+                        other._position + other._size.xo,
+                        other._extent,
+                        other._position + other._size.oy,
+                    )
+                )
+            ),
+        )
+
+    def overlaps_d_bounding_box_2d(self, other: DBoundingBox2d) -> bool:
+        return self._overlaps_rect_like(other)
+
+    def overlaps_d_rectangle(self, other: DRectangle) -> bool:
+        return self._overlaps_rect_like(other)
 
     def overlaps_d_triangle_2d(self, other: DTriangle2d) -> bool:
         return separating_axis_theorem(

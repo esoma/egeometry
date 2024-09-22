@@ -13,7 +13,13 @@ from emath import FVector2
 
 # python
 from typing import Protocol
+from typing import TYPE_CHECKING
 from typing import TypeAlias
+
+if TYPE_CHECKING:
+    # egeometry
+    from ._frectangle import FRectangle
+
 
 _FloatVector2: TypeAlias = FVector2
 
@@ -22,9 +28,7 @@ def _to_float_vector(v: FVector2) -> _FloatVector2:
     return v
 
 
-def _to_float_vectors(
-    vs: tuple[FVector2, FVector2, FVector2]
-) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+def _to_float_vectors(vs: tuple[FVector2, ...]) -> tuple[_FloatVector2, ...]:
     return vs
 
 
@@ -44,7 +48,7 @@ class FTriangle2d:
         # fmt: off
         double_area = (
             point_0.x * (point_1.y - point_2.y) +
-            point_1.x * (point_2.y - point_1.y) +
+            point_1.x * (point_2.y - point_0.y) +
             point_2.x * (point_0.y - point_1.y)
         )
         # fmt: on
@@ -104,6 +108,28 @@ class FTriangle2d:
         if v >= 0 and u + v <= 1:
             return True
         return False
+
+    def _overlaps_rect_like(self, other: FBoundingBox2d | FRectangle) -> bool:
+        return separating_axis_theorem(
+            {*self._axes, _FloatVector2(1, 0), _FloatVector2(0, 1)},
+            _to_float_vectors(self._vertices),
+            _to_float_vectors(
+                tuple(
+                    (
+                        other._position,
+                        other._position + other._size.xo,
+                        other._extent,
+                        other._position + other._size.oy,
+                    )
+                )
+            ),
+        )
+
+    def overlaps_f_bounding_box_2d(self, other: FBoundingBox2d) -> bool:
+        return self._overlaps_rect_like(other)
+
+    def overlaps_f_rectangle(self, other: FRectangle) -> bool:
+        return self._overlaps_rect_like(other)
 
     def overlaps_f_triangle_2d(self, other: FTriangle2d) -> bool:
         return separating_axis_theorem(

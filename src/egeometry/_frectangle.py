@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     # egeometry
     from ._fcircle import FCircle
+    from ._ftriangle2d import FTriangle2d
 
 
 class FRectangleOverlappable(Protocol):
@@ -68,6 +69,9 @@ class FRectangle:
 
     def overlaps_f_rectangle(self, other: FRectangle) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_f_triangle_2d(self, other: FTriangle2d) -> bool:
+        return other.overlaps_f_rectangle(self)
 
     def overlaps_f_vector_2(self, other: FVector2) -> bool:
         return (

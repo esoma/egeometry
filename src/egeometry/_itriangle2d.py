@@ -9,12 +9,18 @@ from ._iboundingbox2d import IBoundingBox2d
 from ._separating_axis_theorem import separating_axis_theorem
 
 # emath
-from emath import DVector2
 from emath import IVector2
 
 # python
 from typing import Protocol
+from typing import TYPE_CHECKING
 from typing import TypeAlias
+
+if TYPE_CHECKING:
+    from ._irectangle import IRectangle
+
+# emath
+from emath import DVector2
 
 _FloatVector2: TypeAlias = DVector2
 
@@ -23,10 +29,8 @@ def _to_float_vector(v: IVector2) -> _FloatVector2:
     return _FloatVector2(*v)
 
 
-def _to_float_vectors(
-    vs: tuple[IVector2, IVector2, IVector2]
-) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
-    return tuple(_FloatVector2(*v) for v in vs)  # type: ignore
+def _to_float_vectors(vs: tuple[IVector2, ...]) -> tuple[_FloatVector2, ...]:
+    return tuple(_FloatVector2(*v) for v in vs)
 
 
 class ITriangle2dOverlappable(Protocol):
@@ -45,7 +49,7 @@ class ITriangle2d:
         # fmt: off
         double_area = (
             point_0.x * (point_1.y - point_2.y) +
-            point_1.x * (point_2.y - point_1.y) +
+            point_1.x * (point_2.y - point_0.y) +
             point_2.x * (point_0.y - point_1.y)
         )
         # fmt: on
@@ -105,6 +109,28 @@ class ITriangle2d:
         if v >= 0 and u + v <= 1:
             return True
         return False
+
+    def _overlaps_rect_like(self, other: IBoundingBox2d | IRectangle) -> bool:
+        return separating_axis_theorem(
+            {*self._axes, _FloatVector2(1, 0), _FloatVector2(0, 1)},
+            _to_float_vectors(self._vertices),
+            _to_float_vectors(
+                tuple(
+                    (
+                        other._position,
+                        other._position + other._size.xo,
+                        other._extent,
+                        other._position + other._size.oy,
+                    )
+                )
+            ),
+        )
+
+    def overlaps_i_bounding_box_2d(self, other: IBoundingBox2d) -> bool:
+        return self._overlaps_rect_like(other)
+
+    def overlaps_i_rectangle(self, other: IRectangle) -> bool:
+        return self._overlaps_rect_like(other)
 
     def overlaps_i_triangle_2d(self, other: ITriangle2d) -> bool:
         return separating_axis_theorem(

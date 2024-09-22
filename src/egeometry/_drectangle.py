@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     # egeometry
     from ._dcircle import DCircle
+    from ._dtriangle2d import DTriangle2d
 
 
 class DRectangleOverlappable(Protocol):
@@ -68,6 +69,9 @@ class DRectangle:
 
     def overlaps_d_rectangle(self, other: DRectangle) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_d_triangle_2d(self, other: DTriangle2d) -> bool:
+        return other.overlaps_d_rectangle(self)
 
     def overlaps_d_vector_2(self, other: DVector2) -> bool:
         return (
