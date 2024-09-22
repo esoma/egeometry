@@ -6,6 +6,7 @@ __all__ = ["ITriangle2d", "ITriangle2dOverlappable"]
 
 # egeometry
 from ._iboundingbox2d import IBoundingBox2d
+from ._separating_axis_theorem import separating_axis_theorem
 
 # emath
 from emath import DVector2
@@ -13,6 +14,19 @@ from emath import IVector2
 
 # python
 from typing import Protocol
+from typing import TypeAlias
+
+_FloatVector2: TypeAlias = DVector2
+
+
+def _to_float_vector(v: IVector2) -> _FloatVector2:
+    return _FloatVector2(*v)
+
+
+def _to_float_vectors(
+    vs: tuple[IVector2, IVector2, IVector2]
+) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+    return tuple(_FloatVector2(*v) for v in vs)  # type: ignore
 
 
 class ITriangle2dOverlappable(Protocol):
@@ -54,6 +68,15 @@ class ITriangle2d:
     def __repr__(self) -> str:
         return f"<Triangle2d vertices={self._vertices}>"
 
+    @property
+    def _axes(self) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+        p = self._vertices
+        return (
+            _FloatVector2(p[1].y - p[0].y, p[0].x - p[1].x).normalize(),
+            _FloatVector2(p[2].y - p[1].y, p[1].x - p[2].x).normalize(),
+            _FloatVector2(p[0].y - p[2].y, p[2].x - p[0].x).normalize(),
+        )
+
     def overlaps(self, other: IVector2 | ITriangle2dOverlappable) -> bool:
         if isinstance(other, IVector2):
             return self.overlaps_i_vector_2(other)
@@ -66,9 +89,9 @@ class ITriangle2d:
     def overlaps_i_vector_2(self, other: IVector2) -> bool:
         # solve for the point's barycentric coordinates
         p0 = self._vertices[0]
-        v0 = DVector2(*(self._vertices[2] - p0))
-        v1 = DVector2(*(self._vertices[1] - p0))
-        v2 = DVector2(*(other - p0))
+        v0 = _to_float_vector(self._vertices[2] - p0)
+        v1 = _to_float_vector(self._vertices[1] - p0)
+        v2 = _to_float_vector(other - p0)
         dot00 = v0 @ v0
         dot01 = v0 @ v1
         dot02 = v0 @ v2
@@ -82,6 +105,13 @@ class ITriangle2d:
         if v >= 0 and u + v <= 1:
             return True
         return False
+
+    def overlaps_i_triangle_2d(self, other: ITriangle2d) -> bool:
+        return separating_axis_theorem(
+            {*self._axes, *other._axes},
+            _to_float_vectors(self._vertices),
+            _to_float_vectors(other._vertices),
+        )
 
     def translate(self, translation: IVector2) -> ITriangle2d:
         return ITriangle2d(*(v + translation for v in self._vertices))

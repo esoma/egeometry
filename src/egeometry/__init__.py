@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 __all__ = [
+    "separating_axis_theorem",
     "DCircle",
     "DCircleOverlappable",
     "FCircle",
@@ -29,7 +30,6 @@ __all__ = [
     "IRectangleOverlappable",
 ]
 
-
 # egeometry
 from ._dboundingbox2d import DBoundingBox2d
 from ._dboundingbox2d import DBoundingBox2dOverlappable
@@ -55,3 +55,4 @@ from ._irectangle import IRectangle
 from ._irectangle import IRectangleOverlappable
 from ._itriangle2d import ITriangle2d
 from ._itriangle2d import ITriangle2dOverlappable
+from ._separating_axis_theorem import separating_axis_theorem

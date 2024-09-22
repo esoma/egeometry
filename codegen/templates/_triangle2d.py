@@ -4,9 +4,32 @@ from __future__ import annotations
 
 __all__ = ["{{ name }}", "{{ name }}Overlappable"]
 
-from emath import {{ data_type }}Vector2, DVector2
-from typing import Protocol
+from emath import {{ data_type }}Vector2
+from typing import Protocol, TypeAlias
 from ._{{ data_type.lower() }}boundingbox2d import {{ data_type }}BoundingBox2d
+from ._separating_axis_theorem import separating_axis_theorem
+
+{% if data_type == "F" %}
+_FloatVector2: TypeAlias = {{ data_type }}Vector2
+def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
+    return v
+def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+    return vs
+{% else %}
+from emath import DVector2
+_FloatVector2: TypeAlias = DVector2
+{% if data_type == "D" %}
+def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
+    return v
+def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+    return vs
+{% else %}
+def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
+    return _FloatVector2(*v)
+def _to_float_vectors(vs: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+    return tuple(_FloatVector2(*v) for v in vs) # type: ignore
+{% endif %}
+{% endif %}
 
 class {{ name }}Overlappable(Protocol):
 
@@ -51,6 +74,15 @@ class {{ name }}:
     def __repr__(self) -> str:
         return f"<Triangle2d vertices={self._vertices}>"
 
+    @property
+    def _axes(self) -> tuple[_FloatVector2, _FloatVector2, _FloatVector2]:
+        p = self._vertices
+        return (
+            _FloatVector2(p[1].y - p[0].y, p[0].x - p[1].x).normalize(),
+            _FloatVector2(p[2].y - p[1].y, p[1].x - p[2].x).normalize(),
+            _FloatVector2(p[0].y - p[2].y, p[2].x - p[0].x).normalize()
+        )
+
     def overlaps(
         self,
         other: {{ data_type }}Vector2 |
@@ -70,9 +102,9 @@ class {{ name }}:
     ) -> bool:
         # solve for the point's barycentric coordinates
         p0 = self._vertices[0]
-        v0 = DVector2(*(self._vertices[2] - p0))
-        v1 = DVector2(*(self._vertices[1] - p0))
-        v2 = DVector2(*(other - p0))
+        v0 = _to_float_vector(self._vertices[2] - p0)
+        v1 = _to_float_vector(self._vertices[1] - p0)
+        v2 = _to_float_vector(other - p0)
         dot00 = v0 @ v0
         dot01 = v0 @ v1
         dot02 = v0 @ v2
@@ -86,6 +118,13 @@ class {{ name }}:
         if v >= 0 and u + v <= 1:
             return True
         return False
+
+    def overlaps_{{ data_type.lower() }}_triangle_2d(self, other: {{ name }}) -> bool:
+        return separating_axis_theorem(
+            {*self._axes, *other._axes},
+            _to_float_vectors(self._vertices),
+            _to_float_vectors(other._vertices)
+        )
 
     def translate(self, translation: {{ data_type }}Vector2) -> {{ name }}:
         return {{ name }}(*(v + translation for v in self._vertices))
