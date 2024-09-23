@@ -10,6 +10,7 @@ from ._{{ data_type.lower() }}boundingbox2d import {{ data_type }}BoundingBox2d
 from ._separating_axis_theorem import separating_axis_theorem
 
 if TYPE_CHECKING:
+    from ._{{ data_type.lower() }}circle import {{ data_type}}Circle
     from ._{{ data_type.lower() }}rectangle import {{ data_type}}Rectangle
 
 {% if data_type == "F" %}
@@ -136,6 +137,9 @@ class {{ name }}:
 
     def overlaps_{{ data_type.lower() }}_bounding_box_2d(self, other: {{ data_type }}BoundingBox2d) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_{{ data_type.lower() }}_circle(self, other: {{ data_type }}Circle) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_triangle_2d(self)
 
     def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ data_type }}Rectangle) -> bool:
         return self._overlaps_rect_like(other)

@@ -8,16 +8,24 @@ __all__ = ["FCircle", "FCircleOverlappable"]
 from ._fboundingbox2d import FBoundingBox2d
 
 # emath
-from emath import DVector2
 from emath import FVector2
 
 # python
 from typing import Protocol
 from typing import TYPE_CHECKING
+from typing import TypeAlias
 
 if TYPE_CHECKING:
     # egeometry
     from ._frectangle import FRectangle
+    from ._ftriangle2d import FTriangle2d
+
+
+_FloatVector2: TypeAlias = FVector2
+
+
+def _to_float_vector(v: FVector2) -> _FloatVector2:
+    return v
 
 
 class FCircleOverlappable(Protocol):
@@ -54,14 +62,14 @@ class FCircle:
 
     def _overlaps_rect_like(self, other: FBoundingBox2d | FRectangle) -> bool:
         assert other.size != FVector2(0)
-        o_center = DVector2(*other.position) + (DVector2(*other.size) * 0.5)
-        f_position = DVector2(*self._position)
+        o_center = _to_float_vector(other.position) + (_to_float_vector(other.size) * 0.5)
+        f_position = _to_float_vector(self._position)
         diff = f_position - o_center
-        closest_o_point = DVector2(
+        closest_o_point = _FloatVector2(
             min(max(diff.x, other.position.x), other.extent.x),
             min(max(diff.y, other.position.y), other.extent.y),
         )
-        closest_o_point_distance = round(f_position.distance(closest_o_point))
+        closest_o_point_distance = f_position.distance(closest_o_point)
         return closest_o_point_distance < self._radius
 
     def overlaps_f_bounding_box_2d(self, other: FBoundingBox2d) -> bool:
@@ -71,14 +79,32 @@ class FCircle:
 
     def overlaps_f_circle(self, other: FCircle) -> bool:
         min_distance = self._radius + other._radius
-        distance = round(DVector2(*self._position).distance(DVector2(*other._position)))
+        distance = _to_float_vector(self._position).distance(_to_float_vector(other._position))
+        print("___")
+        print(self)
+        print(other)
+        print(min_distance, distance)
         return distance < min_distance
 
     def overlaps_f_rectangle(self, other: FRectangle) -> bool:
         return self._overlaps_rect_like(other)
 
+    def overlaps_f_triangle_2d(self, other: FTriangle2d) -> bool:
+        fv_position = _to_float_vector(self._position)
+        for tri_edge_a, tri_edge_b in (
+            (other.vertices[0], other.vertices[1]),
+            (other.vertices[1], other.vertices[2]),
+            (other.vertices[2], other.vertices[0]),
+        ):
+            p = _project_point_on_to_line_segment(
+                _to_float_vector(tri_edge_a), _to_float_vector(tri_edge_b), fv_position
+            )
+            if p.distance(fv_position) < self._radius:
+                return True
+        return False
+
     def overlaps_f_vector_2(self, other: FVector2) -> bool:
-        distance = round(DVector2(*self._position).distance(DVector2(*other)))
+        distance = _FloatVector2(*self._position).distance(_FloatVector2(*other))
         return distance < self._radius
 
     def translate(self, translation: FVector2) -> FCircle:
@@ -95,3 +121,13 @@ class FCircle:
     @property
     def radius(self) -> float:
         return self._radius
+
+
+def _project_point_on_to_line_segment(
+    line_a: _FloatVector2, line_b: _FloatVector2, point: _FloatVector2
+) -> _FloatVector2:
+    slope = line_b - line_a
+    length_2 = sum(x**2 for x in slope)
+    t = ((point - line_a) @ slope) / length_2
+    t = max(min(t, 1), 0)
+    return line_a + (t * slope)

@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 from typing import TypeAlias
 
 if TYPE_CHECKING:
+    from ._dcircle import DCircle
     from ._drectangle import DRectangle
 
 # emath
@@ -128,6 +129,9 @@ class DTriangle2d:
 
     def overlaps_d_bounding_box_2d(self, other: DBoundingBox2d) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_d_circle(self, other: DCircle) -> bool:
+        return other.overlaps_d_triangle_2d(self)
 
     def overlaps_d_rectangle(self, other: DRectangle) -> bool:
         return self._overlaps_rect_like(other)

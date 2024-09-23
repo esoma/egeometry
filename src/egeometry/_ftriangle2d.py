@@ -18,6 +18,7 @@ from typing import TypeAlias
 
 if TYPE_CHECKING:
     # egeometry
+    from ._fcircle import FCircle
     from ._frectangle import FRectangle
 
 
@@ -127,6 +128,9 @@ class FTriangle2d:
 
     def overlaps_f_bounding_box_2d(self, other: FBoundingBox2d) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_f_circle(self, other: FCircle) -> bool:
+        return other.overlaps_f_triangle_2d(self)
 
     def overlaps_f_rectangle(self, other: FRectangle) -> bool:
         return self._overlaps_rect_like(other)

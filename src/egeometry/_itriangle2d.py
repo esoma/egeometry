@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 from typing import TypeAlias
 
 if TYPE_CHECKING:
+    from ._icircle import ICircle
     from ._irectangle import IRectangle
 
 # emath
@@ -128,6 +129,9 @@ class ITriangle2d:
 
     def overlaps_i_bounding_box_2d(self, other: IBoundingBox2d) -> bool:
         return self._overlaps_rect_like(other)
+
+    def overlaps_i_circle(self, other: ICircle) -> bool:
+        return other.overlaps_i_triangle_2d(self)
 
     def overlaps_i_rectangle(self, other: IRectangle) -> bool:
         return self._overlaps_rect_like(other)
