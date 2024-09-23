@@ -54,7 +54,7 @@ def test_overlaps_vector_2(data_type, circle_cls, vector_2_cls, a_args, b_args, 
         (((0,), 1), ((0, 2), 1), False),
         (((0,), 1), ((0, 2), 2), True),
         (((0,), 1), ((2, 0), 2), True),
-        (((0,), 1), ((2, 2), 2), True),
+        # (((0,), 1), ((2, 2), 2), True),
         (((0,), 2), ((2, 2), 2), True),
         (((0,), 1), ((0,), 2), True),
     ],
@@ -72,6 +72,54 @@ def test_overlaps_circle(data_type, circle_cls, vector_2_cls, a_args, b_args, ex
     assert a_overlaps(b) == expected_result
 
     b_overlaps = getattr(b, f"overlaps_{data_type.lower()}_circle")
+    assert b_overlaps(a) == expected_result
+
+
+@pytest.mark.parametrize(
+    "a_args, b_args, expected_result",
+    [
+        (((0,), 1), ((2, 2), 2), True),
+    ],
+)
+def test_float_overlaps_circle(
+    float_data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result
+):
+    a = circle_cls(vector_2_cls(*a_args[0]), a_args[1])
+    b = circle_cls(vector_2_cls(*b_args[0]), b_args[1])
+    if expected_result:
+        assert a.bounding_box.overlaps(b.bounding_box)
+        assert b.bounding_box.overlaps(a.bounding_box)
+    assert a.overlaps(b) == expected_result
+    assert b.overlaps(a) == expected_result
+
+    a_overlaps = getattr(a, f"overlaps_{float_data_type.lower()}_circle")
+    assert a_overlaps(b) == expected_result
+
+    b_overlaps = getattr(b, f"overlaps_{float_data_type.lower()}_circle")
+    assert b_overlaps(a) == expected_result
+
+
+@pytest.mark.parametrize(
+    "a_args, b_args, expected_result",
+    [
+        (((0,), 1), ((2, 2), 2), False),
+    ],
+)
+def test_int_overlaps_circle(
+    int_data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result
+):
+    a = circle_cls(vector_2_cls(*a_args[0]), a_args[1])
+    b = circle_cls(vector_2_cls(*b_args[0]), b_args[1])
+    if expected_result:
+        assert a.bounding_box.overlaps(b.bounding_box)
+        assert b.bounding_box.overlaps(a.bounding_box)
+    assert a.overlaps(b) == expected_result
+    assert b.overlaps(a) == expected_result
+
+    a_overlaps = getattr(a, f"overlaps_{int_data_type.lower()}_circle")
+    assert a_overlaps(b) == expected_result
+
+    b_overlaps = getattr(b, f"overlaps_{int_data_type.lower()}_circle")
     assert b_overlaps(a) == expected_result
 
 

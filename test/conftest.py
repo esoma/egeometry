@@ -14,6 +14,20 @@ def data_type(request):
 
 
 @pytest.fixture
+def float_data_type(data_type):
+    if data_type not in "FD":
+        pytest.skip("float data type only test")
+    return data_type
+
+
+@pytest.fixture
+def int_data_type(data_type):
+    if data_type not in "I":
+        pytest.skip("int data type only test")
+    return data_type
+
+
+@pytest.fixture
 def bounding_box_2d_cls(data_type):
     return getattr(egeometry, f"{data_type}BoundingBox2d")
 

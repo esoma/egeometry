@@ -29,6 +29,10 @@ def _to_float_vector(v: DVector2) -> _FloatVector2:
     return v
 
 
+def _to_component_type(v: float) -> float:
+    return v
+
+
 class DCircleOverlappable(Protocol):
     def overlaps_d_circle(self, other: DCircle) -> bool:
         ...
@@ -71,7 +75,7 @@ class DCircle:
             min(max(diff.y, other.position.y), other.extent.y),
         )
         closest_o_point_distance = f_position.distance(closest_o_point)
-        return closest_o_point_distance < self._radius
+        return _to_component_type(closest_o_point_distance) < self._radius
 
     def overlaps_d_bounding_box_2d(self, other: DBoundingBox2d) -> bool:
         if other.size == DVector2(0):
@@ -81,11 +85,7 @@ class DCircle:
     def overlaps_d_circle(self, other: DCircle) -> bool:
         min_distance = self._radius + other._radius
         distance = _to_float_vector(self._position).distance(_to_float_vector(other._position))
-        print("___")
-        print(self)
-        print(other)
-        print(min_distance, distance)
-        return distance < min_distance
+        return _to_component_type(distance) < min_distance
 
     def overlaps_d_rectangle(self, other: DRectangle) -> bool:
         return self._overlaps_rect_like(other)
@@ -100,13 +100,13 @@ class DCircle:
             p = _project_point_on_to_line_segment(
                 _to_float_vector(tri_edge_a), _to_float_vector(tri_edge_b), fv_position
             )
-            if p.distance(fv_position) < self._radius:
+            if _to_component_type(p.distance(fv_position)) < self._radius:
                 return True
         return False
 
     def overlaps_d_vector_2(self, other: DVector2) -> bool:
         distance = _FloatVector2(*self._position).distance(_FloatVector2(*other))
-        return distance < self._radius
+        return _to_component_type(distance) < self._radius
 
     def translate(self, translation: DVector2) -> DCircle:
         return DCircle(self._position + translation, self._radius)

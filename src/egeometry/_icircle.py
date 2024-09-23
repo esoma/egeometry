@@ -29,6 +29,10 @@ def _to_float_vector(v: IVector2) -> _FloatVector2:
     return _FloatVector2(*v)
 
 
+def _to_component_type(v: float) -> int:
+    return round(v)
+
+
 class ICircleOverlappable(Protocol):
     def overlaps_i_circle(self, other: ICircle) -> bool:
         ...
@@ -71,7 +75,7 @@ class ICircle:
             min(max(diff.y, other.position.y), other.extent.y),
         )
         closest_o_point_distance = f_position.distance(closest_o_point)
-        return closest_o_point_distance < self._radius
+        return _to_component_type(closest_o_point_distance) < self._radius
 
     def overlaps_i_bounding_box_2d(self, other: IBoundingBox2d) -> bool:
         if other.size == IVector2(0):
@@ -81,11 +85,7 @@ class ICircle:
     def overlaps_i_circle(self, other: ICircle) -> bool:
         min_distance = self._radius + other._radius
         distance = _to_float_vector(self._position).distance(_to_float_vector(other._position))
-        print("___")
-        print(self)
-        print(other)
-        print(min_distance, distance)
-        return distance < min_distance
+        return _to_component_type(distance) < min_distance
 
     def overlaps_i_rectangle(self, other: IRectangle) -> bool:
         return self._overlaps_rect_like(other)
@@ -100,13 +100,13 @@ class ICircle:
             p = _project_point_on_to_line_segment(
                 _to_float_vector(tri_edge_a), _to_float_vector(tri_edge_b), fv_position
             )
-            if p.distance(fv_position) < self._radius:
+            if _to_component_type(p.distance(fv_position)) < self._radius:
                 return True
         return False
 
     def overlaps_i_vector_2(self, other: IVector2) -> bool:
         distance = _FloatVector2(*self._position).distance(_FloatVector2(*other))
-        return distance < self._radius
+        return _to_component_type(distance) < self._radius
 
     def translate(self, translation: IVector2) -> ICircle:
         return ICircle(self._position + translation, self._radius)

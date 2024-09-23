@@ -28,6 +28,14 @@ def _to_float_vector(v: {{ data_type }}Vector2) -> _FloatVector2:
 {% endif %}
 {% endif %}
 
+{% if data_type in "FD" %}
+def _to_component_type(v: float) -> float:
+    return v
+{% else %}
+def _to_component_type(v: float) -> int:
+    return round(v)
+{% endif %}
+
 class {{ name }}Overlappable(Protocol):
 
     def overlaps_{{ data_type.lower() }}_circle(
@@ -81,7 +89,7 @@ class {{ name }}:
             min(max(diff.y, other.position.y), other.extent.y),
         )
         closest_o_point_distance = f_position.distance(closest_o_point)
-        return closest_o_point_distance < self._radius
+        return _to_component_type(closest_o_point_distance) < self._radius
 
     def overlaps_{{ data_type.lower() }}_bounding_box_2d(self, other: {{ data_type }}BoundingBox2d) -> bool:
         if other.size == {{ data_type }}Vector2(0):
@@ -91,7 +99,7 @@ class {{ name }}:
     def overlaps_{{ data_type.lower() }}_circle(self, other: {{ data_type }}Circle) -> bool:
         min_distance = self._radius + other._radius
         distance = _to_float_vector(self._position).distance(_to_float_vector(other._position))
-        return distance < min_distance
+        return _to_component_type(distance) < min_distance
 
     def overlaps_{{ data_type.lower() }}_rectangle(self, other: {{ data_type }}Rectangle) -> bool:
         return self._overlaps_rect_like(other)
@@ -104,7 +112,7 @@ class {{ name }}:
             (other.vertices[2], other.vertices[0])
         ):
             p = _project_point_on_to_line_segment(_to_float_vector(tri_edge_a), _to_float_vector(tri_edge_b), fv_position)
-            if p.distance(fv_position) < self._radius:
+            if _to_component_type(p.distance(fv_position)) < self._radius:
                 return True
         return False
 
@@ -113,7 +121,7 @@ class {{ name }}:
         other: {{ data_type }}Vector2
     ) -> bool:
         distance = _FloatVector2(*self._position).distance(_FloatVector2(*other))
-        return distance < self._radius
+        return _to_component_type(distance) < self._radius
 
     def translate(self, translation: {{ data_type }}Vector2) -> {{ name }}:
         return {{ name }}(self._position + translation, self._radius)
