@@ -4,19 +4,15 @@ from __future__ import annotations
 
 __all__ = ["FCircle", "FCircleOverlappable"]
 
-# egeometry
-from ._fboundingbox2d import FBoundingBox2d
-
-# emath
-from emath import FVector2
-
-# python
-from typing import Protocol
 from typing import TYPE_CHECKING
+from typing import Protocol
 from typing import TypeAlias
 
+from emath import FVector2
+
+from ._fboundingbox2d import FBoundingBox2d
+
 if TYPE_CHECKING:
-    # egeometry
     from ._frectangle import FRectangle
     from ._ftriangle2d import FTriangle2d
 
@@ -33,8 +29,7 @@ def _to_component_type(v: float) -> float:
 
 
 class FCircleOverlappable(Protocol):
-    def overlaps_f_circle(self, other: FCircle) -> bool:
-        ...
+    def overlaps_f_circle(self, other: FCircle) -> bool: ...
 
 
 class FCircle:

@@ -1,16 +1,18 @@
 __all__ = ["generate_bounding_box_3d_files"]
 
-# egeometry
+
 from .template import get_template
 from .types import TYPES
 
-# python
+
 from datetime import datetime
 from pathlib import Path
 from typing import Generator
 
 
-def generate_bounding_box_3d_files(build_dir: Path) -> Generator[tuple[str, str], None, None]:
+def generate_bounding_box_3d_files(
+    build_dir: Path,
+) -> Generator[tuple[str, str], None, None]:
     b = build_dir
     for data_type, _ in TYPES:
         yield from generate_bouncing_box_3d_file(b, data_type)

@@ -1,4 +1,4 @@
-# pytest
+
 import pytest
 
 
@@ -38,7 +38,9 @@ def test_shapes_extra(bounding_box_3d_cls, vector_3_cls):
 
 
 def test_shapes(vector_3_cls, bounding_box_3d_cls):
-    assert bounding_box_3d_cls(shapes=[]) == bounding_box_3d_cls(vector_3_cls(0), vector_3_cls(0))
+    assert bounding_box_3d_cls(shapes=[]) == bounding_box_3d_cls(
+        vector_3_cls(0), vector_3_cls(0)
+    )
     assert bounding_box_3d_cls(
         shapes=[vector_3_cls(0, 0, -1), vector_3_cls(-1, 1, 0), vector_3_cls(1, -1, 1)]
     ) == bounding_box_3d_cls(vector_3_cls(-1), vector_3_cls(2))
@@ -116,7 +118,9 @@ def test_overlaps_bounding_box_3d(
 def test_translate(bounding_box_3d_cls, vector_3_cls, bb_args, translation_args):
     bb = bounding_box_3d_cls(vector_3_cls(*bb_args[0]), vector_3_cls(*bb_args[1]))
     translation = vector_3_cls(*translation_args)
-    assert bb.translate(translation) == bounding_box_3d_cls(bb.position + translation, bb.size)
+    assert bb.translate(translation) == bounding_box_3d_cls(
+        bb.position + translation, bb.size
+    )
 
 
 def test_not_overlaps(bounding_box_3d_cls, vector_3_cls):

@@ -4,25 +4,20 @@ from __future__ import annotations
 
 __all__ = ["IRectangle", "IRectangleOverlappable"]
 
-# egeometry
-from ._iboundingbox2d import IBoundingBox2d
+from typing import TYPE_CHECKING
+from typing import Protocol
 
-# emath
 from emath import IVector2
 
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
+from ._iboundingbox2d import IBoundingBox2d
 
 if TYPE_CHECKING:
-    # egeometry
     from ._icircle import ICircle
     from ._itriangle2d import ITriangle2d
 
 
 class IRectangleOverlappable(Protocol):
-    def overlaps_i_rectangle(self, other: IRectangle) -> bool:
-        ...
+    def overlaps_i_rectangle(self, other: IRectangle) -> bool: ...
 
 
 class IRectangle:

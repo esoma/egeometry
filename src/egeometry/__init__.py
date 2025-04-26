@@ -42,7 +42,6 @@ __all__ = [
     "IRectangleOverlappable",
 ]
 
-# egeometry
 from ._dboundingbox2d import DBoundingBox2d
 from ._dboundingbox2d import DBoundingBox2dOverlappable
 from ._dboundingbox2d import HasDBoundingBox2d

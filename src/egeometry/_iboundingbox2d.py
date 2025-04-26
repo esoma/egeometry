@@ -4,43 +4,36 @@ from __future__ import annotations
 
 __all__ = ["IBoundingBox2d", "IBoundingBox2dOverlappable", "HasIBoundingBox2d"]
 
-# emath
-from emath import IVector2
-
-# python
+from typing import TYPE_CHECKING
 from typing import Iterable
 from typing import Protocol
-from typing import TYPE_CHECKING
 from typing import overload
 
+from emath import IVector2
+
 if TYPE_CHECKING:
-    # egeometry
     from ._icircle import ICircle
     from ._irectangle import IRectangle
     from ._itriangle2d import ITriangle2d
 
 
 class IBoundingBox2dOverlappable(Protocol):
-    def overlaps_i_bounding_box_2d(self, other: IBoundingBox2d) -> bool:
-        ...
+    def overlaps_i_bounding_box_2d(self, other: IBoundingBox2d) -> bool: ...
 
 
 class HasIBoundingBox2d(Protocol):
     @property
-    def bounding_box(self) -> IBoundingBox2d:
-        ...
+    def bounding_box(self) -> IBoundingBox2d: ...
 
 
 class IBoundingBox2d:
     __slots__ = ["_extent", "_position", "_size"]
 
     @overload
-    def __init__(self, position: IVector2, size: IVector2) -> None:
-        ...
+    def __init__(self, position: IVector2, size: IVector2) -> None: ...
 
     @overload
-    def __init__(self, *, shapes: Iterable[HasIBoundingBox2d | IVector2]) -> None:
-        ...
+    def __init__(self, *, shapes: Iterable[HasIBoundingBox2d | IVector2]) -> None: ...
 
     def __init__(
         self,

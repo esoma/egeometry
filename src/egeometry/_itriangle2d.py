@@ -4,23 +4,20 @@ from __future__ import annotations
 
 __all__ = ["ITriangle2d", "ITriangle2dOverlappable"]
 
-# egeometry
-from ._iboundingbox2d import IBoundingBox2d
-from ._separating_axis_theorem import separating_axis_theorem
+from typing import TYPE_CHECKING
+from typing import Protocol
+from typing import TypeAlias
 
-# emath
 from emath import IVector2
 
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
-from typing import TypeAlias
+from ._iboundingbox2d import IBoundingBox2d
+from ._separating_axis_theorem import separating_axis_theorem
 
 if TYPE_CHECKING:
     from ._icircle import ICircle
     from ._irectangle import IRectangle
 
-# emath
+
 from emath import DVector2
 
 _FloatVector2: TypeAlias = DVector2
@@ -35,12 +32,13 @@ def _to_float_vectors(vs: tuple[IVector2, ...]) -> tuple[_FloatVector2, ...]:
 
 
 class ITriangle2dOverlappable(Protocol):
-    def overlaps_i_triangle_2d(self, other: ITriangle2d) -> bool:
-        ...
+    def overlaps_i_triangle_2d(self, other: ITriangle2d) -> bool: ...
 
 
 class ITriangle2d:
     __slots__ = ["_bounding_box", "_vertices"]
+
+    _vertices: tuple[IVector2, IVector2, IVector2]
 
     def __init__(self, point_0: IVector2, point_1: IVector2, point_2: IVector2, /):
         self._vertices = (point_0, point_1, point_2)

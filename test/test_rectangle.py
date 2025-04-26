@@ -1,4 +1,4 @@
-# pytest
+
 import pytest
 
 
@@ -84,7 +84,9 @@ def test_overlaps_rectangle(
 def test_translate(rectangle_cls, vector_2_cls, rect_args, translation_args):
     rect = rectangle_cls(vector_2_cls(*rect_args[0]), vector_2_cls(*rect_args[1]))
     translation = vector_2_cls(*translation_args)
-    assert rect.translate(translation) == rectangle_cls(rect.position + translation, rect.size)
+    assert rect.translate(translation) == rectangle_cls(
+        rect.position + translation, rect.size
+    )
 
 
 def test_not_overlaps(rectangle_cls, vector_2_cls):

@@ -4,25 +4,20 @@ from __future__ import annotations
 
 __all__ = ["FRectangle", "FRectangleOverlappable"]
 
-# egeometry
-from ._fboundingbox2d import FBoundingBox2d
+from typing import TYPE_CHECKING
+from typing import Protocol
 
-# emath
 from emath import FVector2
 
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
+from ._fboundingbox2d import FBoundingBox2d
 
 if TYPE_CHECKING:
-    # egeometry
     from ._fcircle import FCircle
     from ._ftriangle2d import FTriangle2d
 
 
 class FRectangleOverlappable(Protocol):
-    def overlaps_f_rectangle(self, other: FRectangle) -> bool:
-        ...
+    def overlaps_f_rectangle(self, other: FRectangle) -> bool: ...
 
 
 class FRectangle:

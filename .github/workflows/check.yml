@@ -72,4 +72,3 @@ jobs:
     - name: Static Analysis
       run: |
         python -m pre_commit run --all-files
-

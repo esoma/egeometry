@@ -95,6 +95,13 @@ python-versions = ">=3.12"
 files = [
     {file = "emath-0.1.16-cp312-cp312-macosx_13_0_x86_64.whl", hash = "sha256:5ab1c3ce362bda66b07a13fd808e9b42562467f8f1ff9a3190aecc9cfc3fe88b"},
     {file = "emath-0.1.16-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:583202d7b33ec86ed4176206386e6b2d12b0d1d9f3d84e78a656ab0edbdfd294"},
+    {file = "emath-0.1.16-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b05466fb63d16d3ba32f077b6e9b9d3599ec84c20fba185a2bccf007cf4e09f9"},
+    {file = "emath-0.1.16-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b426aaa98725e35a8d1146536c805a5a12bcf932594fcdd8f1367dfb5c7cac86"},
+    {file = "emath-0.1.16-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:d41bfa0566f451c92e045141cca3dfae1b93389f1c857fb43a91b49830d63afe"},
+    {file = "emath-0.1.16-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:964408304c032984e2f98bd562d79902329fe09018680a1ed836121b39cbde03"},
+    {file = "emath-0.1.16-cp312-cp312-win32.whl", hash = "sha256:58549b05a91dd137c0b2a5254838d2d59dd805514c699b1cbed32b8735762555"},
+    {file = "emath-0.1.16-cp312-cp312-win_amd64.whl", hash = "sha256:1331bf149d04fed6dc86d7930546f2fe6cdfd382dbbc56382f1b995de02fa7f1"},
+    {file = "emath-0.1.16.tar.gz", hash = "sha256:38865c5d385c943ed30efccd079aa49fc3933784d9e3c3684ddbf6968a84e32d"},
 ]
 
 [[package]]

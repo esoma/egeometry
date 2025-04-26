@@ -4,36 +4,30 @@ from __future__ import annotations
 
 __all__ = ["FBoundingBox3d", "FBoundingBox3dOverlappable", "HasFBoundingBox3d"]
 
-# emath
-from emath import FVector3
-
-# python
 from typing import Iterable
 from typing import Protocol
 from typing import overload
 
+from emath import FVector3
+
 
 class FBoundingBox3dOverlappable(Protocol):
-    def overlaps_f_bounding_box_3d(self, other: FBoundingBox3d) -> bool:
-        ...
+    def overlaps_f_bounding_box_3d(self, other: FBoundingBox3d) -> bool: ...
 
 
 class HasFBoundingBox3d(Protocol):
     @property
-    def bounding_box(self) -> FBoundingBox3d:
-        ...
+    def bounding_box(self) -> FBoundingBox3d: ...
 
 
 class FBoundingBox3d:
     __slots__ = ["_extent", "_position", "_size"]
 
     @overload
-    def __init__(self, position: FVector3, size: FVector3) -> None:
-        ...
+    def __init__(self, position: FVector3, size: FVector3) -> None: ...
 
     @overload
-    def __init__(self, *, shapes: Iterable[HasFBoundingBox3d | FVector3]) -> None:
-        ...
+    def __init__(self, *, shapes: Iterable[HasFBoundingBox3d | FVector3]) -> None: ...
 
     def __init__(
         self,

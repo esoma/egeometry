@@ -4,22 +4,19 @@ from __future__ import annotations
 
 __all__ = ["ICircle", "ICircleOverlappable"]
 
-# egeometry
-from ._iboundingbox2d import IBoundingBox2d
+from typing import TYPE_CHECKING
+from typing import Protocol
+from typing import TypeAlias
 
-# emath
 from emath import IVector2
 
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
-from typing import TypeAlias
+from ._iboundingbox2d import IBoundingBox2d
 
 if TYPE_CHECKING:
     from ._irectangle import IRectangle
     from ._itriangle2d import ITriangle2d
 
-# emath
+
 from emath import DVector2
 
 _FloatVector2: TypeAlias = DVector2
@@ -34,8 +31,7 @@ def _to_component_type(v: float) -> int:
 
 
 class ICircleOverlappable(Protocol):
-    def overlaps_i_circle(self, other: ICircle) -> bool:
-        ...
+    def overlaps_i_circle(self, other: ICircle) -> bool: ...
 
 
 class ICircle:

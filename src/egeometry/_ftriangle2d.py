@@ -4,20 +4,16 @@ from __future__ import annotations
 
 __all__ = ["FTriangle2d", "FTriangle2dOverlappable"]
 
-# egeometry
+from typing import TYPE_CHECKING
+from typing import Protocol
+from typing import TypeAlias
+
+from emath import FVector2
+
 from ._fboundingbox2d import FBoundingBox2d
 from ._separating_axis_theorem import separating_axis_theorem
 
-# emath
-from emath import FVector2
-
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
-from typing import TypeAlias
-
 if TYPE_CHECKING:
-    # egeometry
     from ._fcircle import FCircle
     from ._frectangle import FRectangle
 
@@ -34,12 +30,13 @@ def _to_float_vectors(vs: tuple[FVector2, ...]) -> tuple[_FloatVector2, ...]:
 
 
 class FTriangle2dOverlappable(Protocol):
-    def overlaps_f_triangle_2d(self, other: FTriangle2d) -> bool:
-        ...
+    def overlaps_f_triangle_2d(self, other: FTriangle2d) -> bool: ...
 
 
 class FTriangle2d:
     __slots__ = ["_bounding_box", "_vertices"]
+
+    _vertices: tuple[FVector2, FVector2, FVector2]
 
     def __init__(self, point_0: FVector2, point_1: FVector2, point_2: FVector2, /):
         self._vertices = (point_0, point_1, point_2)

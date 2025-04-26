@@ -1,10 +1,10 @@
 __all__ = ["generate_cicle_files"]
 
-# egeometry
+
 from .template import get_template
 from .types import TYPES
 
-# python
+
 from datetime import datetime
 from pathlib import Path
 from typing import Generator

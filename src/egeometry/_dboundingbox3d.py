@@ -4,36 +4,30 @@ from __future__ import annotations
 
 __all__ = ["DBoundingBox3d", "DBoundingBox3dOverlappable", "HasDBoundingBox3d"]
 
-# emath
-from emath import DVector3
-
-# python
 from typing import Iterable
 from typing import Protocol
 from typing import overload
 
+from emath import DVector3
+
 
 class DBoundingBox3dOverlappable(Protocol):
-    def overlaps_d_bounding_box_3d(self, other: DBoundingBox3d) -> bool:
-        ...
+    def overlaps_d_bounding_box_3d(self, other: DBoundingBox3d) -> bool: ...
 
 
 class HasDBoundingBox3d(Protocol):
     @property
-    def bounding_box(self) -> DBoundingBox3d:
-        ...
+    def bounding_box(self) -> DBoundingBox3d: ...
 
 
 class DBoundingBox3d:
     __slots__ = ["_extent", "_position", "_size"]
 
     @overload
-    def __init__(self, position: DVector3, size: DVector3) -> None:
-        ...
+    def __init__(self, position: DVector3, size: DVector3) -> None: ...
 
     @overload
-    def __init__(self, *, shapes: Iterable[HasDBoundingBox3d | DVector3]) -> None:
-        ...
+    def __init__(self, *, shapes: Iterable[HasDBoundingBox3d | DVector3]) -> None: ...
 
     def __init__(
         self,

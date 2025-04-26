@@ -1,6 +1,5 @@
 __all__ = ["TYPES"]
 
-# python
 from typing import Final
 
 TYPES: Final = (

@@ -4,25 +4,20 @@ from __future__ import annotations
 
 __all__ = ["DRectangle", "DRectangleOverlappable"]
 
-# egeometry
-from ._dboundingbox2d import DBoundingBox2d
+from typing import TYPE_CHECKING
+from typing import Protocol
 
-# emath
 from emath import DVector2
 
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
+from ._dboundingbox2d import DBoundingBox2d
 
 if TYPE_CHECKING:
-    # egeometry
     from ._dcircle import DCircle
     from ._dtriangle2d import DTriangle2d
 
 
 class DRectangleOverlappable(Protocol):
-    def overlaps_d_rectangle(self, other: DRectangle) -> bool:
-        ...
+    def overlaps_d_rectangle(self, other: DRectangle) -> bool: ...
 
 
 class DRectangle:

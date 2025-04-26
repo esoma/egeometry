@@ -1,4 +1,4 @@
-# pytest
+
 import pytest
 
 
@@ -25,7 +25,9 @@ def test_overlaps(
     bb_args,
     expected_result,
 ):
-    rectangle = rectangle_cls(vector_2_cls(*rectangle_args[0]), vector_2_cls(*rectangle_args[1]))
+    rectangle = rectangle_cls(
+        vector_2_cls(*rectangle_args[0]), vector_2_cls(*rectangle_args[1])
+    )
     bb = bounding_box_2d_cls(vector_2_cls(*bb_args[0]), vector_2_cls(*bb_args[1]))
 
     assert rectangle.overlaps(bb) == expected_result

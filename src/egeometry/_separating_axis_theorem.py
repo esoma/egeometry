@@ -3,15 +3,16 @@ from __future__ import annotations
 __all__ = ["separating_axis_theorem"]
 
 # emath
-from emath import DVector2
-from emath import FVector2
+import warnings
 
 # python
 from math import inf
 from typing import Collection
 from typing import Iterable
 from typing import TypeVar
-import warnings
+
+from emath import DVector2
+from emath import FVector2
 
 _V = TypeVar("_V", DVector2, FVector2)
 

@@ -4,23 +4,20 @@ from __future__ import annotations
 
 __all__ = ["DTriangle2d", "DTriangle2dOverlappable"]
 
-# egeometry
-from ._dboundingbox2d import DBoundingBox2d
-from ._separating_axis_theorem import separating_axis_theorem
+from typing import TYPE_CHECKING
+from typing import Protocol
+from typing import TypeAlias
 
-# emath
 from emath import DVector2
 
-# python
-from typing import Protocol
-from typing import TYPE_CHECKING
-from typing import TypeAlias
+from ._dboundingbox2d import DBoundingBox2d
+from ._separating_axis_theorem import separating_axis_theorem
 
 if TYPE_CHECKING:
     from ._dcircle import DCircle
     from ._drectangle import DRectangle
 
-# emath
+
 from emath import DVector2
 
 _FloatVector2: TypeAlias = DVector2
@@ -35,12 +32,13 @@ def _to_float_vectors(vs: tuple[DVector2, ...]) -> tuple[_FloatVector2, ...]:
 
 
 class DTriangle2dOverlappable(Protocol):
-    def overlaps_d_triangle_2d(self, other: DTriangle2d) -> bool:
-        ...
+    def overlaps_d_triangle_2d(self, other: DTriangle2d) -> bool: ...
 
 
 class DTriangle2d:
     __slots__ = ["_bounding_box", "_vertices"]
+
+    _vertices: tuple[DVector2, DVector2, DVector2]
 
     def __init__(self, point_0: DVector2, point_1: DVector2, point_2: DVector2, /):
         self._vertices = (point_0, point_1, point_2)

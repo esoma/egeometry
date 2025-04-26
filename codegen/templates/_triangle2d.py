@@ -47,6 +47,8 @@ class {{ name }}Overlappable(Protocol):
 class {{ name }}:
     __slots__ = ["_bounding_box", "_vertices"]
 
+    _vertices: tuple[{{ data_type }}Vector2, {{ data_type }}Vector2, {{ data_type }}Vector2]
+
     def __init__(self, point_0: {{ data_type }}Vector2, point_1: {{ data_type }}Vector2, point_2: {{ data_type }}Vector2, /):
         self._vertices = (point_0, point_1, point_2)
 
