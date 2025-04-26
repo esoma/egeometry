@@ -4,18 +4,30 @@ from __future__ import annotations
 
 __all__ = [
     "separating_axis_theorem",
+    "DBoundingBox2d",
+    "DBoundingBox2dOverlappable",
+    "HasDBoundingBox2d",
+    "FBoundingBox2d",
+    "FBoundingBox2dOverlappable",
+    "HasFBoundingBox2d",
+    "IBoundingBox2d",
+    "IBoundingBox2dOverlappable",
+    "HasIBoundingBox2d",
+    "DBoundingBox3d",
+    "DBoundingBox3dOverlappable",
+    "HasDBoundingBox3d",
+    "FBoundingBox3d",
+    "FBoundingBox3dOverlappable",
+    "HasFBoundingBox3d",
+    "IBoundingBox3d",
+    "IBoundingBox3dOverlappable",
+    "HasIBoundingBox3d",
     "DCircle",
     "DCircleOverlappable",
     "FCircle",
     "FCircleOverlappable",
     "ICircle",
     "ICircleOverlappable",
-    "DBoundingBox2d",
-    "DBoundingBox2dOverlappable",
-    "FBoundingBox2d",
-    "FBoundingBox2dOverlappable",
-    "IBoundingBox2d",
-    "IBoundingBox2dOverlappable",
     "DTriangle2d",
     "DTriangle2dOverlappable",
     "FTriangle2d",
@@ -33,6 +45,10 @@ __all__ = [
 # egeometry
 from ._dboundingbox2d import DBoundingBox2d
 from ._dboundingbox2d import DBoundingBox2dOverlappable
+from ._dboundingbox2d import HasDBoundingBox2d
+from ._dboundingbox3d import DBoundingBox3d
+from ._dboundingbox3d import DBoundingBox3dOverlappable
+from ._dboundingbox3d import HasDBoundingBox3d
 from ._dcircle import DCircle
 from ._dcircle import DCircleOverlappable
 from ._drectangle import DRectangle
@@ -41,14 +57,22 @@ from ._dtriangle2d import DTriangle2d
 from ._dtriangle2d import DTriangle2dOverlappable
 from ._fboundingbox2d import FBoundingBox2d
 from ._fboundingbox2d import FBoundingBox2dOverlappable
+from ._fboundingbox2d import HasFBoundingBox2d
+from ._fboundingbox3d import FBoundingBox3d
+from ._fboundingbox3d import FBoundingBox3dOverlappable
+from ._fboundingbox3d import HasFBoundingBox3d
 from ._fcircle import FCircle
 from ._fcircle import FCircleOverlappable
 from ._frectangle import FRectangle
 from ._frectangle import FRectangleOverlappable
 from ._ftriangle2d import FTriangle2d
 from ._ftriangle2d import FTriangle2dOverlappable
+from ._iboundingbox2d import HasIBoundingBox2d
 from ._iboundingbox2d import IBoundingBox2d
 from ._iboundingbox2d import IBoundingBox2dOverlappable
+from ._iboundingbox3d import HasIBoundingBox3d
+from ._iboundingbox3d import IBoundingBox3d
+from ._iboundingbox3d import IBoundingBox3dOverlappable
 from ._icircle import ICircle
 from ._icircle import ICircleOverlappable
 from ._irectangle import IRectangle

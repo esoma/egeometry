@@ -1,4 +1,4 @@
-__all__ = ["generate_bounding_box_files"]
+__all__ = ["generate_bounding_box_2d_files"]
 
 # egeometry
 from .template import get_template
@@ -31,3 +31,4 @@ def generate_bouncing_box_2d_file(
         )
     yield (f"_{name.lower()}", name)
     yield (f"_{name.lower()}", f"{name}Overlappable")
+    yield (f"_{name.lower()}", f"Has{name}")
