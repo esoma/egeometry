@@ -104,7 +104,7 @@ class FBoundingBox3d:
             raise TypeError(other)
         return other_overlaps(self)
 
-    def overlaps_f_bounding_box_2d(self, other: FBoundingBox3d) -> bool:
+    def overlaps_f_bounding_box_3d(self, other: FBoundingBox3d) -> bool:
         return not (
             self._position.x >= other._extent.x
             or self._extent.x <= other._position.x

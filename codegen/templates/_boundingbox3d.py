@@ -108,7 +108,7 @@ class {{ name }}:
             raise TypeError(other)
         return other_overlaps(self)
 
-    def overlaps_{{ data_type.lower() }}_bounding_box_2d(
+    def overlaps_{{ data_type.lower() }}_bounding_box_3d(
         self,
         other: {{ name }}
     ) -> bool:

@@ -33,6 +33,11 @@ def bounding_box_2d_cls(data_type):
 
 
 @pytest.fixture
+def bounding_box_3d_cls(data_type):
+    return getattr(egeometry, f"{data_type}BoundingBox3d")
+
+
+@pytest.fixture
 def circle_cls(data_type):
     return getattr(egeometry, f"{data_type}Circle")
 
@@ -50,3 +55,8 @@ def triangle_2d_cls(data_type):
 @pytest.fixture
 def vector_2_cls(data_type):
     return getattr(emath, f"{data_type}Vector2")
+
+
+@pytest.fixture
+def vector_3_cls(data_type):
+    return getattr(emath, f"{data_type}Vector3")

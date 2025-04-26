@@ -104,7 +104,7 @@ class IBoundingBox3d:
             raise TypeError(other)
         return other_overlaps(self)
 
-    def overlaps_i_bounding_box_2d(self, other: IBoundingBox3d) -> bool:
+    def overlaps_i_bounding_box_3d(self, other: IBoundingBox3d) -> bool:
         return not (
             self._position.x >= other._extent.x
             or self._extent.x <= other._position.x
