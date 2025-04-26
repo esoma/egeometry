@@ -2,10 +2,7 @@ from __future__ import annotations
 
 __all__ = ["separating_axis_theorem"]
 
-# emath
 import warnings
-
-# python
 from math import inf
 from typing import Collection
 from typing import Iterable
