@@ -28,18 +28,20 @@ __all__ = [
     "FCircleOverlappable",
     "ICircle",
     "ICircleOverlappable",
-    "DTriangle2d",
-    "DTriangle2dOverlappable",
-    "FTriangle2d",
-    "FTriangle2dOverlappable",
-    "ITriangle2d",
-    "ITriangle2dOverlappable",
+    "DPlane",
+    "FPlane",
     "DRectangle",
     "DRectangleOverlappable",
     "FRectangle",
     "FRectangleOverlappable",
     "IRectangle",
     "IRectangleOverlappable",
+    "DTriangle2d",
+    "DTriangle2dOverlappable",
+    "FTriangle2d",
+    "FTriangle2dOverlappable",
+    "ITriangle2d",
+    "ITriangle2dOverlappable",
 ]
 
 from ._dboundingbox2d import DBoundingBox2d
@@ -50,6 +52,7 @@ from ._dboundingbox3d import DBoundingBox3dOverlappable
 from ._dboundingbox3d import HasDBoundingBox3d
 from ._dcircle import DCircle
 from ._dcircle import DCircleOverlappable
+from ._dplane import DPlane
 from ._drectangle import DRectangle
 from ._drectangle import DRectangleOverlappable
 from ._dtriangle2d import DTriangle2d
@@ -62,6 +65,7 @@ from ._fboundingbox3d import FBoundingBox3dOverlappable
 from ._fboundingbox3d import HasFBoundingBox3d
 from ._fcircle import FCircle
 from ._fcircle import FCircleOverlappable
+from ._fplane import FPlane
 from ._frectangle import FRectangle
 from ._frectangle import FRectangleOverlappable
 from ._ftriangle2d import FTriangle2d

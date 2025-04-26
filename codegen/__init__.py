@@ -6,6 +6,7 @@ from codegen.circle import generate_circle_files
 from codegen.rectangle import generate_rectangle_files
 from codegen.template import get_template
 from codegen.triangle2d import generate_triangle_2d_files
+from codegen.plane import generate_plane_files
 
 from datetime import datetime
 from pathlib import Path
@@ -16,6 +17,7 @@ def generate_geometry_files(build_dir: Path) -> None:
     bounding_box_2d_types = list(generate_bounding_box_2d_files(build_dir))
     bounding_box_3d_types = list(generate_bounding_box_3d_files(build_dir))
     circle_types = list(generate_circle_files(build_dir))
+    plane_types = list(generate_plane_files(build_dir))
     rectangle_types = list(generate_rectangle_files(build_dir))
     triangle_2d_types = list(generate_triangle_2d_files(build_dir))
     generate_init_file(
@@ -24,8 +26,9 @@ def generate_geometry_files(build_dir: Path) -> None:
             *bounding_box_2d_types,
             *bounding_box_3d_types,
             *circle_types,
-            *triangle_2d_types,
+            *plane_types,
             *rectangle_types,
+            *triangle_2d_types,
         ),
     )
 

@@ -48,6 +48,11 @@ def rectangle_cls(data_type):
 
 
 @pytest.fixture
+def plane_cls(float_data_type):
+    return getattr(egeometry, f"{float_data_type}Plane")
+
+
+@pytest.fixture
 def triangle_2d_cls(data_type):
     return getattr(egeometry, f"{data_type}Triangle2d")
 
