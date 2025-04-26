@@ -37,7 +37,9 @@ __all__ = [
     "IRectangle",
     "IRectangleOverlappable",
     "DRectangleFrustum",
+    "DRectangleFrustumOverlappable",
     "FRectangleFrustum",
+    "FRectangleFrustumOverlappable",
     "DTriangle2d",
     "DTriangle2dOverlappable",
     "FTriangle2d",
@@ -58,6 +60,7 @@ from ._dplane import DPlane
 from ._drectangle import DRectangle
 from ._drectangle import DRectangleOverlappable
 from ._drectanglefrustum import DRectangleFrustum
+from ._drectanglefrustum import DRectangleFrustumOverlappable
 from ._dtriangle2d import DTriangle2d
 from ._dtriangle2d import DTriangle2dOverlappable
 from ._fboundingbox2d import FBoundingBox2d
@@ -72,6 +75,7 @@ from ._fplane import FPlane
 from ._frectangle import FRectangle
 from ._frectangle import FRectangleOverlappable
 from ._frectanglefrustum import FRectangleFrustum
+from ._frectanglefrustum import FRectangleFrustumOverlappable
 from ._ftriangle2d import FTriangle2d
 from ._ftriangle2d import FTriangle2dOverlappable
 from ._iboundingbox2d import HasIBoundingBox2d

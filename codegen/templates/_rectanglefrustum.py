@@ -4,9 +4,19 @@ from __future__ import annotations
 
 __all__ = ["{{ name }}"]
 
-from emath import {{ data_type }}Vector3, {{ data_type }}Matrix4
+from emath import {{ data_type }}Vector3, {{ data_type }}Vector4, {{ data_type }}Matrix4
 from ._{{ data_type.lower() }}plane import {{ data_type }}Plane
 from typing import overload
+from typing import Protocol
+
+
+class {{ name }}Overlappable(Protocol):
+
+    def overlaps_{{ data_type.lower() }}_rectangle_frustum(
+        self,
+        other: {{ name }}
+    ) -> bool:
+        ...
 
 
 class {{ name }}:
@@ -58,13 +68,14 @@ class {{ name }}:
         self._transform = transform
         self._projection = projection
 
-        r = [(transform @ projection).get_row(i) for i in range(4)]
-        self._near_plane = {{ data_type }}Plane(r[3].w + r[2].w, r[3].xyz + r[2].xyz)
-        self._far_plane = {{ data_type }}Plane(r[3].w - r[2].w, r[3].xyz - r[2].xyz)
-        self._left_plane = {{ data_type }}Plane(r[3].w + r[0].w, r[3].xyz + r[0].xyz)
-        self._right_plane = {{ data_type }}Plane(r[3].w - r[0].w, r[3].xyz - r[0].xyz)
-        self._bottom_plane = {{ data_type }}Plane(r[3].w + r[1].w, r[3].xyz + r[1].xyz)
-        self._top_plane = {{ data_type }}Plane(r[3].w - r[1].w, r[3].xyz - r[1].xyz)
+        r = [projection.get_row(i) for i in range(4)]
+        tip = transform.inverse().transpose()
+        self._near_plane = _create_transformed_plane(tip, r[3] + r[2])
+        self._far_plane = _create_transformed_plane(tip, r[3] - r[2])
+        self._left_plane = _create_transformed_plane(tip, r[3] + r[0])
+        self._right_plane = _create_transformed_plane(tip, r[3] - r[0])
+        self._bottom_plane = _create_transformed_plane(tip, r[3] + r[1])
+        self._top_plane = _create_transformed_plane(tip, r[3] - r[1])
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, {{ name }}):
@@ -81,6 +92,28 @@ class {{ name }}:
             f"bottom_plane={self._bottom_plane} "
             f"top_plane={self._top_plane}>"
         )
+
+    def overlaps(
+        self,
+        other: {{ data_type }}Vector3 |
+               {{ name }}Overlappable
+   ) -> bool:
+        if isinstance(other, {{ data_type }}Vector3):
+            return self.overlaps_{{ data_type.lower() }}_vector_3(other)
+        try:
+            other_overlaps = other.overlaps_{{ data_type.lower() }}_rectangle_frustum
+        except AttributeError:
+            raise TypeError(other)
+        return other_overlaps(self)
+
+    def overlaps_{{ data_type.lower() }}_vector_3(
+        self,
+        other: {{ data_type }}Vector3
+    ) -> bool:
+        for plane in self.planes:
+            if plane.get_signed_distance_to_point(other) < 0:
+                return False
+        return True
 
     @property
     def transform(self) -> {{ data_type }}Matrix4:
@@ -131,3 +164,10 @@ class {{ name }}:
             self._top_plane,
             self._bottom_plane
         )
+
+def _create_transformed_plane(
+    inversed_transposed_transform: {{ data_type }}Matrix4,
+    plane: {{ data_type }}Vector4
+) -> {{ data_type }}Plane:
+    plane = inversed_transposed_transform @ plane
+    return {{ data_type }}Plane(plane.w, plane.xyz)

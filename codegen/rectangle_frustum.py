@@ -30,3 +30,4 @@ def generate_rectangle_frustum_file(
             )
         )
     yield (f"_{name.lower()}", name)
+    yield (f"_{name.lower()}", f"{name}Overlappable")

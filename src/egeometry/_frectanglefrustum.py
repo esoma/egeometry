@@ -4,11 +4,18 @@ from __future__ import annotations
 
 __all__ = ["FRectangleFrustum"]
 
+from typing import Protocol
 from typing import overload
 
 from emath import FMatrix4
+from emath import FVector3
+from emath import FVector4
 
 from ._fplane import FPlane
+
+
+class FRectangleFrustumOverlappable(Protocol):
+    def overlaps_f_rectangle_frustum(self, other: FRectangleFrustum) -> bool: ...
 
 
 class FRectangleFrustum:
@@ -56,13 +63,14 @@ class FRectangleFrustum:
         self._transform = transform
         self._projection = projection
 
-        r = [(transform @ projection).get_row(i) for i in range(4)]
-        self._near_plane = FPlane(r[3].w + r[2].w, r[3].xyz + r[2].xyz)
-        self._far_plane = FPlane(r[3].w - r[2].w, r[3].xyz - r[2].xyz)
-        self._left_plane = FPlane(r[3].w + r[0].w, r[3].xyz + r[0].xyz)
-        self._right_plane = FPlane(r[3].w - r[0].w, r[3].xyz - r[0].xyz)
-        self._bottom_plane = FPlane(r[3].w + r[1].w, r[3].xyz + r[1].xyz)
-        self._top_plane = FPlane(r[3].w - r[1].w, r[3].xyz - r[1].xyz)
+        r = [projection.get_row(i) for i in range(4)]
+        tip = transform.inverse().transpose()
+        self._near_plane = _create_transformed_plane(tip, r[3] + r[2])
+        self._far_plane = _create_transformed_plane(tip, r[3] - r[2])
+        self._left_plane = _create_transformed_plane(tip, r[3] + r[0])
+        self._right_plane = _create_transformed_plane(tip, r[3] - r[0])
+        self._bottom_plane = _create_transformed_plane(tip, r[3] + r[1])
+        self._top_plane = _create_transformed_plane(tip, r[3] - r[1])
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, FRectangleFrustum):
@@ -79,6 +87,21 @@ class FRectangleFrustum:
             f"bottom_plane={self._bottom_plane} "
             f"top_plane={self._top_plane}>"
         )
+
+    def overlaps(self, other: FVector3 | FRectangleFrustumOverlappable) -> bool:
+        if isinstance(other, FVector3):
+            return self.overlaps_f_vector_3(other)
+        try:
+            other_overlaps = other.overlaps_f_rectangle_frustum
+        except AttributeError:
+            raise TypeError(other)
+        return other_overlaps(self)
+
+    def overlaps_f_vector_3(self, other: FVector3) -> bool:
+        for plane in self.planes:
+            if plane.get_signed_distance_to_point(other) < 0:
+                return False
+        return True
 
     @property
     def transform(self) -> FMatrix4:
@@ -122,3 +145,8 @@ class FRectangleFrustum:
             self._top_plane,
             self._bottom_plane,
         )
+
+
+def _create_transformed_plane(inversed_transposed_transform: FMatrix4, plane: FVector4) -> FPlane:
+    plane = inversed_transposed_transform @ plane
+    return FPlane(plane.w, plane.xyz)
