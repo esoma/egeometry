@@ -4,11 +4,17 @@ from __future__ import annotations
 
 __all__ = ["FBoundingBox3d", "FBoundingBox3dOverlappable", "HasFBoundingBox3d"]
 
+from typing import TYPE_CHECKING
 from typing import Iterable
 from typing import Protocol
 from typing import overload
 
 from emath import FVector3
+
+from ._separating_axis_theorem import separating_axis_theorem
+
+if TYPE_CHECKING:
+    from ._frectanglefrustum import FRectangleFrustum
 
 
 class FBoundingBox3dOverlappable(Protocol):
@@ -98,6 +104,18 @@ class FBoundingBox3d:
             raise TypeError(other)
         return other_overlaps(self)
 
+    def overlaps_f_rectangle_frustum(self, other: FRectangleFrustum) -> bool:
+        return separating_axis_theorem(
+            {
+                FVector3(1, 0, 0),
+                FVector3(0, 1, 0),
+                FVector3(0, 0, 1),
+                *(p.normal for p in other.planes),
+            },
+            set(other.points),
+            set(self.points),
+        )
+
     def overlaps_f_bounding_box_3d(self, other: FBoundingBox3d) -> bool:
         return not (
             self._position.x >= other._extent.x
@@ -136,3 +154,18 @@ class FBoundingBox3d:
     @property
     def size(self) -> FVector3:
         return self._size
+
+    @property
+    def points(
+        self,
+    ) -> tuple[FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3]:
+        return (
+            self._position,
+            self._position + self._size.xoo,
+            self._position + self._size.oyo,
+            self._position + self._size.ooz,
+            self._position + self._size.xyo,
+            self._position + self._size.xoz,
+            self._position + self._size.oyz,
+            self._extent,
+        )

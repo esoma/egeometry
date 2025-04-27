@@ -9,9 +9,11 @@ from typing import Iterable
 from typing import TypeVar
 
 from emath import DVector2
+from emath import DVector3
 from emath import FVector2
+from emath import FVector3
 
-_V = TypeVar("_V", DVector2, FVector2)
+_V = TypeVar("_V", DVector2, FVector2, DVector3, FVector3)
 
 
 def separating_axis_theorem(

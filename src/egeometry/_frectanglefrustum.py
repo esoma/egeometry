@@ -4,6 +4,7 @@ from __future__ import annotations
 
 __all__ = ["FRectangleFrustum"]
 
+from typing import TYPE_CHECKING
 from typing import Protocol
 from typing import overload
 
@@ -12,6 +13,9 @@ from emath import FVector3
 from emath import FVector4
 
 from ._fplane import FPlane
+
+if TYPE_CHECKING:
+    from ._fboundingbox3d import FBoundingBox3d
 
 
 class FRectangleFrustumOverlappable(Protocol):
@@ -97,6 +101,9 @@ class FRectangleFrustum:
             raise TypeError(other)
         return other_overlaps(self)
 
+    def overlaps_f_bounding_box_3d(self, other: FBoundingBox3d) -> bool:
+        return other.overlaps_f_rectangle_frustum(self)
+
     def overlaps_f_vector_3(self, other: FVector3) -> bool:
         for plane in self.planes:
             if plane.get_signed_distance_to_point(other) < 0:
@@ -144,6 +151,22 @@ class FRectangleFrustum:
             self._right_plane,
             self._top_plane,
             self._bottom_plane,
+        )
+
+    @property
+    def points(
+        self,
+    ) -> tuple[FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3]:
+        vp = (self._transform @ self._projection).inverse()
+        return (
+            vp @ FVector3(-1, -1, -1),
+            vp @ FVector3(1, -1, -1),
+            vp @ FVector3(-1, 1, -1),
+            vp @ FVector3(-1, -1, 1),
+            vp @ FVector3(1, 1, 1),
+            vp @ FVector3(-1, 1, 1),
+            vp @ FVector3(1, -1, 1),
+            vp @ FVector3(1, 1, -1),
         )
 
 

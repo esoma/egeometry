@@ -4,11 +4,17 @@ from __future__ import annotations
 
 __all__ = ["DBoundingBox3d", "DBoundingBox3dOverlappable", "HasDBoundingBox3d"]
 
+from typing import TYPE_CHECKING
 from typing import Iterable
 from typing import Protocol
 from typing import overload
 
 from emath import DVector3
+
+from ._separating_axis_theorem import separating_axis_theorem
+
+if TYPE_CHECKING:
+    from ._drectanglefrustum import DRectangleFrustum
 
 
 class DBoundingBox3dOverlappable(Protocol):
@@ -98,6 +104,18 @@ class DBoundingBox3d:
             raise TypeError(other)
         return other_overlaps(self)
 
+    def overlaps_d_rectangle_frustum(self, other: DRectangleFrustum) -> bool:
+        return separating_axis_theorem(
+            {
+                DVector3(1, 0, 0),
+                DVector3(0, 1, 0),
+                DVector3(0, 0, 1),
+                *(p.normal for p in other.planes),
+            },
+            set(other.points),
+            set(self.points),
+        )
+
     def overlaps_d_bounding_box_3d(self, other: DBoundingBox3d) -> bool:
         return not (
             self._position.x >= other._extent.x
@@ -136,3 +154,18 @@ class DBoundingBox3d:
     @property
     def size(self) -> DVector3:
         return self._size
+
+    @property
+    def points(
+        self,
+    ) -> tuple[DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3]:
+        return (
+            self._position,
+            self._position + self._size.xoo,
+            self._position + self._size.oyo,
+            self._position + self._size.ooz,
+            self._position + self._size.xyo,
+            self._position + self._size.xoz,
+            self._position + self._size.oyz,
+            self._extent,
+        )

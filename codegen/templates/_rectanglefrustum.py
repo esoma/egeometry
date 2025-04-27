@@ -6,9 +6,11 @@ __all__ = ["{{ name }}"]
 
 from emath import {{ data_type }}Vector3, {{ data_type }}Vector4, {{ data_type }}Matrix4
 from ._{{ data_type.lower() }}plane import {{ data_type }}Plane
-from typing import overload
+from typing import overload, TYPE_CHECKING
 from typing import Protocol
 
+if TYPE_CHECKING:
+    from ._{{ data_type.lower() }}boundingbox3d import {{ data_type }}BoundingBox3d
 
 class {{ name }}Overlappable(Protocol):
 
@@ -106,6 +108,12 @@ class {{ name }}:
             raise TypeError(other)
         return other_overlaps(self)
 
+    def overlaps_{{ data_type.lower() }}_bounding_box_3d(
+        self,
+        other: {{ data_type }}BoundingBox3d
+    ) -> bool:
+        return other.overlaps_{{ data_type.lower() }}_rectangle_frustum(self)
+
     def overlaps_{{ data_type.lower() }}_vector_3(
         self,
         other: {{ data_type }}Vector3
@@ -163,6 +171,29 @@ class {{ name }}:
             self._right_plane,
             self._top_plane,
             self._bottom_plane
+        )
+
+    @property
+    def points(self) -> tuple[
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3
+    ]:
+        vp = (self._transform @ self._projection).inverse()
+        return (
+            vp @ {{ data_type }}Vector3(-1, -1, -1),
+            vp @ {{ data_type }}Vector3(1, -1, -1),
+            vp @ {{ data_type }}Vector3(-1, 1, -1),
+            vp @ {{ data_type }}Vector3(-1, -1, 1),
+            vp @ {{ data_type }}Vector3(1, 1, 1),
+            vp @ {{ data_type }}Vector3(-1, 1, 1),
+            vp @ {{ data_type }}Vector3(1, -1, 1),
+            vp @ {{ data_type }}Vector3(1, 1, -1),
         )
 
 def _create_transformed_plane(

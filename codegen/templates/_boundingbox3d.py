@@ -4,8 +4,14 @@ from __future__ import annotations
 
 __all__ = ["{{ name }}", "{{ name }}Overlappable", "Has{{ name }}"]
 
-from emath import {{ data_type }}Vector3
-from typing import Protocol, overload, Iterable
+from emath import {{ data_type }}Vector3, {{ data_type }}Vector4
+from typing import Protocol, overload, Iterable, TYPE_CHECKING
+from ._separating_axis_theorem import separating_axis_theorem
+
+{% if data_type in "DF" %}
+if TYPE_CHECKING:
+    from ._{{ data_type.lower() }}rectanglefrustum import {{ data_type }}RectangleFrustum
+{% endif %}
 
 class {{ name }}Overlappable(Protocol):
 
@@ -108,6 +114,23 @@ class {{ name }}:
             raise TypeError(other)
         return other_overlaps(self)
 
+{% if data_type in "DF" %}
+    def overlaps_{{ data_type.lower() }}_rectangle_frustum(
+        self,
+        other: {{ data_type }}RectangleFrustum
+    ) -> bool:
+        return separating_axis_theorem(
+            {
+                {{ data_type }}Vector3(1, 0, 0),
+                {{ data_type }}Vector3(0, 1, 0),
+                {{ data_type }}Vector3(0, 0, 1),
+                *(p.normal for p in other.planes)
+            },
+            set(other.points),
+            set(self.points)
+        )
+{% endif %}
+
     def overlaps_{{ data_type.lower() }}_bounding_box_3d(
         self,
         other: {{ name }}
@@ -152,3 +175,25 @@ class {{ name }}:
     @property
     def size(self) -> {{ data_type }}Vector3:
         return self._size
+
+    @property
+    def points(self) -> tuple[
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3,
+        {{ data_type }}Vector3
+    ]:
+        return (
+            self._position,
+            self._position + self._size.xoo,
+            self._position + self._size.oyo,
+            self._position + self._size.ooz,
+            self._position + self._size.xyo,
+            self._position + self._size.xoz,
+            self._position + self._size.oyz,
+            self._extent
+        )

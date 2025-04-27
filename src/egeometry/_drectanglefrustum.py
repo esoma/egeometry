@@ -4,6 +4,7 @@ from __future__ import annotations
 
 __all__ = ["DRectangleFrustum"]
 
+from typing import TYPE_CHECKING
 from typing import Protocol
 from typing import overload
 
@@ -12,6 +13,9 @@ from emath import DVector3
 from emath import DVector4
 
 from ._dplane import DPlane
+
+if TYPE_CHECKING:
+    from ._dboundingbox3d import DBoundingBox3d
 
 
 class DRectangleFrustumOverlappable(Protocol):
@@ -97,6 +101,9 @@ class DRectangleFrustum:
             raise TypeError(other)
         return other_overlaps(self)
 
+    def overlaps_d_bounding_box_3d(self, other: DBoundingBox3d) -> bool:
+        return other.overlaps_d_rectangle_frustum(self)
+
     def overlaps_d_vector_3(self, other: DVector3) -> bool:
         for plane in self.planes:
             if plane.get_signed_distance_to_point(other) < 0:
@@ -144,6 +151,22 @@ class DRectangleFrustum:
             self._right_plane,
             self._top_plane,
             self._bottom_plane,
+        )
+
+    @property
+    def points(
+        self,
+    ) -> tuple[DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3]:
+        vp = (self._transform @ self._projection).inverse()
+        return (
+            vp @ DVector3(-1, -1, -1),
+            vp @ DVector3(1, -1, -1),
+            vp @ DVector3(-1, 1, -1),
+            vp @ DVector3(-1, -1, 1),
+            vp @ DVector3(1, 1, 1),
+            vp @ DVector3(-1, 1, 1),
+            vp @ DVector3(1, -1, 1),
+            vp @ DVector3(1, 1, -1),
         )
 
 
