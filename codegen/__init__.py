@@ -7,6 +7,7 @@ from codegen.rectangle import generate_rectangle_files
 from codegen.rectangle_frustum import generate_rectangle_frustum_files
 from codegen.template import get_template
 from codegen.triangle2d import generate_triangle_2d_files
+from codegen.trianglemesh3d import generate_triangle_mesh_3d_files
 from codegen.plane import generate_plane_files
 
 from datetime import datetime
@@ -22,6 +23,7 @@ def generate_geometry_files(build_dir: Path) -> None:
     rectangle_types = list(generate_rectangle_files(build_dir))
     rectangle_frustum_types = list(generate_rectangle_frustum_files(build_dir))
     triangle_2d_types = list(generate_triangle_2d_files(build_dir))
+    triangle_mesh_3d_types = list(generate_triangle_mesh_3d_files(build_dir))
     generate_init_file(
         build_dir,
         (
@@ -32,6 +34,7 @@ def generate_geometry_files(build_dir: Path) -> None:
             *rectangle_types,
             *rectangle_frustum_types,
             *triangle_2d_types,
+            *triangle_mesh_3d_types,
         ),
     )
 

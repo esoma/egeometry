@@ -46,6 +46,10 @@ __all__ = [
     "FTriangle2dOverlappable",
     "ITriangle2d",
     "ITriangle2dOverlappable",
+    "DTriangleMesh3d",
+    "DTriangleMesh3dRaycastResult",
+    "FTriangleMesh3d",
+    "FTriangleMesh3dRaycastResult",
 ]
 
 from ._dboundingbox2d import DBoundingBox2d
@@ -63,6 +67,8 @@ from ._drectanglefrustum import DRectangleFrustum
 from ._drectanglefrustum import DRectangleFrustumOverlappable
 from ._dtriangle2d import DTriangle2d
 from ._dtriangle2d import DTriangle2dOverlappable
+from ._dtrianglemesh3d import DTriangleMesh3d
+from ._dtrianglemesh3d import DTriangleMesh3dRaycastResult
 from ._fboundingbox2d import FBoundingBox2d
 from ._fboundingbox2d import FBoundingBox2dOverlappable
 from ._fboundingbox2d import HasFBoundingBox2d
@@ -78,6 +84,8 @@ from ._frectanglefrustum import FRectangleFrustum
 from ._frectanglefrustum import FRectangleFrustumOverlappable
 from ._ftriangle2d import FTriangle2d
 from ._ftriangle2d import FTriangle2dOverlappable
+from ._ftrianglemesh3d import FTriangleMesh3d
+from ._ftrianglemesh3d import FTriangleMesh3dRaycastResult
 from ._iboundingbox2d import HasIBoundingBox2d
 from ._iboundingbox2d import IBoundingBox2d
 from ._iboundingbox2d import IBoundingBox2dOverlappable

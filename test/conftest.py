@@ -57,15 +57,21 @@ def rectangle_frustum_cls(float_data_type):
 def triangle_2d_cls(data_type):
     return getattr(egeometry, f"{data_type}Triangle2d")
 
+@pytest.fixture
+def triangle_mesh_3d_cls(float_data_type):
+    return getattr(egeometry, f"{float_data_type}TriangleMesh3d")
 
 @pytest.fixture
 def vector_2_cls(data_type):
     return getattr(emath, f"{data_type}Vector2")
 
-
 @pytest.fixture
 def vector_3_cls(data_type):
     return getattr(emath, f"{data_type}Vector3")
+
+@pytest.fixture
+def vector_3_array_cls(data_type):
+    return getattr(emath, f"{data_type}Vector3Array")
 
 @pytest.fixture
 def vector_4_cls(data_type):
