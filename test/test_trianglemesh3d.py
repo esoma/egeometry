@@ -28,20 +28,20 @@ def test_raycast(triangle_mesh_3d_cls, vector_3_array_cls, vector_3_cls):
         vector_3_cls(.5, 0, 1),
         vector_3_cls(0, .5, 1),
     )
-    indices = U8Array(0, 1, 2, 3, 4, 5)
+    indices = U8Array(3, 4, 5, 0, 1, 2)
     trimesh = triangle_mesh_3d_cls(vertices, indices)
 
     results = list(trimesh.raycast(vector_3_cls(0, 0, 0), vector_3_cls(0, 0, 1)))
     assert results == [
         (
-            vector_3_cls(0, 0, 0),
-            0,
-            (vector_3_cls(0, 0, 0), vector_3_cls(1, 0, 0), vector_3_cls(0, 1, 0)),
-        ),
-        (
             vector_3_cls(0, 0, 1),
             1,
             (vector_3_cls(0, 0, 1), vector_3_cls(.5, 0, 1), vector_3_cls(0, .5, 1)),
+        ),
+        (
+            vector_3_cls(0, 0, 0),
+            0,
+            (vector_3_cls(0, 0, 0), vector_3_cls(1, 0, 0), vector_3_cls(0, 1, 0)),
         )
     ]
 

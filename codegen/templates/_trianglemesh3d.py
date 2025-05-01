@@ -30,13 +30,15 @@ class {{ name }}(Generic[_I]):
         return self._indices
 
     @property
-    def triangles(self) -> Generator[tuple[{{ data_type }}Vector3, {{ data_type }}Vector3, {{ data_type }}Vector3]]:
-        for i in range(0, len(self._indices), 3):
-            yield (
-                self._vertices[i],
-                self._vertices[i + 1],
-                self._vertices[i + 2]
+    def triangles(self) -> tuple[tuple[{{ data_type }}Vector3, {{ data_type }}Vector3, {{ data_type }}Vector3], ...]:
+        return tuple(
+            (
+                self._vertices[self._indices[i]],
+                self._vertices[self._indices[i + 1]],
+                self._vertices[self._indices[i + 2]]
             )
+            for i in range(0, len(self._indices), 3)
+        )
 
     def raycast(self, eye: {{ data_type }}Vector3, direction: {{ data_type }}Vector3) -> Generator[{{ name }}RaycastResult, None, None]:
         for triangle in self.triangles:

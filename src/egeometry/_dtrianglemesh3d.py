@@ -43,9 +43,15 @@ class DTriangleMesh3d(Generic[_I]):
         return self._indices
 
     @property
-    def triangles(self) -> Generator[tuple[DVector3, DVector3, DVector3]]:
-        for i in range(0, len(self._indices), 3):
-            yield (self._vertices[i], self._vertices[i + 1], self._vertices[i + 2])
+    def triangles(self) -> tuple[tuple[DVector3, DVector3, DVector3], ...]:
+        return tuple(
+            (
+                self._vertices[self._indices[i]],
+                self._vertices[self._indices[i + 1]],
+                self._vertices[self._indices[i + 2]],
+            )
+            for i in range(0, len(self._indices), 3)
+        )
 
     def raycast(
         self, eye: DVector3, direction: DVector3
