@@ -25,6 +25,7 @@ class DTriangleMesh3dRaycastResult(NamedTuple):
     position: DVector3
     distance: float
     triangle: tuple[DVector3, DVector3, DVector3]
+    triangle_index: int
 
 
 class DTriangleMesh3d(Generic[_I]):
@@ -56,7 +57,7 @@ class DTriangleMesh3d(Generic[_I]):
     def raycast(
         self, eye: DVector3, direction: DVector3
     ) -> Generator[DTriangleMesh3dRaycastResult, None, None]:
-        for triangle in self.triangles:
+        for i, triangle in enumerate(self.triangles):
             d_edge_0 = triangle[1] - triangle[0]
             d_edge_1 = triangle[0] - triangle[2]
             normal = -d_edge_0.cross(d_edge_1).normalize()
@@ -83,4 +84,4 @@ class DTriangleMesh3d(Generic[_I]):
             w = (dot11 * dot02 - dot01 * dot12) * inv_denom
             v = (dot00 * dot12 - dot01 * dot02) * inv_denom
             if w >= 0 and v >= 0 and w + v <= 1:
-                yield DTriangleMesh3dRaycastResult(intersection_point, t, triangle)
+                yield DTriangleMesh3dRaycastResult(intersection_point, t, triangle, i)

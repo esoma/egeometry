@@ -13,6 +13,7 @@ class {{ name }}RaycastResult(NamedTuple):
     position: {{ data_type }}Vector3
     distance: float
     triangle: tuple[{{ data_type }}Vector3, {{ data_type }}Vector3, {{ data_type }}Vector3]
+    triangle_index: int
 
 class {{ name }}(Generic[_I]):
     __slots__ = ["_vertices", "_indices"]
@@ -41,7 +42,7 @@ class {{ name }}(Generic[_I]):
         )
 
     def raycast(self, eye: {{ data_type }}Vector3, direction: {{ data_type }}Vector3) -> Generator[{{ name }}RaycastResult, None, None]:
-        for triangle in self.triangles:
+        for i, triangle in enumerate(self.triangles):
             d_edge_0 = triangle[1] - triangle[0]
             d_edge_1 = triangle[0] - triangle[2]
             normal = -d_edge_0.cross(d_edge_1).normalize()
@@ -68,4 +69,4 @@ class {{ name }}(Generic[_I]):
             w = (dot11 * dot02 - dot01 * dot12) * inv_denom
             v = (dot00 * dot12 - dot01 * dot02) * inv_denom
             if w >= 0 and v >= 0 and w + v <= 1:
-                yield {{ name }}RaycastResult(intersection_point, t, triangle)
+                yield {{ name }}RaycastResult(intersection_point, t, triangle, i)
