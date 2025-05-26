@@ -31,3 +31,4 @@ def generate_plane_file(
             )
         )
     yield (f"_{name.lower()}", name)
+    yield (f"_{name.lower()}", f"{name}RaycastResult")

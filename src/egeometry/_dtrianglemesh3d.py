@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = ["DTriangleMesh3d"]
+__all__ = ["DTriangleMesh3d", "DTriangleMesh3dRaycastResult"]
 
 from typing import Generator
 from typing import Generic

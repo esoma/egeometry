@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = ["{{ name }}"]
+__all__ = ["{{ name }}", "{{ name }}RaycastResult"]
 
 from emath import {{ data_type }}Vector3, {{ data_type }}Vector3Array, U8Array, U16Array, U32Array, I8Array, I16Array, I32Array
 from typing import TypeAlias, TypeVar, Generator, NamedTuple, Generic

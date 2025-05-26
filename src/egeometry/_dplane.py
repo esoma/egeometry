@@ -2,9 +2,17 @@
 
 from __future__ import annotations
 
-__all__ = ["DPlane"]
+__all__ = ["DPlane", "DPlaneRaycastResult"]
+
+from typing import Generator
+from typing import NamedTuple
 
 from emath import DVector3
+
+
+class DPlaneRaycastResult(NamedTuple):
+    position: DVector3
+    distance: float
 
 
 class DPlane:
@@ -39,3 +47,15 @@ class DPlane:
     @property
     def normal(self) -> DVector3:
         return self._normal
+
+    def raycast(
+        self, eye: DVector3, direction: DVector3
+    ) -> Generator[DPlaneRaycastResult, None, None]:
+        den = self._normal @ direction
+        if den == 0:
+            return
+        d = self._normal @ (self._normal * -self._distance)
+        t = (d - self._normal @ eye) / den
+        if t < 0:
+            return
+        yield DPlaneRaycastResult(eye + t * direction, t)

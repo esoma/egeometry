@@ -2,9 +2,17 @@
 
 from __future__ import annotations
 
-__all__ = ["FPlane"]
+__all__ = ["FPlane", "FPlaneRaycastResult"]
+
+from typing import Generator
+from typing import NamedTuple
 
 from emath import FVector3
+
+
+class FPlaneRaycastResult(NamedTuple):
+    position: FVector3
+    distance: float
 
 
 class FPlane:
@@ -39,3 +47,15 @@ class FPlane:
     @property
     def normal(self) -> FVector3:
         return self._normal
+
+    def raycast(
+        self, eye: FVector3, direction: FVector3
+    ) -> Generator[FPlaneRaycastResult, None, None]:
+        den = self._normal @ direction
+        if den == 0:
+            return
+        d = self._normal @ (self._normal * -self._distance)
+        t = (d - self._normal @ eye) / den
+        if t < 0:
+            return
+        yield FPlaneRaycastResult(eye + t * direction, t)

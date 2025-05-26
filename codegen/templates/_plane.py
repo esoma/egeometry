@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
-__all__ = ["{{ name }}"]
+__all__ = ["{{ name }}", "{{ name }}RaycastResult"]
 
 from emath import {{ data_type }}Vector3
+from typing import Generator, NamedTuple
+
+class {{ name }}RaycastResult(NamedTuple):
+    position: {{ data_type }}Vector3
+    distance: float
 
 
 class {{ name }}:
@@ -39,3 +44,13 @@ class {{ name }}:
     @property
     def normal(self) -> {{ data_type }}Vector3:
         return self._normal
+
+    def raycast(self, eye: {{ data_type }}Vector3, direction: {{ data_type }}Vector3) -> Generator[{{ name }}RaycastResult, None, None]:
+        den = self._normal @ direction
+        if den == 0:
+            return
+        d = self._normal @ (self._normal * -self._distance)
+        t = (d - self._normal @ eye) / den
+        if t < 0:
+            return
+        yield {{ name }}RaycastResult(eye + t * direction, t)
