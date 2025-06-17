@@ -1,8 +1,11 @@
-[tool.poetry]
+[project]
 name = "egeometry"
+requires-python = ">=3.12"
 version = "0.11.0"
 description = "Python geometry library."
-authors = ["Erik Soma <stillusingirc@gmail.com>"]
+authors = [
+    {name = "Erik Soma", email= "stillusingirc@gmail.com"}
+]
 
 [tool.poetry.build]
 generate-setup-file = false
