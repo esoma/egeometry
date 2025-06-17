@@ -3,12 +3,10 @@ from __future__ import annotations
 __all__ = ()
 
 try:
-    # egeometry
     from codegen import generate_geometry_files
 except ImportError as ex:
     generate_geometry_files = None  # type: ignore
 
-# python
 import os
 from pathlib import Path
 
