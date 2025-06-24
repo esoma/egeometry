@@ -95,21 +95,30 @@ toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
 
 [[package]]
 name = "emath"
-version = "0.1.17"
+version = "0.1.18"
 description = "Fast immutable math primitives."
 optional = false
 python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "emath-0.1.17-cp312-cp312-macosx_13_0_x86_64.whl", hash = "sha256:6a698708cf01861f7714d45523d1adb96c3d5e03ac59d1eef2c0aeccb9400412"},
-    {file = "emath-0.1.17-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:ee099497ca1174f71156403f22f877d1ff420f16d21149428f30317981dbbd51"},
-    {file = "emath-0.1.17-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:15ef58785ebb5b2f334f1674cf0f59e22ef8257bc5412fced1907d733563d02c"},
-    {file = "emath-0.1.17-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0b6ac81134efce979ad537b45076135b5a29ada2416019d2a2b493b8b7dca4f5"},
-    {file = "emath-0.1.17-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:2ded995234badcc0b249b609bef32789c87b37e0e6b575a73f60c43297a8d69b"},
-    {file = "emath-0.1.17-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:e943be3298bcb84d978ddc12bb83fd620bec82e6822c1f88296a1e1870d58184"},
-    {file = "emath-0.1.17-cp312-cp312-win32.whl", hash = "sha256:d6fdcb06abf018f87c9496a530852daca1d8c840360da76a68fc8319ddc8155b"},
-    {file = "emath-0.1.17-cp312-cp312-win_amd64.whl", hash = "sha256:bceba9b2a6dce32a0a465a4fb7202f95b6e7298038f37239b284770175ce843e"},
-    {file = "emath-0.1.17.tar.gz", hash = "sha256:0211c232b73eb678df76c6f28568f5c2f54fdae414e7354612b5cd599b51d778"},
+    {file = "emath-0.1.18-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:d95fe1129aa27f6856a358400d1986ff874297142de466a450851eb41b219f0d"},
+    {file = "emath-0.1.18-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:f1c438f713149f37035c8cc4eaa8927235472d03d6fdae92810e686b2795a926"},
+    {file = "emath-0.1.18-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:315f0258e95a83d87b58ef142ce5baf8300aa5afd0c747b6748e5619481df8ef"},
+    {file = "emath-0.1.18-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:5864efbf4e9af9ce776fa1ec95b3ebe34408d1079eec8cccb70736110b6599e8"},
+    {file = "emath-0.1.18-cp312-cp312-win32.whl", hash = "sha256:03d4ff4a50c4557a4ac5a98997add113482901f909bb621dec733d3dc2b5c3f4"},
+    {file = "emath-0.1.18-cp312-cp312-win_amd64.whl", hash = "sha256:808741b6693fcbb09209d51efd5cab5b1b619cce718e08368b2def7d7bb80640"},
+    {file = "emath-0.1.18-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:8a006628a497e09d63eccc384344f6b2b76dce9736cdc6968d2102f5b731112f"},
+    {file = "emath-0.1.18-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:6040000727c264db4d5dff1ef86ae1e5300ca7796be18de4d84c1cb777c7778e"},
+    {file = "emath-0.1.18-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:6dab409ffe3ef572d00fab2165351afd87ccd62179cda36529f6fa599808c1a5"},
+    {file = "emath-0.1.18-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:1c8d36bd42c846e6c1c9d8de8bdd9df30fd19a0c0183d77ef60cc2d0c159745f"},
+    {file = "emath-0.1.18-cp313-cp313-win32.whl", hash = "sha256:f785e7665176c0c6bb83ac43b9c14dee504872e4f489856b72657cbc70392272"},
+    {file = "emath-0.1.18-cp313-cp313-win_amd64.whl", hash = "sha256:d0f44eb5c12e745e9bc1191f8cb7765ecc29f42126eb99bb343fff192822ab3b"},
+    {file = "emath-0.1.18-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:f3cf5364e84708af899b0ae70ae8ba3c22d464bbe48aacca4efe180926164f03"},
+    {file = "emath-0.1.18-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:90dfdbdf4503bb8642804e3decef8e39ee466c5a51905a2790bc46cd7e5e4f97"},
+    {file = "emath-0.1.18-cp314-cp314-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:054063e0032316cf349b28e7302c0d3d65a5705c71541803b4661c050d67274c"},
+    {file = "emath-0.1.18-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:06637afc0c2215909189fc9ee4c7bbfa52a1b0dc16ac317a468164835b9f7b13"},
+    {file = "emath-0.1.18-cp314-cp314-win32.whl", hash = "sha256:50f4a91afa5b985a5f2ac1aa8a3280e614a297e95a6f8f84d84f1bc8b7670c87"},
+    {file = "emath-0.1.18-cp314-cp314-win_amd64.whl", hash = "sha256:f2441d7a96aee548f5f8f1d52bc906cc616975f3dba6fafcc7d3e5c62ae49b3c"},
 ]
 
 [[package]]
@@ -154,14 +163,14 @@ testing = ["coverage", "pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pygments"
-version = "2.19.1"
+version = "2.19.2"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "pygments-2.19.1-py3-none-any.whl", hash = "sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c"},
-    {file = "pygments-2.19.1.tar.gz", hash = "sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f"},
+    {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
+    {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
 ]
 
 [package.extras]
@@ -169,14 +178,14 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pytest"
-version = "8.4.0"
+version = "8.4.1"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pytest-8.4.0-py3-none-any.whl", hash = "sha256:f40f825768ad76c0977cbacdf1fd37c6f7a468e460ea6a0636078f8972d4517e"},
-    {file = "pytest-8.4.0.tar.gz", hash = "sha256:14d920b48472ea0dbf68e45b96cd1ffda4705f33307dcc86c676c1b5104838a6"},
+    {file = "pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7"},
+    {file = "pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c"},
 ]
 
 [package.dependencies]
