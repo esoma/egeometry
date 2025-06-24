@@ -36,10 +36,13 @@ jobs:
     - name: Install Poetry
       uses: snok/install-poetry@v1.4.1
 
+    - name: Remove Build Script
+      run: |
+        sed --in-place '/script = "buildscript.py"/d' pyproject.toml
+
     - name: Build
       run: |
-        poetry self add poetry-plugin-ignore-build-script
-        poetry build --ignore-build-script
+        poetry build
 
     - name: Upload Github Release Artifact
       uses: svenstaro/upload-release-action@v2
