@@ -1,4 +1,3 @@
-
 import pytest
 
 
@@ -127,3 +126,60 @@ def test_not_overlaps(bounding_box_3d_cls, vector_3_cls):
     bb = bounding_box_3d_cls(vector_3_cls(0), vector_3_cls(1))
     with pytest.raises(TypeError):
         bb.overlaps(object())
+
+
+def test_raycast(bounding_box_3d_cls, vector_3_cls, float_data_type):
+    # ray intersecting box from outside
+    bb = bounding_box_3d_cls(vector_3_cls(0, 0, 0), vector_3_cls(2, 2, 2))
+    results = list(bb.raycast(vector_3_cls(-1, 0, 0), vector_3_cls(1, 0, 0)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(0, 0, 0)
+    assert results[0].distance == 1
+
+    # ray intersecting box from origin
+    results = list(bb.raycast(vector_3_cls(0, 0, 0), vector_3_cls(1, 0, 0)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(0, 0, 0)
+    assert results[0].distance == 0
+
+    # ray intersecting box at an angle
+    results = list(bb.raycast(vector_3_cls(-1, -1, 0), vector_3_cls(1, 1, 0)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(0, 0, 0)
+    assert results[0].distance == 1.0
+
+    # ray missing box
+    results = list(bb.raycast(vector_3_cls(-1, 0, 0), vector_3_cls(0, 1, 0)))
+    assert len(results) == 0
+
+    # ray parallel to box face
+    results = list(bb.raycast(vector_3_cls(0, 0, -1), vector_3_cls(1, 0, 0)))
+    assert len(results) == 0
+
+    # ray starting inside box
+    results = list(bb.raycast(vector_3_cls(1, 1, 1), vector_3_cls(1, 0, 0)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(1, 1, 1)
+    assert results[0].distance == 0
+
+    # ray exiting box
+    results = list(bb.raycast(vector_3_cls(1, 1, 1), vector_3_cls(1, 0, 0)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(1, 1, 1)
+    assert results[0].distance == 0
+
+    # ray intersecting box corner
+    results = list(bb.raycast(vector_3_cls(-1, -1, -1), vector_3_cls(1, 1, 1)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(0, 0, 0)
+    assert results[0].distance == 1.0
+
+    # ray pointing away from box
+    results = list(bb.raycast(vector_3_cls(3, 0, 0), vector_3_cls(1, 0, 0)))
+    assert len(results) == 0
+
+    # ray starting on box surface
+    results = list(bb.raycast(vector_3_cls(2, 0, 0), vector_3_cls(1, 0, 0)))
+    assert len(results) == 1
+    assert results[0].position == vector_3_cls(2, 0, 0)
+    assert results[0].distance == 0

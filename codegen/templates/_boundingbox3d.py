@@ -2,10 +2,15 @@
 
 from __future__ import annotations
 
-__all__ = ["{{ name }}", "{{ name }}Overlappable", "Has{{ name }}"]
+__all__ = [
+    "{{ name }}", "{{ name }}Overlappable", "Has{{ name }}",
+{% if data_type in "DF" %}
+    "{{ name }}RaycastResult"
+{% endif %}
+]
 
 from emath import {{ data_type }}Vector3, {{ data_type }}Vector4
-from typing import Protocol, overload, Iterable, TYPE_CHECKING
+from typing import Protocol, overload, Iterable, TYPE_CHECKING, Generator, NamedTuple
 from ._separating_axis_theorem import separating_axis_theorem
 
 {% if data_type in "DF" %}
@@ -28,6 +33,11 @@ class Has{{ name }}(Protocol):
     def bounding_box(self) -> {{ name }}:
         ...
 
+{% if data_type in "DF" %}
+class {{ name }}RaycastResult(NamedTuple):
+    position: {{ data_type }}Vector3
+    distance: float
+{% endif %}
 
 
 class {{ name }}:
@@ -197,3 +207,39 @@ class {{ name }}:
             self._position + self._size.oyz,
             self._extent
         )
+
+{% if data_type in "DF" %}
+    def raycast(self, eye: {{ data_type }}Vector3, direction: {{ data_type }}Vector3) -> Generator[{{ name }}RaycastResult, None, None]:
+        t_min = float("-inf")
+        t_max = float("inf")
+
+        if abs(direction.x) > 1e-6:
+            t1 = (self._position.x - eye.x) / direction.x
+            t2 = (self._extent.x - eye.x) / direction.x
+            t_min = max(t_min, min(t1, t2))
+            t_max = min(t_max, max(t1, t2))
+        elif eye.x < self._position.x or eye.x > self._extent.x:
+            return
+
+        if abs(direction.y) > 1e-6:
+            t1 = (self._position.y - eye.y) / direction.y
+            t2 = (self._extent.y - eye.y) / direction.y
+            t_min = max(t_min, min(t1, t2))
+            t_max = min(t_max, max(t1, t2))
+        elif eye.y < self._position.y or eye.y > self._extent.y:
+            return
+
+        if abs(direction.z) > 1e-6:
+            t1 = (self._position.z - eye.z) / direction.z
+            t2 = (self._extent.z - eye.z) / direction.z
+            t_min = max(t_min, min(t1, t2))
+            t_max = min(t_max, max(t1, t2))
+        elif eye.z < self._position.z or eye.z > self._extent.z:
+            return
+
+        if t_min <= t_max and t_max >= 0:
+            if t_min < 0:
+                t_min = 0
+            intersection_point = eye + t_min * direction
+            yield {{ name }}RaycastResult(intersection_point, t_min)
+{% endif %}

@@ -34,3 +34,5 @@ def generate_bouncing_box_3d_file(
     yield (f"_{name.lower()}", name)
     yield (f"_{name.lower()}", f"{name}Overlappable")
     yield (f"_{name.lower()}", f"Has{name}")
+    if data_type in "FD":
+        yield (f"_{name.lower()}", f"{ name }RaycastResult")

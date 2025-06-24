@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
-__all__ = ["DBoundingBox3d", "DBoundingBox3dOverlappable", "HasDBoundingBox3d"]
+__all__ = [
+    "DBoundingBox3d",
+    "DBoundingBox3dOverlappable",
+    "HasDBoundingBox3d",
+    "DBoundingBox3dRaycastResult",
+]
 
 from typing import TYPE_CHECKING
+from typing import Generator
 from typing import Iterable
+from typing import NamedTuple
 from typing import Protocol
 from typing import overload
 
@@ -24,6 +31,11 @@ class DBoundingBox3dOverlappable(Protocol):
 class HasDBoundingBox3d(Protocol):
     @property
     def bounding_box(self) -> DBoundingBox3d: ...
+
+
+class DBoundingBox3dRaycastResult(NamedTuple):
+    position: DVector3
+    distance: float
 
 
 class DBoundingBox3d:
@@ -169,3 +181,39 @@ class DBoundingBox3d:
             self._position + self._size.oyz,
             self._extent,
         )
+
+    def raycast(
+        self, eye: DVector3, direction: DVector3
+    ) -> Generator[DBoundingBox3dRaycastResult, None, None]:
+        t_min = float("-inf")
+        t_max = float("inf")
+
+        if abs(direction.x) > 1e-6:
+            t1 = (self._position.x - eye.x) / direction.x
+            t2 = (self._extent.x - eye.x) / direction.x
+            t_min = max(t_min, min(t1, t2))
+            t_max = min(t_max, max(t1, t2))
+        elif eye.x < self._position.x or eye.x > self._extent.x:
+            return
+
+        if abs(direction.y) > 1e-6:
+            t1 = (self._position.y - eye.y) / direction.y
+            t2 = (self._extent.y - eye.y) / direction.y
+            t_min = max(t_min, min(t1, t2))
+            t_max = min(t_max, max(t1, t2))
+        elif eye.y < self._position.y or eye.y > self._extent.y:
+            return
+
+        if abs(direction.z) > 1e-6:
+            t1 = (self._position.z - eye.z) / direction.z
+            t2 = (self._extent.z - eye.z) / direction.z
+            t_min = max(t_min, min(t1, t2))
+            t_max = min(t_max, max(t1, t2))
+        elif eye.z < self._position.z or eye.z > self._extent.z:
+            return
+
+        if t_min <= t_max and t_max >= 0:
+            if t_min < 0:
+                t_min = 0
+            intersection_point = eye + t_min * direction
+            yield DBoundingBox3dRaycastResult(intersection_point, t_min)

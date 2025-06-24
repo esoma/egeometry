@@ -16,9 +16,11 @@ __all__ = [
     "DBoundingBox3d",
     "DBoundingBox3dOverlappable",
     "HasDBoundingBox3d",
+    "DBoundingBox3dRaycastResult",
     "FBoundingBox3d",
     "FBoundingBox3dOverlappable",
     "HasFBoundingBox3d",
+    "FBoundingBox3dRaycastResult",
     "IBoundingBox3d",
     "IBoundingBox3dOverlappable",
     "HasIBoundingBox3d",
@@ -59,6 +61,7 @@ from ._dboundingbox2d import DBoundingBox2dOverlappable
 from ._dboundingbox2d import HasDBoundingBox2d
 from ._dboundingbox3d import DBoundingBox3d
 from ._dboundingbox3d import DBoundingBox3dOverlappable
+from ._dboundingbox3d import DBoundingBox3dRaycastResult
 from ._dboundingbox3d import HasDBoundingBox3d
 from ._dcircle import DCircle
 from ._dcircle import DCircleOverlappable
@@ -77,6 +80,7 @@ from ._fboundingbox2d import FBoundingBox2dOverlappable
 from ._fboundingbox2d import HasFBoundingBox2d
 from ._fboundingbox3d import FBoundingBox3d
 from ._fboundingbox3d import FBoundingBox3dOverlappable
+from ._fboundingbox3d import FBoundingBox3dRaycastResult
 from ._fboundingbox3d import HasFBoundingBox3d
 from ._fcircle import FCircle
 from ._fcircle import FCircleOverlappable
