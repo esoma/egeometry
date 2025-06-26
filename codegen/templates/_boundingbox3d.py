@@ -175,7 +175,7 @@ class {{ name }}:
 
 {% if data_type in "DF" %}
     def __matmul__(self, transform: {{ data_type }}Matrix4) -> {{ name }}:
-        return {{ name }}(shapes=(p @ transform for p in self.points ))
+        return {{ name }}(shapes=(transform @ p for p in self.points ))
 {% endif %}
 
     @property

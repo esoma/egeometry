@@ -153,7 +153,7 @@ class FBoundingBox3d:
         return FBoundingBox3d(self._position + translation, self._size)
 
     def __matmul__(self, transform: FMatrix4) -> FBoundingBox3d:
-        return FBoundingBox3d(shapes=(p @ transform for p in self.points))
+        return FBoundingBox3d(shapes=(transform @ p for p in self.points))
 
     @property
     def bounding_box(self) -> FBoundingBox3d:

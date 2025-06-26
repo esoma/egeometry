@@ -209,7 +209,7 @@ def test_matmul(
 
     expected = bounding_box_3d_cls(
         shapes=[
-            p @ transform
+            transform @ p
             for p in (
                 bb.position,
                 bb.position + bb.size.xoo,
