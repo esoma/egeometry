@@ -1,4 +1,3 @@
-
 import pytest
 
 
@@ -13,13 +12,7 @@ import pytest
     ],
 )
 def test_overlaps(
-    data_type,
-    circle_cls,
-    bounding_box_2d_cls,
-    vector_2_cls,
-    circle_args,
-    bb_args,
-    expected_result,
+    data_type, circle_cls, bounding_box_2d_cls, vector_2_cls, circle_args, bb_args, expected_result
 ):
     circle = circle_cls(vector_2_cls(*circle_args[0]), circle_args[1])
     bb = bounding_box_2d_cls(vector_2_cls(*bb_args[0]), vector_2_cls(*bb_args[1]))

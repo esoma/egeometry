@@ -1,4 +1,3 @@
-
 import pytest
 
 
@@ -9,9 +8,7 @@ def test_attrs(circle_cls, bounding_box_2d_cls, rectangle_cls, vector_2_cls, x, 
     circle = circle_cls(vector_2_cls(x, y), r)
     assert circle.position == vector_2_cls(x, y)
     assert circle.radius == r
-    assert circle.bounding_box == bounding_box_2d_cls(
-        circle.position - r, vector_2_cls(r * 2)
-    )
+    assert circle.bounding_box == bounding_box_2d_cls(circle.position - r, vector_2_cls(r * 2))
     assert repr(circle) == f"<Circle position={circle.position} radius={circle.radius}>"
 
 
@@ -38,9 +35,7 @@ def test_not_equal(circle_cls, vector_2_cls):
         (((0,), 5), (5, 2), False),
     ],
 )
-def test_overlaps_vector_2(
-    data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result
-):
+def test_overlaps_vector_2(data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result):
     a = circle_cls(vector_2_cls(*a_args[0]), a_args[1])
     b = vector_2_cls(*b_args)
 
@@ -63,9 +58,7 @@ def test_overlaps_vector_2(
         (((0,), 1), ((0,), 2), True),
     ],
 )
-def test_overlaps_circle(
-    data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result
-):
+def test_overlaps_circle(data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result):
     a = circle_cls(vector_2_cls(*a_args[0]), a_args[1])
     b = circle_cls(vector_2_cls(*b_args[0]), b_args[1])
     if expected_result:
@@ -81,12 +74,7 @@ def test_overlaps_circle(
     assert b_overlaps(a) == expected_result
 
 
-@pytest.mark.parametrize(
-    "a_args, b_args, expected_result",
-    [
-        (((0,), 1), ((2, 2), 2), True),
-    ],
-)
+@pytest.mark.parametrize("a_args, b_args, expected_result", [(((0,), 1), ((2, 2), 2), True)])
 def test_float_overlaps_circle(
     float_data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result
 ):
@@ -105,12 +93,7 @@ def test_float_overlaps_circle(
     assert b_overlaps(a) == expected_result
 
 
-@pytest.mark.parametrize(
-    "a_args, b_args, expected_result",
-    [
-        (((0,), 1), ((2, 2), 2), False),
-    ],
-)
+@pytest.mark.parametrize("a_args, b_args, expected_result", [(((0,), 1), ((2, 2), 2), False)])
 def test_int_overlaps_circle(
     int_data_type, circle_cls, vector_2_cls, a_args, b_args, expected_result
 ):

@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.parametrize("distance", [-1, 0, 1])
 @pytest.mark.parametrize("normal", [(1,), (-1,)])
 def test_attrs(plane_cls, vector_3_cls, distance, normal):
@@ -10,14 +11,17 @@ def test_attrs(plane_cls, vector_3_cls, distance, normal):
     assert repr(plane) == f"<Plane distance={plane.distance} normal={plane.normal}>"
     assert plane == plane
 
+
 def test_invalid_normal(plane_cls, vector_3_cls):
     with pytest.raises(ValueError) as excinfo:
         plane_cls(0, vector_3_cls(0))
     assert str(excinfo.value) == "invalid normal"
 
+
 def test_not_equal(plane_cls, vector_3_cls):
     plane = plane_cls(0, vector_3_cls(1))
     assert plane != object()
+
 
 @pytest.mark.parametrize("distance", [-1, 0, 1])
 @pytest.mark.parametrize("normal", [(1, 0, 0), (0, 1, 0), (0, 0, 1)])

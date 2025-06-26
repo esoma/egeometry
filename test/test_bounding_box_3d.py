@@ -37,9 +37,7 @@ def test_shapes_extra(bounding_box_3d_cls, vector_3_cls):
 
 
 def test_shapes(vector_3_cls, bounding_box_3d_cls):
-    assert bounding_box_3d_cls(shapes=[]) == bounding_box_3d_cls(
-        vector_3_cls(0), vector_3_cls(0)
-    )
+    assert bounding_box_3d_cls(shapes=[]) == bounding_box_3d_cls(vector_3_cls(0), vector_3_cls(0))
     assert bounding_box_3d_cls(
         shapes=[vector_3_cls(0, 0, -1), vector_3_cls(-1, 1, 0), vector_3_cls(1, -1, 1)]
     ) == bounding_box_3d_cls(vector_3_cls(-1), vector_3_cls(2))
@@ -117,9 +115,7 @@ def test_overlaps_bounding_box_3d(
 def test_translate(bounding_box_3d_cls, vector_3_cls, bb_args, translation_args):
     bb = bounding_box_3d_cls(vector_3_cls(*bb_args[0]), vector_3_cls(*bb_args[1]))
     translation = vector_3_cls(*translation_args)
-    assert bb.translate(translation) == bounding_box_3d_cls(
-        bb.position + translation, bb.size
-    )
+    assert bb.translate(translation) == bounding_box_3d_cls(bb.position + translation, bb.size)
 
 
 def test_not_overlaps(bounding_box_3d_cls, vector_3_cls):
@@ -189,23 +185,42 @@ def test_raycast(bounding_box_3d_cls, vector_3_cls, float_data_type):
 @pytest.mark.parametrize("size_args", [(0, 0, 0), (4, 5, 6)])
 @pytest.mark.parametrize("translation_args", [(0, 0, 0), (-10, 9, 11)])
 @pytest.mark.parametrize("scale_args", [(1, 1, 1), (0, 0, 0), (2, 4, 6)])
-@pytest.mark.parametrize("angle", [0, .5, 1])
+@pytest.mark.parametrize("angle", [0, 0.5, 1])
 @pytest.mark.parametrize("angle_args", [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1)])
 def test_matmul(
-    bounding_box_3d_cls, vector_3_cls, matrix_4_cls, float_data_type, position_args, size_args,
-    translation_args, scale_args, angle, angle_args):
+    bounding_box_3d_cls,
+    vector_3_cls,
+    matrix_4_cls,
+    float_data_type,
+    position_args,
+    size_args,
+    translation_args,
+    scale_args,
+    angle,
+    angle_args,
+):
     bb = bounding_box_3d_cls(vector_3_cls(*position_args), vector_3_cls(*size_args))
-    transform = matrix_4_cls(1).translate(vector_3_cls(*translation_args)).scale(vector_3_cls(*scale_args)).rotate(angle, vector_3_cls(*angle_args).normalize())
+    transform = (
+        matrix_4_cls(1)
+        .translate(vector_3_cls(*translation_args))
+        .scale(vector_3_cls(*scale_args))
+        .rotate(angle, vector_3_cls(*angle_args).normalize())
+    )
 
-    expected = bounding_box_3d_cls(shapes=[p @ transform for p in (
-        bb.position,
-        bb.position + bb.size.xoo,
-        bb.position + bb.size.oyo,
-        bb.position + bb.size.ooz,
-        bb.position + bb.size.xyo,
-        bb.position + bb.size.xoz,
-        bb.position + bb.size.oyz,
-        bb.extent,
-    )])
+    expected = bounding_box_3d_cls(
+        shapes=[
+            p @ transform
+            for p in (
+                bb.position,
+                bb.position + bb.size.xoo,
+                bb.position + bb.size.oyo,
+                bb.position + bb.size.ooz,
+                bb.position + bb.size.xyo,
+                bb.position + bb.size.xoz,
+                bb.position + bb.size.oyz,
+                bb.extent,
+            )
+        ]
+    )
 
     assert bb @ transform == expected

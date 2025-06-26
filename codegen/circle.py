@@ -1,13 +1,12 @@
 __all__ = ["generate_cicle_files"]
 
 
-from .template import get_template
-from .types import TYPES
-
-
 from datetime import datetime
 from pathlib import Path
 from typing import Generator
+
+from .template import get_template
+from .types import TYPES
 
 
 def generate_circle_files(build_dir: Path) -> Generator[tuple[str, str], None, None]:

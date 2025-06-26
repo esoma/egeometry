@@ -24,12 +24,7 @@ def test_attrs(
 
 
 @pytest.mark.parametrize(
-    "points_args",
-    [
-        [(0, 0), (0, 0), (0, 0)],
-        [(0, 1), (0, 0), (0, 1)],
-        [(0, 0), (0, 1), (0, 2)],
-    ],
+    "points_args", [[(0, 0), (0, 0), (0, 0)], [(0, 1), (0, 0), (0, 1)], [(0, 0), (0, 1), (0, 2)]]
 )
 def test_invalid_vertices(triangle_2d_cls, vector_2_cls, points_args):
     points = [vector_2_cls(*pa) for pa in points_args]
@@ -43,13 +38,7 @@ def test_not_equal(triangle_2d_cls, vector_2_cls):
     assert tri != object()
 
 
-@pytest.mark.parametrize(
-    "points_args",
-    [
-        [(0, 0), (1, 0), (0, 1)],
-        [(0, 1), (100, 80), (-12, 5)],
-    ],
-)
+@pytest.mark.parametrize("points_args", [[(0, 0), (1, 0), (0, 1)], [(0, 1), (100, 80), (-12, 5)]])
 @pytest.mark.parametrize("translation_args", [(0,), (1, -1)])
 def test_translate(triangle_2d_cls, vector_2_cls, points_args, translation_args):
     points = [vector_2_cls(*pa) for pa in points_args]

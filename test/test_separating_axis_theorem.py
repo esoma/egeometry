@@ -1,12 +1,12 @@
 # egeometry
-from egeometry import separating_axis_theorem
+# pytest
+import pytest
 
 # emath
 from emath import DVector2
 from emath import FVector2
 
-# pytest
-import pytest
+from egeometry import separating_axis_theorem
 
 
 @pytest.mark.parametrize("vector_2_cls", [FVector2, DVector2])

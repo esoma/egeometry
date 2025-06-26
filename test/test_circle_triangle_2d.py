@@ -12,13 +12,7 @@ import pytest
     ],
 )
 def test_overlaps(
-    data_type,
-    triangle_2d_cls,
-    circle_cls,
-    vector_2_cls,
-    tri_args,
-    circle_args,
-    expected_result,
+    data_type, triangle_2d_cls, circle_cls, vector_2_cls, tri_args, circle_args, expected_result
 ):
     tri = triangle_2d_cls(*(vector_2_cls(*a) for a in tri_args))
     circle = circle_cls(vector_2_cls(*circle_args[0]), circle_args[1])

@@ -1,18 +1,18 @@
 __all__ = ["generate_geometry_files"]
 
+from datetime import datetime
+from pathlib import Path
+from typing import Sequence
+
 from codegen.bounding_box_2d import generate_bounding_box_2d_files
 from codegen.bounding_box_3d import generate_bounding_box_3d_files
 from codegen.circle import generate_circle_files
+from codegen.plane import generate_plane_files
 from codegen.rectangle import generate_rectangle_files
 from codegen.rectangle_frustum import generate_rectangle_frustum_files
 from codegen.template import get_template
 from codegen.triangle2d import generate_triangle_2d_files
 from codegen.trianglemesh3d import generate_triangle_mesh_3d_files
-from codegen.plane import generate_plane_files
-
-from datetime import datetime
-from pathlib import Path
-from typing import Sequence
 
 
 def generate_geometry_files(build_dir: Path) -> None:
@@ -42,9 +42,4 @@ def generate_geometry_files(build_dir: Path) -> None:
 def generate_init_file(build_dir: Path, types: Sequence[tuple[str, str]]) -> None:
     template = get_template("__init__.py")
     with open(build_dir / "__init__.py", "w") as f:
-        f.write(
-            template.render(
-                types=types,
-                when=datetime.utcnow(),
-            )
-        )
+        f.write(template.render(types=types, when=datetime.utcnow()))

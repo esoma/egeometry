@@ -1,4 +1,3 @@
-
 import pytest
 
 
@@ -21,9 +20,7 @@ def test_overlaps(
     expected_result,
 ):
     circle = circle_cls(vector_2_cls(*circle_args[0]), circle_args[1])
-    rectangle = rectangle_cls(
-        vector_2_cls(*rectangle_args[0]), vector_2_cls(*rectangle_args[1])
-    )
+    rectangle = rectangle_cls(vector_2_cls(*rectangle_args[0]), vector_2_cls(*rectangle_args[1]))
 
     assert circle.overlaps(rectangle) == expected_result
     assert rectangle.overlaps(circle) == expected_result
