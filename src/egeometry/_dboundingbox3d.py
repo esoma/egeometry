@@ -16,6 +16,7 @@ from typing import NamedTuple
 from typing import Protocol
 from typing import overload
 
+from emath import DMatrix4
 from emath import DVector3
 
 from ._separating_axis_theorem import separating_axis_theorem
@@ -150,6 +151,9 @@ class DBoundingBox3d:
 
     def translate(self, translation: DVector3) -> DBoundingBox3d:
         return DBoundingBox3d(self._position + translation, self._size)
+
+    def __matmul__(self, transform: DMatrix4) -> DBoundingBox3d:
+        return DBoundingBox3d(shapes=(p @ transform for p in self.points))
 
     @property
     def bounding_box(self) -> DBoundingBox3d:

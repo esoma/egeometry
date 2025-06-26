@@ -16,6 +16,7 @@ from typing import NamedTuple
 from typing import Protocol
 from typing import overload
 
+from emath import FMatrix4
 from emath import FVector3
 
 from ._separating_axis_theorem import separating_axis_theorem
@@ -150,6 +151,9 @@ class FBoundingBox3d:
 
     def translate(self, translation: FVector3) -> FBoundingBox3d:
         return FBoundingBox3d(self._position + translation, self._size)
+
+    def __matmul__(self, transform: FMatrix4) -> FBoundingBox3d:
+        return FBoundingBox3d(shapes=(p @ transform for p in self.points))
 
     @property
     def bounding_box(self) -> FBoundingBox3d:

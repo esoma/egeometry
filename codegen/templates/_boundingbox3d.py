@@ -10,6 +10,9 @@ __all__ = [
 ]
 
 from emath import {{ data_type }}Vector3, {{ data_type }}Vector4
+{% if data_type in "DF" %}
+from emath import {{ data_type }}Matrix4
+{% endif %}
 from typing import Protocol, overload, Iterable, TYPE_CHECKING, Generator, NamedTuple
 from ._separating_axis_theorem import separating_axis_theorem
 
@@ -169,6 +172,11 @@ class {{ name }}:
 
     def translate(self, translation: {{ data_type }}Vector3) -> {{ name }}:
         return {{ name }}(self._position + translation, self._size)
+
+{% if data_type in "DF" %}
+    def __matmul__(self, transform: {{ data_type }}Matrix4) -> {{ name }}:
+        return {{ name }}(shapes=(p @ transform for p in self.points ))
+{% endif %}
 
     @property
     def bounding_box(self) -> {{ name }}:
