@@ -120,3 +120,22 @@ def test_not_overlaps(bounding_box_2d_cls, vector_2_cls):
     bb = bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(1))
     with pytest.raises(TypeError):
         bb.overlaps(object())
+
+
+def test_clip(bounding_box_2d_cls, vector_2_cls):
+    bb = bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(10))
+
+    result = bb.clip(bb)
+    assert result == bb
+
+    result = bb.clip(bounding_box_2d_cls(vector_2_cls(5), vector_2_cls(0)))
+    assert result == bounding_box_2d_cls(vector_2_cls(5), vector_2_cls(0))
+
+    result = bb.clip(bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(5)))
+    assert result == bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(5))
+
+    result = bb.clip(bounding_box_2d_cls(vector_2_cls(-1), vector_2_cls(5)))
+    assert result == bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(4))
+
+    result = bb.clip(bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(200)))
+    assert result == bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(9))

@@ -148,6 +148,17 @@ class {{ name }}:
     def translate(self, translation: {{ data_type }}Vector2) -> {{ name }}:
         return {{ name }}(self._position + translation, self._size)
 
+    def clip(self, other: {{ name }}) -> {{ name }}:
+        top_left = {{ data_type }}Vector2(
+            max(self._position.x, other._position.x),
+            max(self._position.y, other._position.y),
+        )
+        bottom_right = {{ data_type }}Vector2(
+            min(self._extent.x, other._extent.x),
+            min(self._extent.y, other._extent.y),
+        )
+        return {{ name }}(shapes=(top_left, bottom_right))
+
     @property
     def bounding_box(self) -> {{ name }}:
         return self

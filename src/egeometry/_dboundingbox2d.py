@@ -126,6 +126,15 @@ class DBoundingBox2d:
     def translate(self, translation: DVector2) -> DBoundingBox2d:
         return DBoundingBox2d(self._position + translation, self._size)
 
+    def clip(self, other: DBoundingBox2d) -> DBoundingBox2d:
+        top_left = DVector2(
+            max(self._position.x, other._position.x), max(self._position.y, other._position.y)
+        )
+        bottom_right = DVector2(
+            min(self._extent.x, other._extent.x), min(self._extent.y, other._extent.y)
+        )
+        return DBoundingBox2d(shapes=(top_left, bottom_right))
+
     @property
     def bounding_box(self) -> DBoundingBox2d:
         return self

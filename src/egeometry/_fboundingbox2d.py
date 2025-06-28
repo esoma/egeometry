@@ -126,6 +126,15 @@ class FBoundingBox2d:
     def translate(self, translation: FVector2) -> FBoundingBox2d:
         return FBoundingBox2d(self._position + translation, self._size)
 
+    def clip(self, other: FBoundingBox2d) -> FBoundingBox2d:
+        top_left = FVector2(
+            max(self._position.x, other._position.x), max(self._position.y, other._position.y)
+        )
+        bottom_right = FVector2(
+            min(self._extent.x, other._extent.x), min(self._extent.y, other._extent.y)
+        )
+        return FBoundingBox2d(shapes=(top_left, bottom_right))
+
     @property
     def bounding_box(self) -> FBoundingBox2d:
         return self
