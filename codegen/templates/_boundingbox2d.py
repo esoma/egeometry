@@ -5,6 +5,9 @@ from __future__ import annotations
 __all__ = ["{{ name }}", "{{ name }}Overlappable", "Has{{ name }}"]
 
 from emath import {{ data_type }}Vector2
+{% if data_type in "DF" %}
+from emath import {{ data_type }}Matrix4
+{% endif %}
 from typing import Protocol, TYPE_CHECKING, overload, Iterable
 
 if TYPE_CHECKING:
@@ -148,6 +151,11 @@ class {{ name }}:
     def translate(self, translation: {{ data_type }}Vector2) -> {{ name }}:
         return {{ name }}(self._position + translation, self._size)
 
+{% if data_type in "DF" %}
+    def __matmul__(self, transform: {{ data_type }}Matrix4) -> {{ name }}:
+        return {{ name }}(shapes=((transform @ p.xyo).xy for p in self.points ))
+{% endif %}
+
     def clip(self, other: {{ name }}) -> {{ name }}:
         top_left = {{ data_type }}Vector2(
             max(self._position.x, other._position.x),
@@ -174,3 +182,17 @@ class {{ name }}:
     @property
     def size(self) -> {{ data_type }}Vector2:
         return self._size
+
+    @property
+    def points(self) -> tuple[
+        {{ data_type }}Vector2,
+        {{ data_type }}Vector2,
+        {{ data_type }}Vector2,
+        {{ data_type }}Vector2,
+    ]:
+        return (
+            self._position,
+            self._position + self._size.xo,
+            self._position + self._size.oy,
+            self._extent
+        )

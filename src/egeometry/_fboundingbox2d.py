@@ -9,6 +9,7 @@ from typing import Iterable
 from typing import Protocol
 from typing import overload
 
+from emath import FMatrix4
 from emath import FVector2
 
 if TYPE_CHECKING:
@@ -126,6 +127,9 @@ class FBoundingBox2d:
     def translate(self, translation: FVector2) -> FBoundingBox2d:
         return FBoundingBox2d(self._position + translation, self._size)
 
+    def __matmul__(self, transform: FMatrix4) -> FBoundingBox2d:
+        return FBoundingBox2d(shapes=((transform @ p.xyo).xy for p in self.points))
+
     def clip(self, other: FBoundingBox2d) -> FBoundingBox2d:
         top_left = FVector2(
             max(self._position.x, other._position.x), max(self._position.y, other._position.y)
@@ -150,3 +154,12 @@ class FBoundingBox2d:
     @property
     def size(self) -> FVector2:
         return self._size
+
+    @property
+    def points(self) -> tuple[FVector2, FVector2, FVector2, FVector2]:
+        return (
+            self._position,
+            self._position + self._size.xo,
+            self._position + self._size.oy,
+            self._extent,
+        )

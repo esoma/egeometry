@@ -9,6 +9,7 @@ from typing import Iterable
 from typing import Protocol
 from typing import overload
 
+from emath import DMatrix4
 from emath import DVector2
 
 if TYPE_CHECKING:
@@ -126,6 +127,9 @@ class DBoundingBox2d:
     def translate(self, translation: DVector2) -> DBoundingBox2d:
         return DBoundingBox2d(self._position + translation, self._size)
 
+    def __matmul__(self, transform: DMatrix4) -> DBoundingBox2d:
+        return DBoundingBox2d(shapes=((transform @ p.xyo).xy for p in self.points))
+
     def clip(self, other: DBoundingBox2d) -> DBoundingBox2d:
         top_left = DVector2(
             max(self._position.x, other._position.x), max(self._position.y, other._position.y)
@@ -150,3 +154,12 @@ class DBoundingBox2d:
     @property
     def size(self) -> DVector2:
         return self._size
+
+    @property
+    def points(self) -> tuple[DVector2, DVector2, DVector2, DVector2]:
+        return (
+            self._position,
+            self._position + self._size.xo,
+            self._position + self._size.oy,
+            self._extent,
+        )

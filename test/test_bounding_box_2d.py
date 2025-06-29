@@ -10,6 +10,12 @@ def test_attrs(bounding_box_2d_cls, vector_2_cls, x, y, w, h):
     assert bb.position == vector_2_cls(x, y)
     assert bb.size == vector_2_cls(w, h)
     assert bb.extent == bb.position + bb.size
+    assert set(bb.points) == {
+        vector_2_cls(x, y),
+        vector_2_cls(x + w, y),
+        vector_2_cls(x, y + h),
+        vector_2_cls(x + w, y + h),
+    }
     assert bb.bounding_box is bb
     assert repr(bb) == f"<BoundingBox2d position={bb.position} size={bb.size}>"
 
@@ -139,3 +145,40 @@ def test_clip(bounding_box_2d_cls, vector_2_cls):
 
     result = bb.clip(bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(200)))
     assert result == bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(9))
+
+
+@pytest.mark.parametrize("position_args", [(0, 0), (1, 2)])
+@pytest.mark.parametrize("size_args", [(0, 0), (4, 5)])
+@pytest.mark.parametrize("translation_args", [(0, 0, 0), (-10, 9, 11)])
+@pytest.mark.parametrize("scale_args", [(1, 1, 1), (0, 0, 0), (2, 4, 6)])
+@pytest.mark.parametrize("angle", [0, 0.5, 1])
+@pytest.mark.parametrize("angle_args", [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1)])
+def test_matmul(
+    bounding_box_2d_cls,
+    vector_2_cls,
+    vector_3_cls,
+    matrix_4_cls,
+    float_data_type,
+    position_args,
+    size_args,
+    translation_args,
+    scale_args,
+    angle,
+    angle_args,
+):
+    bb = bounding_box_2d_cls(vector_2_cls(*position_args), vector_2_cls(*size_args))
+    transform = (
+        matrix_4_cls(1)
+        .translate(vector_3_cls(*translation_args))
+        .scale(vector_3_cls(*scale_args))
+        .rotate(angle, vector_3_cls(*angle_args).normalize())
+    )
+
+    expected = bounding_box_2d_cls(
+        shapes=[
+            (transform @ p.xyo).xy
+            for p in (bb.position, bb.position + bb.size.xo, bb.position + bb.size.oy, bb.extent)
+        ]
+    )
+
+    assert bb @ transform == expected

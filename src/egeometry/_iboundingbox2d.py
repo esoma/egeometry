@@ -150,3 +150,12 @@ class IBoundingBox2d:
     @property
     def size(self) -> IVector2:
         return self._size
+
+    @property
+    def points(self) -> tuple[IVector2, IVector2, IVector2, IVector2]:
+        return (
+            self._position,
+            self._position + self._size.xo,
+            self._position + self._size.oy,
+            self._extent,
+        )
