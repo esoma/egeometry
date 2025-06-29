@@ -129,7 +129,7 @@ class FBoundingBox2d:
     def translate(self, translation: FVector2) -> FBoundingBox2d:
         return FBoundingBox2d(self._position + translation, self._size)
 
-    def __matmul__(self, transform: FMatrix4) -> FBoundingBox2d:
+    def __rmatmul__(self, transform: FMatrix4) -> FBoundingBox2d:
         return FBoundingBox2d(shapes=((transform @ p.xyo).xy for p in self.points))
 
     def clip(self, other: FBoundingBox2d) -> FBoundingBox2d:

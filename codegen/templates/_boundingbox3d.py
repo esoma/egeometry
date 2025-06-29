@@ -174,7 +174,7 @@ class {{ name }}:
         return {{ name }}(self._position + translation, self._size)
 
 {% if data_type in "DF" %}
-    def __matmul__(self, transform: {{ data_type }}Matrix4) -> {{ name }}:
+    def __rmatmul__(self, transform: {{ data_type }}Matrix4) -> {{ name }}:
         return {{ name }}(shapes=(transform @ p for p in self.points ))
 {% endif %}
 

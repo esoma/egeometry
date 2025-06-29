@@ -129,7 +129,7 @@ class DBoundingBox2d:
     def translate(self, translation: DVector2) -> DBoundingBox2d:
         return DBoundingBox2d(self._position + translation, self._size)
 
-    def __matmul__(self, transform: DMatrix4) -> DBoundingBox2d:
+    def __rmatmul__(self, transform: DMatrix4) -> DBoundingBox2d:
         return DBoundingBox2d(shapes=((transform @ p.xyo).xy for p in self.points))
 
     def clip(self, other: DBoundingBox2d) -> DBoundingBox2d:

@@ -152,7 +152,7 @@ class DBoundingBox3d:
     def translate(self, translation: DVector3) -> DBoundingBox3d:
         return DBoundingBox3d(self._position + translation, self._size)
 
-    def __matmul__(self, transform: DMatrix4) -> DBoundingBox3d:
+    def __rmatmul__(self, transform: DMatrix4) -> DBoundingBox3d:
         return DBoundingBox3d(shapes=(transform @ p for p in self.points))
 
     @property

@@ -181,7 +181,7 @@ def test_matmul(
         ]
     )
 
-    assert bb @ transform == expected
+    assert transform @ bb == expected
 
 
 @pytest.mark.parametrize("position_args", [(0, 0), (1, 2)])

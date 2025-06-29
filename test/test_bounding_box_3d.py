@@ -223,4 +223,4 @@ def test_matmul(
         ]
     )
 
-    assert bb @ transform == expected
+    assert transform @ bb == expected
