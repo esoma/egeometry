@@ -117,6 +117,9 @@ files = [
     {file = "emath-0.2.0-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:a670e9b06d6f3b324c04a2b9b986a023a52c32b448ce5ded48d6ca7f9efb2780"},
     {file = "emath-0.2.0-cp314-cp314-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c1cc535fd40268ae80c3d0c1f1be69387e3228c8bc39e154444deb82139156c9"},
     {file = "emath-0.2.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:fe1f9ecc49ced90c980d3aebddd31fd31d75b8f0e797ca6528dbd4e0165f0a4b"},
+    {file = "emath-0.2.0-cp314-cp314-win32.whl", hash = "sha256:1fddd6781758d81a3764c0d463fda6eaa11902d7b48d65dff7d3e9c7adba21ca"},
+    {file = "emath-0.2.0-cp314-cp314-win_amd64.whl", hash = "sha256:473d91abae761d915574842a161815662524755af3f7d5f4844c39f5df7f1910"},
+    {file = "emath-0.2.0.tar.gz", hash = "sha256:e0b2cd4832a235126dd7f4e7eefc4700fffa14060987869061059009dfadae02"},
 ]
 
 [[package]]
