@@ -9,6 +9,13 @@ def data_type(request):
     return request.param
 
 
+@pytest.fixture(params=["D", "F", "I"])
+def other_data_type(request, data_type):
+    if request.param == data_type:
+        pytest.skip("same data type")
+    return request.param
+
+
 @pytest.fixture
 def float_data_type(data_type):
     if data_type not in "FD":
@@ -26,6 +33,11 @@ def int_data_type(data_type):
 @pytest.fixture
 def bounding_box_2d_cls(data_type):
     return getattr(egeometry, f"{data_type}BoundingBox2d")
+
+
+@pytest.fixture
+def other_bounding_box_2d_cls(other_data_type):
+    return getattr(egeometry, f"{other_data_type}BoundingBox2d")
 
 
 @pytest.fixture
@@ -66,6 +78,11 @@ def triangle_mesh_3d_cls(float_data_type):
 @pytest.fixture
 def vector_2_cls(data_type):
     return getattr(emath, f"{data_type}Vector2")
+
+
+@pytest.fixture
+def other_vector_2_cls(other_data_type):
+    return getattr(emath, f"{other_data_type}Vector2")
 
 
 @pytest.fixture

@@ -12,6 +12,8 @@ from typing import overload
 from emath import IVector2
 
 if TYPE_CHECKING:
+    from ._dboundingbox2d import DBoundingBox2d
+    from ._fboundingbox2d import FBoundingBox2d
     from ._icircle import ICircle
     from ._irectangle import IRectangle
     from ._itriangle2d import ITriangle2d
@@ -159,3 +161,13 @@ class IBoundingBox2d:
             self._position + self._size.oy,
             self._extent,
         )
+
+    def to_d(self) -> DBoundingBox2d:
+        from ._dboundingbox2d import DBoundingBox2d
+
+        return DBoundingBox2d(self.position.to_d(), self.size.to_d())
+
+    def to_f(self) -> FBoundingBox2d:
+        from ._fboundingbox2d import FBoundingBox2d
+
+        return FBoundingBox2d(self.position.to_f(), self.size.to_f())

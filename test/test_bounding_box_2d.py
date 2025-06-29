@@ -182,3 +182,22 @@ def test_matmul(
     )
 
     assert bb @ transform == expected
+
+
+@pytest.mark.parametrize("position_args", [(0, 0), (1, 2)])
+@pytest.mark.parametrize("size_args", [(0, 0), (4, 5)])
+def test_to(
+    bounding_box_2d_cls,
+    vector_2_cls,
+    other_data_type,
+    other_bounding_box_2d_cls,
+    other_vector_2_cls,
+    position_args,
+    size_args,
+):
+    bb = bounding_box_2d_cls(vector_2_cls(*position_args), vector_2_cls(*size_args))
+    other_bb = other_bounding_box_2d_cls(
+        other_vector_2_cls(*position_args), other_vector_2_cls(*size_args)
+    )
+    to_other_data_type = getattr(bb, f"to_{other_data_type.lower()}")
+    assert to_other_data_type() == other_bb

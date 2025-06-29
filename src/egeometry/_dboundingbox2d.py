@@ -16,6 +16,8 @@ if TYPE_CHECKING:
     from ._dcircle import DCircle
     from ._drectangle import DRectangle
     from ._dtriangle2d import DTriangle2d
+    from ._fboundingbox2d import FBoundingBox2d
+    from ._iboundingbox2d import IBoundingBox2d
 
 
 class DBoundingBox2dOverlappable(Protocol):
@@ -163,3 +165,13 @@ class DBoundingBox2d:
             self._position + self._size.oy,
             self._extent,
         )
+
+    def to_f(self) -> FBoundingBox2d:
+        from ._fboundingbox2d import FBoundingBox2d
+
+        return FBoundingBox2d(self.position.to_f(), self.size.to_f())
+
+    def to_i(self) -> IBoundingBox2d:
+        from ._iboundingbox2d import IBoundingBox2d
+
+        return IBoundingBox2d(self.position.to_i(), self.size.to_i())

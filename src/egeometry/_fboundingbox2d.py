@@ -13,9 +13,11 @@ from emath import FMatrix4
 from emath import FVector2
 
 if TYPE_CHECKING:
+    from ._dboundingbox2d import DBoundingBox2d
     from ._fcircle import FCircle
     from ._frectangle import FRectangle
     from ._ftriangle2d import FTriangle2d
+    from ._iboundingbox2d import IBoundingBox2d
 
 
 class FBoundingBox2dOverlappable(Protocol):
@@ -163,3 +165,13 @@ class FBoundingBox2d:
             self._position + self._size.oy,
             self._extent,
         )
+
+    def to_d(self) -> DBoundingBox2d:
+        from ._dboundingbox2d import DBoundingBox2d
+
+        return DBoundingBox2d(self.position.to_d(), self.size.to_d())
+
+    def to_i(self) -> IBoundingBox2d:
+        from ._iboundingbox2d import IBoundingBox2d
+
+        return IBoundingBox2d(self.position.to_i(), self.size.to_i())

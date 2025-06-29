@@ -95,30 +95,28 @@ toml = ["tomli ; python_full_version <= \"3.11.0a6\""]
 
 [[package]]
 name = "emath"
-version = "0.1.18"
+version = "0.2.0"
 description = "Fast immutable math primitives."
 optional = false
 python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "emath-0.1.18-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:d95fe1129aa27f6856a358400d1986ff874297142de466a450851eb41b219f0d"},
-    {file = "emath-0.1.18-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:f1c438f713149f37035c8cc4eaa8927235472d03d6fdae92810e686b2795a926"},
-    {file = "emath-0.1.18-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:315f0258e95a83d87b58ef142ce5baf8300aa5afd0c747b6748e5619481df8ef"},
-    {file = "emath-0.1.18-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:5864efbf4e9af9ce776fa1ec95b3ebe34408d1079eec8cccb70736110b6599e8"},
-    {file = "emath-0.1.18-cp312-cp312-win32.whl", hash = "sha256:03d4ff4a50c4557a4ac5a98997add113482901f909bb621dec733d3dc2b5c3f4"},
-    {file = "emath-0.1.18-cp312-cp312-win_amd64.whl", hash = "sha256:808741b6693fcbb09209d51efd5cab5b1b619cce718e08368b2def7d7bb80640"},
-    {file = "emath-0.1.18-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:8a006628a497e09d63eccc384344f6b2b76dce9736cdc6968d2102f5b731112f"},
-    {file = "emath-0.1.18-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:6040000727c264db4d5dff1ef86ae1e5300ca7796be18de4d84c1cb777c7778e"},
-    {file = "emath-0.1.18-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:6dab409ffe3ef572d00fab2165351afd87ccd62179cda36529f6fa599808c1a5"},
-    {file = "emath-0.1.18-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:1c8d36bd42c846e6c1c9d8de8bdd9df30fd19a0c0183d77ef60cc2d0c159745f"},
-    {file = "emath-0.1.18-cp313-cp313-win32.whl", hash = "sha256:f785e7665176c0c6bb83ac43b9c14dee504872e4f489856b72657cbc70392272"},
-    {file = "emath-0.1.18-cp313-cp313-win_amd64.whl", hash = "sha256:d0f44eb5c12e745e9bc1191f8cb7765ecc29f42126eb99bb343fff192822ab3b"},
-    {file = "emath-0.1.18-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:f3cf5364e84708af899b0ae70ae8ba3c22d464bbe48aacca4efe180926164f03"},
-    {file = "emath-0.1.18-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:90dfdbdf4503bb8642804e3decef8e39ee466c5a51905a2790bc46cd7e5e4f97"},
-    {file = "emath-0.1.18-cp314-cp314-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:054063e0032316cf349b28e7302c0d3d65a5705c71541803b4661c050d67274c"},
-    {file = "emath-0.1.18-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:06637afc0c2215909189fc9ee4c7bbfa52a1b0dc16ac317a468164835b9f7b13"},
-    {file = "emath-0.1.18-cp314-cp314-win32.whl", hash = "sha256:50f4a91afa5b985a5f2ac1aa8a3280e614a297e95a6f8f84d84f1bc8b7670c87"},
-    {file = "emath-0.1.18-cp314-cp314-win_amd64.whl", hash = "sha256:f2441d7a96aee548f5f8f1d52bc906cc616975f3dba6fafcc7d3e5c62ae49b3c"},
+    {file = "emath-0.2.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:201ffd0863eb09aad50a7941c6a92ab33731b90cf9ade84ce13903824d0a01d1"},
+    {file = "emath-0.2.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:dbddb4e62dbf1428863a2fbc34c5cee586852c65554a6e7da0f3b2c106ce18d7"},
+    {file = "emath-0.2.0-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:3dd59fb514ce0adb5d665adb54465091606bce3037c81886a7672ea4e93da688"},
+    {file = "emath-0.2.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:665b0cd5908cb6622c289f6d90d6506d16db7ea03a56e225e8058426acfc4f8c"},
+    {file = "emath-0.2.0-cp312-cp312-win32.whl", hash = "sha256:f860252929ed99de5f0d93ef6071f067900ca0f3eeefc19fb8ea7230189eef54"},
+    {file = "emath-0.2.0-cp312-cp312-win_amd64.whl", hash = "sha256:b78169a1f427d59d9949db556c047e4ad78558411a35bc97f99b497195bb5a3d"},
+    {file = "emath-0.2.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:c0e33fabae4a1cf41a6885b5f76b996e62ecf975cb7bcacb4bc03f009c15306f"},
+    {file = "emath-0.2.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:ff48d5dbed34376add2914e14df79d04a61afc864aba857df89e2027c2aff901"},
+    {file = "emath-0.2.0-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:715e751270bc43eeaaf418b64cc08a6dddc8e77b6ff237fdcead314e481059a4"},
+    {file = "emath-0.2.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:10e61b3ec75db30266304ea3525c621099055ce22cae274ccac68a63ad27cb38"},
+    {file = "emath-0.2.0-cp313-cp313-win32.whl", hash = "sha256:478e2b2b337c291197500a9cfb8926f838182e18286c45067c3f41e06f5847c9"},
+    {file = "emath-0.2.0-cp313-cp313-win_amd64.whl", hash = "sha256:8c2c83690ebc6d77bf747436cd8fa5dbe6e6d1c2c0f08a3a51b852009d738174"},
+    {file = "emath-0.2.0-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:16adeb004cab8714a48aa3a69937d1971757ecf9952f119ef2a119ce918fbc16"},
+    {file = "emath-0.2.0-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:a670e9b06d6f3b324c04a2b9b986a023a52c32b448ce5ded48d6ca7f9efb2780"},
+    {file = "emath-0.2.0-cp314-cp314-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c1cc535fd40268ae80c3d0c1f1be69387e3228c8bc39e154444deb82139156c9"},
+    {file = "emath-0.2.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:fe1f9ecc49ced90c980d3aebddd31fd31d75b8f0e797ca6528dbd4e0165f0a4b"},
 ]
 
 [[package]]
@@ -221,4 +219,4 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "virtualenv"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "47e8107be0c921c36971058144988f87658bd0b076a6aa283c1d08bd14b352cc"
+content-hash = "0b5cc0ddf9bb2dcbc86101f34f51b99cb393008b42b897644904a244a6dd6b9e"

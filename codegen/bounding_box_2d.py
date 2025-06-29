@@ -21,7 +21,14 @@ def generate_bouncing_box_2d_file(
     template = get_template("_boundingbox2d.py")
     name = f"{data_type}BoundingBox2d"
     with open(build_dir / f"_{name.lower()}.py", "w") as f:
-        f.write(template.render(data_type=data_type, name=name, when=datetime.utcnow()))
+        f.write(
+            template.render(
+                data_type=data_type,
+                other_data_types=[dt for dt, _ in TYPES if dt != data_type],
+                name=name,
+                when=datetime.utcnow(),
+            )
+        )
     yield (f"_{name.lower()}", name)
     yield (f"_{name.lower()}", f"{name}Overlappable")
     yield (f"_{name.lower()}", f"Has{name}")

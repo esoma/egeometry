@@ -14,6 +14,9 @@ if TYPE_CHECKING:
     from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
     from ._{{ data_type.lower() }}rectangle import {{ data_type}}Rectangle
     from ._{{ data_type.lower() }}triangle2d import {{ data_type}}Triangle2d
+{% for other_data_type in other_data_types %}
+    from ._{{ other_data_type.lower() }}boundingbox2d import {{ other_data_type}}BoundingBox2d
+{% endfor %}
 
 class {{ name }}Overlappable(Protocol):
 
@@ -196,3 +199,12 @@ class {{ name }}:
             self._position + self._size.oy,
             self._extent
         )
+
+{% for other_data_type in other_data_types %}
+    def to_{{ other_data_type.lower() }}(self) -> {{ other_data_type}}BoundingBox2d:
+        from ._{{ other_data_type.lower() }}boundingbox2d import {{ other_data_type}}BoundingBox2d
+        return {{ other_data_type}}BoundingBox2d(
+            self.position.to_{{ other_data_type.lower() }}(),
+            self.size.to_{{ other_data_type.lower() }}(),
+        )
+{% endfor %}
