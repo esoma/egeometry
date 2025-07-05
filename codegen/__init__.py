@@ -24,6 +24,7 @@ def generate_geometry_files(build_dir: Path) -> None:
     rectangle_frustum_types = list(generate_rectangle_frustum_files(build_dir))
     triangle_2d_types = list(generate_triangle_2d_files(build_dir))
     triangle_mesh_3d_types = list(generate_triangle_mesh_3d_files(build_dir))
+    generate_extension(build_dir)
     generate_init_file(
         build_dir,
         (
@@ -43,3 +44,9 @@ def generate_init_file(build_dir: Path, types: Sequence[tuple[str, str]]) -> Non
     template = get_template("__init__.py")
     with open(build_dir / "__init__.py", "w") as f:
         f.write(template.render(types=types, when=datetime.utcnow()))
+
+
+def generate_extension(build_dir: Path) -> None:
+    template = get_template("_egeometry.c")
+    with open(build_dir / f"_egeometry.c", "w") as f:
+        f.write(template.render(when=datetime.utcnow()))
