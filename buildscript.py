@@ -30,8 +30,8 @@ _egeometry = Extension(
     include_dirs=["vendor/glm", "vendor/emath/include", "src/egeometry"],
     sources=["src/egeometry/_egeometry.cpp"],
     language="c++11",
-    extra_compile_args=_coverage_compile_args,
-    extra_link_args=_coverage_links_args,
+    extra_compile_args=_coverage_compile_args + ([] if os.name == "nt" else ["-std=c++11", "-w"]),
+    extra_link_args=_coverage_links_args + ([] if os.name == "nt" else ["-lstdc++"]),
 )
 
 
