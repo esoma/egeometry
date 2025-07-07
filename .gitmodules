@@ -1,3 +1,6 @@
 [submodule "vendor/emath"]
 	path = vendor/emath
 	url = https://github.com/esoma/emath
+[submodule "vendor/glm"]
+	path = vendor/glm
+	url = https://github.com/g-truc/glm.git

@@ -130,10 +130,10 @@ class {{ name }}:
             {*self._axes, _FloatVector2(1, 0), _FloatVector2(0, 1)},
             _to_float_vectors(self._vertices),
             _to_float_vectors(tuple((
-                other._position,
-                other._position + other._size.xo,
-                other._extent,
-                other._position + other._size.oy,
+                other.position,
+                other.position + other.size.xo,
+                other.extent,
+                other.position + other.size.oy,
             )))
         )
 

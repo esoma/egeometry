@@ -27,8 +27,9 @@ if os.environ.get("EGEOMETRY_BUILD_WITH_COVERAGE", "0") == "1":
 
 _egeometry = Extension(
     "egeometry._egeometry",
-    include_dirs=["src/egeometry", "vendor/emath/include"],
-    sources=["src/egeometry/_egeometry.c"],
+    include_dirs=["vendor/glm", "vendor/emath/include", "src/egeometry"],
+    sources=["src/egeometry/_egeometry.cpp"],
+    language="c++11",
     extra_compile_args=_coverage_compile_args,
     extra_link_args=_coverage_links_args,
 )

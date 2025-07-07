@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.parametrize("y", [-1, 0, 1])
 @pytest.mark.parametrize("w", [0, 1, 100])
 @pytest.mark.parametrize("h", [0, 2, 200])
-def test_attrs(bounding_box_2d_cls, vector_2_cls, x, y, w, h):
+def test_attrs(data_type, bounding_box_2d_cls, vector_2_cls, x, y, w, h):
     bb = bounding_box_2d_cls(vector_2_cls(x, y), vector_2_cls(w, h))
     assert bb.position == vector_2_cls(x, y)
     assert bb.size == vector_2_cls(w, h)
@@ -17,7 +17,7 @@ def test_attrs(bounding_box_2d_cls, vector_2_cls, x, y, w, h):
         vector_2_cls(x + w, y + h),
     }
     assert bb.bounding_box is bb
-    assert repr(bb) == f"<BoundingBox2d position={bb.position} size={bb.size}>"
+    assert repr(bb) == f"<{data_type}BoundingBox2d position={bb.position} size={bb.size}>"
 
 
 @pytest.mark.parametrize("w", [-1, -100])

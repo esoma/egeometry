@@ -54,11 +54,12 @@ class {{ name }}:
         return other_overlaps(self)
 
     def _overlaps_rect_like(self, other: {{ name }} | {{ data_type }}BoundingBox2d) -> bool:
+        other_extent = other.extent
         return not (
-            self._position.x >= other._extent.x or
-            self._extent.x <= other._position.x or
-            self._position.y >= other._extent.y or
-            self._extent.y <= other._position.y
+            self.position.x >= other_extent.x or
+            self._extent.x <= other.position.x or
+            self.position.y >= other_extent.y or
+            self._extent.y <= other.position.y
         )
 
     def overlaps_{{ data_type.lower() }}_bounding_box_2d(

@@ -114,10 +114,10 @@ class FTriangle2d:
             _to_float_vectors(
                 tuple(
                     (
-                        other._position,
-                        other._position + other._size.xo,
-                        other._extent,
-                        other._position + other._size.oy,
+                        other.position,
+                        other.position + other.size.xo,
+                        other.extent,
+                        other.position + other.size.oy,
                     )
                 )
             ),
