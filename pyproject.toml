@@ -29,3 +29,6 @@ in-project = true
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+
+[tool.cibuildwheel]
+enable = ["cpython-prerelease"]
