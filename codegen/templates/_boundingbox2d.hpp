@@ -25,6 +25,7 @@ static PyObject *
 
     PyObject *py_position = 0;
     PyObject *py_size = 0;
+    {{ name }} *self = 0;
 
     auto arg_count = PyTuple_GET_SIZE(args);
     auto kwarg_count = PyDict_Size(kwds);
@@ -151,7 +152,8 @@ static PyObject *
         auto create_vector = module_state->emath_api->{{ data_type }}Vector2_Create;
         py_position = create_vector(({{ c_type }}*)&position);
         if (!py_position){ return 0; }
-        py_size = create_vector(({{ c_type }}*)&(extent - position));
+        auto size = extent - position;
+        py_size = create_vector(({{ c_type }}*)&size);
         if (!py_size)
         {
             Py_DECREF(py_position);
@@ -163,7 +165,7 @@ static PyObject *
         goto invalid_args;
     }
 
-    {{ name }} *self = ({{ name }}*)cls->tp_alloc(cls, 0);
+    self = ({{ name }}*)cls->tp_alloc(cls, 0);
     if (!self)
     {
         Py_DECREF(py_position);

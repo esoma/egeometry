@@ -25,6 +25,7 @@ FBoundingBox2d__new__(PyTypeObject *cls, PyObject *args, PyObject *kwds)
 
     PyObject *py_position = 0;
     PyObject *py_size = 0;
+    FBoundingBox2d *self = 0;
 
     auto arg_count = PyTuple_GET_SIZE(args);
     auto kwarg_count = PyDict_Size(kwds);
@@ -151,7 +152,8 @@ FBoundingBox2d__new__(PyTypeObject *cls, PyObject *args, PyObject *kwds)
         auto create_vector = module_state->emath_api->FVector2_Create;
         py_position = create_vector((float*)&position);
         if (!py_position){ return 0; }
-        py_size = create_vector((float*)&(extent - position));
+        auto size = extent - position;
+        py_size = create_vector((float*)&size);
         if (!py_size)
         {
             Py_DECREF(py_position);
@@ -163,7 +165,7 @@ FBoundingBox2d__new__(PyTypeObject *cls, PyObject *args, PyObject *kwds)
         goto invalid_args;
     }
 
-    FBoundingBox2d *self = (FBoundingBox2d*)cls->tp_alloc(cls, 0);
+    self = (FBoundingBox2d*)cls->tp_alloc(cls, 0);
     if (!self)
     {
         Py_DECREF(py_position);

@@ -25,6 +25,7 @@ IBoundingBox2d__new__(PyTypeObject *cls, PyObject *args, PyObject *kwds)
 
     PyObject *py_position = 0;
     PyObject *py_size = 0;
+    IBoundingBox2d *self = 0;
 
     auto arg_count = PyTuple_GET_SIZE(args);
     auto kwarg_count = PyDict_Size(kwds);
@@ -151,7 +152,8 @@ IBoundingBox2d__new__(PyTypeObject *cls, PyObject *args, PyObject *kwds)
         auto create_vector = module_state->emath_api->IVector2_Create;
         py_position = create_vector((int*)&position);
         if (!py_position){ return 0; }
-        py_size = create_vector((int*)&(extent - position));
+        auto size = extent - position;
+        py_size = create_vector((int*)&size);
         if (!py_size)
         {
             Py_DECREF(py_position);
@@ -163,7 +165,7 @@ IBoundingBox2d__new__(PyTypeObject *cls, PyObject *args, PyObject *kwds)
         goto invalid_args;
     }
 
-    IBoundingBox2d *self = (IBoundingBox2d*)cls->tp_alloc(cls, 0);
+    self = (IBoundingBox2d*)cls->tp_alloc(cls, 0);
     if (!self)
     {
         Py_DECREF(py_position);
