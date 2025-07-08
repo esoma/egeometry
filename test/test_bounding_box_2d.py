@@ -146,6 +146,12 @@ def test_clip(bounding_box_2d_cls, vector_2_cls):
     result = bb.clip(bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(200)))
     assert result == bounding_box_2d_cls(vector_2_cls(1), vector_2_cls(9))
 
+    result = bb.clip(bounding_box_2d_cls(vector_2_cls(11), vector_2_cls(1)))
+    assert result == bounding_box_2d_cls(vector_2_cls(11), vector_2_cls(0))
+
+    result = bb.clip(bounding_box_2d_cls(vector_2_cls(-5), vector_2_cls(2)))
+    assert result == bounding_box_2d_cls(vector_2_cls(0), vector_2_cls(0))
+
 
 @pytest.mark.parametrize("position_args", [(0, 0), (1, 2)])
 @pytest.mark.parametrize("size_args", [(0, 0), (4, 5)])

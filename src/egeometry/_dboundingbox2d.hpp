@@ -335,6 +335,10 @@ DBoundingBox2d_clip(DBoundingBox2d *self, DBoundingBox2d *other)
         self_extent.y < other_extent.y ? self_extent.y : other_extent.y
     );
     auto result_size = result_extent - result_position;
+    if (result_size.x < 0 || result_size.y < 0)
+    {
+        result_size = DBoundingBox2dGlmVector(0);
+    }
 
     auto create_vector_2 = module_state->emath_api->DVector2_Create;
     auto py_position = create_vector_2((double*)&result_position);

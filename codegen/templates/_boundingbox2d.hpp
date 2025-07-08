@@ -335,6 +335,10 @@ static PyObject *
         self_extent.y < other_extent.y ? self_extent.y : other_extent.y
     );
     auto result_size = result_extent - result_position;
+    if (result_size.x < 0 || result_size.y < 0)
+    {
+        result_size = {{ name }}GlmVector(0);
+    }
 
     auto create_vector_2 = module_state->emath_api->{{ data_type }}Vector2_Create;
     auto py_position = create_vector_2(({{ c_type }}*)&result_position);

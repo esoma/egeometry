@@ -335,6 +335,10 @@ FBoundingBox2d_clip(FBoundingBox2d *self, FBoundingBox2d *other)
         self_extent.y < other_extent.y ? self_extent.y : other_extent.y
     );
     auto result_size = result_extent - result_position;
+    if (result_size.x < 0 || result_size.y < 0)
+    {
+        result_size = FBoundingBox2dGlmVector(0);
+    }
 
     auto create_vector_2 = module_state->emath_api->FVector2_Create;
     auto py_position = create_vector_2((float*)&result_position);
