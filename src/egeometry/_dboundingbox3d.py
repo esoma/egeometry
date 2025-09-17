@@ -10,6 +10,7 @@ __all__ = [
 ]
 
 from typing import TYPE_CHECKING
+from typing import Any
 from typing import Generator
 from typing import Iterable
 from typing import NamedTuple
@@ -20,6 +21,14 @@ from emath import DMatrix4
 from emath import DVector3
 
 from ._separating_axis_theorem import separating_axis_theorem
+
+try:
+    import pydantic_core
+except ImportError:
+    pass
+if TYPE_CHECKING:
+    import pydantic_core
+
 
 if TYPE_CHECKING:
     from ._drectanglefrustum import DRectangleFrustum
@@ -107,6 +116,29 @@ class DBoundingBox3d:
 
     def __repr__(self) -> str:
         return f"<BoundingBox3d position={self._position} size={self._size}>"
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: Any
+    ) -> pydantic_core.CoreSchema:
+        return pydantic_core.core_schema.no_info_after_validator_function(
+            cls._deserialize,
+            pydantic_core.core_schema.any_schema(),
+            serialization=pydantic_core.core_schema.plain_serializer_function_ser_schema(
+                cls._serialize, when_used="always"
+            ),
+        )
+
+    @classmethod
+    def _deserialize(cls, value: Any) -> DBoundingBox3d:
+        if isinstance(value, DBoundingBox3d):
+            return value
+        position, size = value
+        return DBoundingBox3d(DVector3.from_buffer(position), DVector3.from_buffer(size))
+
+    @classmethod
+    def _serialize(cls, value: DBoundingBox3d) -> tuple[bytes, bytes]:
+        return (bytes(value._position), bytes(value._size))
 
     def overlaps(self, other: DVector3 | DBoundingBox3dOverlappable) -> bool:
         if isinstance(other, DVector3):

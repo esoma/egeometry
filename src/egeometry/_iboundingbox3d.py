@@ -4,11 +4,20 @@ from __future__ import annotations
 
 __all__ = ["IBoundingBox3d", "IBoundingBox3dOverlappable", "HasIBoundingBox3d"]
 
+from typing import TYPE_CHECKING
+from typing import Any
 from typing import Iterable
 from typing import Protocol
 from typing import overload
 
 from emath import IVector3
+
+try:
+    import pydantic_core
+except ImportError:
+    pass
+if TYPE_CHECKING:
+    import pydantic_core
 
 
 class IBoundingBox3dOverlappable(Protocol):
@@ -88,6 +97,29 @@ class IBoundingBox3d:
 
     def __repr__(self) -> str:
         return f"<BoundingBox3d position={self._position} size={self._size}>"
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: Any
+    ) -> pydantic_core.CoreSchema:
+        return pydantic_core.core_schema.no_info_after_validator_function(
+            cls._deserialize,
+            pydantic_core.core_schema.any_schema(),
+            serialization=pydantic_core.core_schema.plain_serializer_function_ser_schema(
+                cls._serialize, when_used="always"
+            ),
+        )
+
+    @classmethod
+    def _deserialize(cls, value: Any) -> IBoundingBox3d:
+        if isinstance(value, IBoundingBox3d):
+            return value
+        position, size = value
+        return IBoundingBox3d(IVector3.from_buffer(position), IVector3.from_buffer(size))
+
+    @classmethod
+    def _serialize(cls, value: IBoundingBox3d) -> tuple[bytes, bytes]:
+        return (bytes(value._position), bytes(value._size))
 
     def overlaps(self, other: IVector3 | IBoundingBox3dOverlappable) -> bool:
         if isinstance(other, IVector3):

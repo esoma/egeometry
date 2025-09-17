@@ -13,8 +13,14 @@ from emath import {{ data_type }}Vector3, {{ data_type }}Vector4
 {% if data_type in "DF" %}
 from emath import {{ data_type }}Matrix4
 {% endif %}
-from typing import Protocol, overload, Iterable, TYPE_CHECKING, Generator, NamedTuple
+from typing import Protocol, overload, Iterable, TYPE_CHECKING, Generator, NamedTuple, Any
 from ._separating_axis_theorem import separating_axis_theorem
+try:
+    import pydantic_core
+except ImportError:
+    pass
+if TYPE_CHECKING:
+    import pydantic_core
 
 {% if data_type in "DF" %}
 if TYPE_CHECKING:
@@ -113,6 +119,30 @@ class {{ name }}:
 
     def __repr__(self) -> str:
         return f"<BoundingBox3d position={self._position} size={self._size}>"
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: Any) -> pydantic_core.CoreSchema:
+        return pydantic_core.core_schema.no_info_after_validator_function(
+            cls._deserialize,
+            pydantic_core.core_schema.any_schema(),
+            serialization=pydantic_core.core_schema.plain_serializer_function_ser_schema(
+                cls._serialize, when_used="always"
+            ),
+        )
+
+    @classmethod
+    def _deserialize(cls, value: Any) -> {{ name }}:
+        if isinstance(value, {{ name }}):
+            return value
+        position, size = value
+        return {{ name }}(
+            {{ data_type }}Vector3.from_buffer(position),
+            {{ data_type }}Vector3.from_buffer(size),
+        )
+
+    @classmethod
+    def _serialize(cls, value: {{ name }}) -> tuple[bytes, bytes]:
+        return (bytes(value._position), bytes(value._size))
 
     def overlaps(
         self,

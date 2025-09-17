@@ -1,3 +1,4 @@
+import pydantic
 import pytest
 
 
@@ -224,3 +225,13 @@ def test_matmul(
     )
 
     assert transform @ bb == expected
+
+
+def test_pydantic(bounding_box_3d_cls, vector_3_cls):
+    class Model(pydantic.BaseModel):
+        bb: bounding_box_3d_cls
+
+    bb = bounding_box_3d_cls(vector_3_cls(1, 2, 3), vector_3_cls(4, 5, 6))
+    model = Model(bb=bb)
+    serialized = model.model_dump()
+    assert bb == Model.model_validate(serialized).bb
