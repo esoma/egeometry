@@ -146,6 +146,11 @@ static PyObject *
                         }
                     }
                 }
+                if (PyErr_Occurred())
+                {
+                    Py_DECREF(py_shapes_iter);
+                    return 0;
+                }
             }
             Py_DECREF(py_shapes_iter);
         }

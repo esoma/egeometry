@@ -50,6 +50,8 @@ def test_shapes(vector_2_cls, bounding_box_2d_cls, rectangle_cls, circle_cls):
             circle_cls(vector_2_cls(4, 0), 5),
         ]
     ) == bounding_box_2d_cls(vector_2_cls(-2, -5), vector_2_cls(11, 15))
+    with pytest.raises(AttributeError):
+        assert bounding_box_2d_cls(shapes=(x.thing for x in [1, 2, 3]))
 
 
 def test_not_equal(bounding_box_2d_cls, vector_2_cls):
