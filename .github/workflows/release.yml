@@ -38,7 +38,7 @@ jobs:
         git submodule update --init --recursive
 
     - name: Build Wheels
-      uses: pypa/cibuildwheel@v3.0.0
+      uses: pypa/cibuildwheel@v3.3.0
 
     - name: Upload Github Wheel Release Artifact
       uses: svenstaro/upload-release-action@v2
