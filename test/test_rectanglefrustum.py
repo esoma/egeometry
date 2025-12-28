@@ -10,6 +10,8 @@ from emath import FVector3
     [
         {"orthographic": (0, 800, 0, 600, 0.1, 100)},
         {"perspective": (radians(60), 4.0 / 3.0, 0.1, 100)},
+        {"orthographic_rh_zo": (0, 800, 0, 600, 0.1, 100)},
+        {"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)},
     ],
 )
 @pytest.mark.parametrize(
@@ -37,7 +39,11 @@ def test_attrs(
         transform_kwargs["transform"] = transform
     except KeyError:
         transform = matrix_4_cls(1)
-    if "orthographic" in projection_kwargs:
+    if "orthographic_rh_zo" in projection_kwargs:
+        projection = matrix_4_cls.orthographic_rh_zo(*projection_kwargs["orthographic_rh_zo"])
+    elif "perspective_rh_zo" in projection_kwargs:
+        projection = matrix_4_cls.perspective_rh_zo(*projection_kwargs["perspective_rh_zo"])
+    elif "orthographic" in projection_kwargs:
         projection = matrix_4_cls.orthographic(*projection_kwargs["orthographic"])
     else:
         projection = matrix_4_cls.perspective(*projection_kwargs["perspective"])
@@ -45,7 +51,10 @@ def test_attrs(
 
     r = [projection.get_row(i) for i in range(4)]
     tip = transform.inverse().transpose()
-    near_plane = tip @ (r[3] + r[2])
+    if "orthographic_rh_zo" in projection_kwargs or "perspective_rh_zo" in projection_kwargs:
+        near_plane = tip @ r[2]
+    else:
+        near_plane = tip @ (r[3] + r[2])
     near_plane = plane_cls(near_plane.w, near_plane.xyz)
     far_plane = tip @ (r[3] - r[2])
     far_plane = plane_cls(far_plane.w, far_plane.xyz)
@@ -90,7 +99,8 @@ def test_missing_projection(rectangle_frustum_cls):
     with pytest.raises(TypeError) as excinfo:
         rectangle_frustum_cls()
     assert (
-        str(excinfo.value) == "either orthographic or perspective must be specified, but not both"
+        str(excinfo.value) == "exactly one of orthographic, perspective, orthographic_rh_zo, or "
+        "perspective_rh_zo must be specified"
     )
 
 
@@ -99,7 +109,10 @@ def test_double_projection(rectangle_frustum_cls):
         rectangle_frustum_cls(
             orthographic=(0, 800, 0, 600, 0.1, 100), perspective=(radians(60), 4.0 / 3.0, 0.1, 100)
         )
-    assert str(excinfo.value) == "either orthographic or perspective must be specified"
+    assert (
+        str(excinfo.value) == "exactly one of orthographic, perspective, orthographic_rh_zo, or "
+        "perspective_rh_zo must be specified"
+    )
 
 
 def test_not_equal(rectangle_frustum_cls):
@@ -143,6 +156,28 @@ def test_not_equal(rectangle_frustum_cls):
         ({"orthographic": (-10, 10, -5, 5, 0.1, 100)}, (0, -4.9, -50), True),
         ({"orthographic": (-10, 10, -5, 5, 0.1, 100)}, (0, 5.1, -50), False),
         ({"orthographic": (-10, 10, -5, 5, 0.1, 100)}, (0, 4.9, -50), True),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0,), False),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0, 0, -0.11), True),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0, 0, -99.9), True),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0, 0, -101), False),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0, 0, -50), True),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (1000, 0, -50), False),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (-1000, 0, -50), False),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0, 1000, -50), False),
+        ({"perspective_rh_zo": (radians(60), 4.0 / 3.0, 0.1, 100)}, (0, -1000, -50), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0,), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, 0, -0.09), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, 0, -0.11), True),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, 0, -99.9), True),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, 0, -101.1), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (-10.1, 0, -50), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (-9.9, 0, -50), True),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (10.1, 0, -50), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (9.9, 0, -50), True),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, -5.1, -50), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, -4.9, -50), True),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, 5.1, -50), False),
+        ({"orthographic_rh_zo": (-10, 10, -5, 5, 0.1, 100)}, (0, 4.9, -50), True),
     ],
 )
 def test_overlaps_vector_3(

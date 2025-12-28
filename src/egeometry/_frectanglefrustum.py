@@ -47,29 +47,57 @@ class FRectangleFrustum:
         self, *, transform: FMatrix4 = FMatrix4(1), perspective: tuple[float, float, float, float]
     ): ...
 
+    @overload
+    def __init__(
+        self,
+        *,
+        transform: FMatrix4 = FMatrix4(1),
+        orthographic_rh_zo: tuple[float, float, float, float, float, float],
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        transform: FMatrix4 = FMatrix4(1),
+        perspective_rh_zo: tuple[float, float, float, float],
+    ): ...
+
     def __init__(
         self,
         *,
         transform: FMatrix4 = FMatrix4(1),
         orthographic: tuple[float, float, float, float, float, float] | None = None,
         perspective: tuple[float, float, float, float] | None = None,
+        orthographic_rh_zo: tuple[float, float, float, float, float, float] | None = None,
+        perspective_rh_zo: tuple[float, float, float, float] | None = None,
     ):
-        if orthographic is None and perspective is None:
-            raise TypeError("either orthographic or perspective must be specified, but not both")
-        elif orthographic is not None and perspective is not None:
-            raise TypeError("either orthographic or perspective must be specified")
-        elif orthographic is not None:
+        projection_params = [orthographic, perspective, orthographic_rh_zo, perspective_rh_zo]
+        if sum(p is not None for p in projection_params) != 1:
+            raise TypeError(
+                "exactly one of orthographic, perspective, orthographic_rh_zo, or "
+                "perspective_rh_zo must be specified"
+            )
+
+        if orthographic is not None:
             projection = FMatrix4.orthographic(*orthographic)
-        else:
-            assert perspective is not None
+        elif perspective is not None:
             projection = FMatrix4.perspective(*perspective)
+        elif orthographic_rh_zo is not None:
+            projection = FMatrix4.orthographic_rh_zo(*orthographic_rh_zo)
+        else:
+            assert perspective_rh_zo is not None
+            projection = FMatrix4.perspective_rh_zo(*perspective_rh_zo)
 
         self._transform = transform
         self._projection = projection
 
         r = [projection.get_row(i) for i in range(4)]
         tip = transform.inverse().transpose()
-        self._near_plane = _create_transformed_plane(tip, r[3] + r[2])
+        if orthographic_rh_zo is not None or perspective_rh_zo is not None:
+            self._near_plane = _create_transformed_plane(tip, r[2])
+        else:
+            self._near_plane = _create_transformed_plane(tip, r[3] + r[2])
         self._far_plane = _create_transformed_plane(tip, r[3] - r[2])
         self._left_plane = _create_transformed_plane(tip, r[3] + r[0])
         self._right_plane = _create_transformed_plane(tip, r[3] - r[0])
