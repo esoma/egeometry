@@ -9,6 +9,7 @@ __all__ = [
     "FBoundingBox3dRaycastResult",
 ]
 
+from math import copysign
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Generator
@@ -19,8 +20,6 @@ from typing import overload
 
 from emath import FMatrix4
 from emath import FVector3
-
-from ._separating_axis_theorem import separating_axis_theorem
 
 try:
     import pydantic_core
@@ -150,16 +149,21 @@ class FBoundingBox3d:
         return other_overlaps(self)
 
     def overlaps_f_rectangle_frustum(self, other: FRectangleFrustum) -> bool:
-        return separating_axis_theorem(
-            {
-                FVector3(1, 0, 0),
-                FVector3(0, 1, 0),
-                FVector3(0, 0, 1),
-                *(p.normal for p in other.planes),
-            },
-            set(other.points),
-            set(self.points),
-        )
+        half_extents = self.size * 0.5
+        center = self.position + half_extents
+        for plane in other.planes:
+            p = (
+                center
+                + FVector3(
+                    copysign(1, plane.normal.x),
+                    copysign(1, plane.normal.y),
+                    copysign(1, plane.normal.z),
+                )
+                * half_extents
+            )
+            if (plane.normal @ p) + plane.distance < 0:
+                return False
+        return True
 
     def overlaps_f_bounding_box_3d(self, other: FBoundingBox3d) -> bool:
         return not (

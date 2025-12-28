@@ -9,6 +9,7 @@ __all__ = [
 {% endif %}
 ]
 
+from math import copysign
 from emath import {{ data_type }}Vector3, {{ data_type }}Vector4
 {% if data_type in "DF" %}
 from emath import {{ data_type }}Matrix4
@@ -162,16 +163,17 @@ class {{ name }}:
         self,
         other: {{ data_type }}RectangleFrustum
     ) -> bool:
-        return separating_axis_theorem(
-            {
-                {{ data_type }}Vector3(1, 0, 0),
-                {{ data_type }}Vector3(0, 1, 0),
-                {{ data_type }}Vector3(0, 0, 1),
-                *(p.normal for p in other.planes)
-            },
-            set(other.points),
-            set(self.points)
-        )
+        half_extents = (self.size * .5)
+        center = self.position + half_extents
+        for plane in other.planes:
+            p = center + {{ data_type }}Vector3(
+                copysign(1, plane.normal.x),
+                copysign(1, plane.normal.y),
+                copysign(1, plane.normal.z)
+            ) * half_extents
+            if (plane.normal @ p) + plane.distance < 0:
+                return False
+        return True
 {% endif %}
 
     def overlaps_{{ data_type.lower() }}_bounding_box_3d(

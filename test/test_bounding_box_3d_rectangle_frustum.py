@@ -1,9 +1,14 @@
+from math import radians
+
 import pytest
 
 
 @pytest.mark.parametrize(
     "bb_args, f_kwargs, expected_result",
     [
+        ([(0,), (0,)], {"perspective": (radians(60), 4.0 / 3.0, 0.1, 100)}, False),
+        ([(-1,), (2,)], {"perspective": (radians(60), 4.0 / 3.0, 0.1, 100)}, True),
+        ([(-1, -1, -50), (2,)], {"perspective": (radians(60), 4.0 / 3.0, 0.1, 100)}, True),
         ([(0,), (0,)], {"orthographic": (-10, 10, -10, 10, -10, 10)}, True),
         ([(0,), (0,)], {"orthographic": (-10, 10, -10, 10, 1, 10)}, False),
         ([(0,), (0,)], {"orthographic": (-10, 10, -10, 10, -10, -1)}, False),

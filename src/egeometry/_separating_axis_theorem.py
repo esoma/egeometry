@@ -48,17 +48,7 @@ def separating_axis_theorem(
             min_b = min(min_b, d)
             max_b = max(max_b, d)
 
-        half_a_diff = (max_a - min_a) * 0.5
-        half_a_sum = (min_a + max_a) * 0.5
-
-        min_b -= half_a_diff
-        dmin = min_b - half_a_sum
-        if dmin > 0:
-            return False
-
-        max_b += half_a_diff
-        dmax = max_b - half_a_sum
-        if dmax < 0:
+        if max_a < min_b or max_b < min_a:
             return False
 
     return True
