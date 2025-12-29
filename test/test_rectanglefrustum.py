@@ -169,3 +169,116 @@ def test_not_overlaps(rectangle_frustum_cls):
     frustum = rectangle_frustum_cls(orthographic=(0, 800, 0, 600, 0.1, 100))
     with pytest.raises(TypeError):
         frustum.overlaps(object())
+
+
+@pytest.mark.parametrize(
+    "projection_kwargs",
+    [
+        {"orthographic": (0, 800, 0, 600, 0.1, 100)},
+        {"perspective": (radians(60), 4.0 / 3.0, 0.1, 100)},
+    ],
+)
+@pytest.mark.parametrize(
+    "transform_kwargs",
+    [
+        {},
+        {"transform": FMatrix4(1)},
+        {"transform": FMatrix4(1).translate(FVector3(10, 20, 30))},
+        {"transform": FMatrix4(1).scale(FVector3(2))},
+    ],
+)
+def test_edges(
+    rectangle_frustum_cls,
+    linesegment3d_cls,
+    matrix_4_cls,
+    vector_4_cls,
+    transform_kwargs,
+    projection_kwargs,
+):
+    try:
+        transform = matrix_4_cls(*(vector_4_cls(*v) for v in transform_kwargs["transform"]))
+        transform_kwargs["transform"] = transform
+    except KeyError:
+        pass
+    print(transform_kwargs)
+    print(projection_kwargs)
+    frustum = rectangle_frustum_cls(**transform_kwargs, **projection_kwargs)
+    p0, p1, p2, p3, p4, p5, p6, p7 = frustum.points
+    print(frustum.points)
+    edges = frustum.edges
+
+    expected_edges = (
+        # near face edges
+        linesegment3d_cls(p0, p1),
+        linesegment3d_cls(p1, p7),
+        linesegment3d_cls(p7, p2),
+        linesegment3d_cls(p2, p0),
+        # far face edges
+        linesegment3d_cls(p3, p6),
+        linesegment3d_cls(p6, p4),
+        linesegment3d_cls(p4, p5),
+        linesegment3d_cls(p5, p3),
+        # connecting edges
+        linesegment3d_cls(p0, p3),
+        linesegment3d_cls(p1, p6),
+        linesegment3d_cls(p7, p4),
+        linesegment3d_cls(p2, p5),
+    )
+
+    assert edges == expected_edges
+
+
+@pytest.mark.parametrize(
+    "projection_kwargs",
+    [
+        {"orthographic": (0, 800, 0, 600, 0.1, 100)},
+        {"perspective": (radians(60), 4.0 / 3.0, 0.1, 100)},
+    ],
+)
+@pytest.mark.parametrize(
+    "transform_kwargs",
+    [
+        {},
+        {"transform": FMatrix4(1)},
+        {"transform": FMatrix4(1).translate(FVector3(10, 20, 30))},
+        {"transform": FMatrix4(1).scale(FVector3(2))},
+    ],
+)
+def test_points(
+    rectangle_frustum_cls,
+    vector_3_cls,
+    matrix_4_cls,
+    vector_4_cls,
+    transform_kwargs,
+    projection_kwargs,
+):
+    try:
+        transform = matrix_4_cls(*(vector_4_cls(*v) for v in transform_kwargs["transform"]))
+        transform_kwargs["transform"] = transform
+    except KeyError:
+        transform = matrix_4_cls(1)
+    if "orthographic" in projection_kwargs:
+        projection = matrix_4_cls.orthographic(*projection_kwargs["orthographic"])
+    else:
+        projection = matrix_4_cls.perspective(*projection_kwargs["perspective"])
+    frustum = rectangle_frustum_cls(**transform_kwargs, **projection_kwargs)
+    points = frustum.points
+
+    vp = (transform @ projection).inverse()
+
+    def unproject(x: float, y: float, z: float):
+        clip = vp @ vector_4_cls(x, y, z, 1)
+        return clip.xyz / clip.w
+
+    expected_points = (
+        unproject(-1, -1, -1),
+        unproject(1, -1, -1),
+        unproject(-1, 1, -1),
+        unproject(-1, -1, 1),
+        unproject(1, 1, 1),
+        unproject(-1, 1, 1),
+        unproject(1, -1, 1),
+        unproject(1, 1, -1),
+    )
+
+    assert points == expected_points

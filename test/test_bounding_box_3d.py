@@ -10,11 +10,15 @@ import egeometry
 @pytest.mark.parametrize("w", [0, 1, 100])
 @pytest.mark.parametrize("h", [0, 2, 200])
 @pytest.mark.parametrize("d", [0, 2, 200])
-def test_attrs(bounding_box_3d_cls, vector_3_cls, x, y, z, w, h, d):
+def test_attrs(data_type, bounding_box_3d_cls, vector_3_cls, x, y, z, w, h, d):
     bb = bounding_box_3d_cls(vector_3_cls(x, y, z), vector_3_cls(w, h, d))
     assert bb.position == vector_3_cls(x, y, z)
     assert bb.size == vector_3_cls(w, h, d)
     assert bb.extent == bb.position + bb.size
+    if data_type in "DF":
+        assert bb.center == bb.position + bb.size * 0.5
+    else:
+        assert not hasattr(bb, "center")
     assert bb.bounding_box is bb
     assert repr(bb) == f"<BoundingBox3d position={bb.position} size={bb.size}>"
 
@@ -223,6 +227,32 @@ def test_edges(vector_3_cls, linesegment3d_cls, float_data_type, position_args, 
     assert edges[10].b == p7
     assert edges[11].a == p2
     assert edges[11].b == p6
+
+
+@pytest.mark.parametrize("position_args", [(0, 0, 0), (1, 2, 3)])
+@pytest.mark.parametrize("size_args", [(1, 1, 1), (2, 3, 4), (5, 5, 5)])
+def test_planes(vector_3_cls, plane_cls, float_data_type, position_args, size_args):
+    bb_cls = getattr(egeometry, f"{float_data_type}BoundingBox3d")
+    bb = bb_cls(vector_3_cls(*position_args), vector_3_cls(*size_args))
+    planes = bb.planes
+
+    assert len(planes) == 6
+
+    # Verify normals point outward
+    assert planes[0].normal == vector_3_cls(-1, 0, 0)  # left
+    assert planes[1].normal == vector_3_cls(1, 0, 0)  # right
+    assert planes[2].normal == vector_3_cls(0, -1, 0)  # bottom
+    assert planes[3].normal == vector_3_cls(0, 1, 0)  # top
+    assert planes[4].normal == vector_3_cls(0, 0, -1)  # front
+    assert planes[5].normal == vector_3_cls(0, 0, 1)  # back
+
+    # Verify distances
+    assert planes[0].distance == bb.position.x  # left
+    assert planes[1].distance == -bb.extent.x  # right
+    assert planes[2].distance == bb.position.y  # bottom
+    assert planes[3].distance == -bb.extent.y  # top
+    assert planes[4].distance == bb.position.z  # front
+    assert planes[5].distance == -bb.extent.z  # back
 
 
 @pytest.mark.parametrize("position_args", [(0, 0, 0), (1, 2, 3)])

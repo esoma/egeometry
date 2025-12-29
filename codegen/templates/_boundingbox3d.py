@@ -14,6 +14,7 @@ from emath import {{ data_type }}Vector3, {{ data_type }}Vector4
 {% if data_type in "DF" %}
 from emath import {{ data_type }}Matrix4
 from ._{{ data_type.lower() }}linesegment3d import {{ data_type }}LineSegment3d
+from ._{{ data_type.lower() }}plane import {{ data_type }}Plane
 {% endif %}
 from typing import Protocol, overload, Iterable, TYPE_CHECKING, Generator, NamedTuple, Any
 from ._separating_axis_theorem import separating_axis_theorem
@@ -227,6 +228,12 @@ class {{ name }}:
     def size(self) -> {{ data_type }}Vector3:
         return self._size
 
+{% if data_type in "DF" %}
+    @property
+    def center(self) -> {{ data_type }}Vector3:
+        return self._position + self._size * 0.5
+{% endif %}
+
     @property
     def points(self) -> tuple[
         {{ data_type }}Vector3,
@@ -282,6 +289,24 @@ class {{ name }}:
             {{ data_type }}LineSegment3d(p1, p5),
             {{ data_type }}LineSegment3d(p4, p7),
             {{ data_type }}LineSegment3d(p2, p6),
+        )
+
+    @property
+    def planes(self) -> tuple[
+        {{ data_type }}Plane,
+        {{ data_type }}Plane,
+        {{ data_type }}Plane,
+        {{ data_type }}Plane,
+        {{ data_type }}Plane,
+        {{ data_type }}Plane
+    ]:
+        return (
+            {{ data_type }}Plane(self._position.x, {{ data_type }}Vector3(-1, 0, 0)),
+            {{ data_type }}Plane(-self._extent.x, {{ data_type }}Vector3(1, 0, 0)),
+            {{ data_type }}Plane(self._position.y, {{ data_type }}Vector3(0, -1, 0)),
+            {{ data_type }}Plane(-self._extent.y, {{ data_type }}Vector3(0, 1, 0)),
+            {{ data_type }}Plane(self._position.z, {{ data_type }}Vector3(0, 0, -1)),
+            {{ data_type }}Plane(-self._extent.z, {{ data_type }}Vector3(0, 0, 1)),
         )
 
     def raycast(self, eye: {{ data_type }}Vector3, direction: {{ data_type }}Vector3) -> Generator[{{ name }}RaycastResult, None, None]:

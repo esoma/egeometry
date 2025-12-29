@@ -12,6 +12,7 @@ from emath import FMatrix4
 from emath import FVector3
 from emath import FVector4
 
+from ._flinesegment3d import FLineSegment3d
 from ._fplane import FPlane
 
 if TYPE_CHECKING:
@@ -158,15 +159,56 @@ class FRectangleFrustum:
         self,
     ) -> tuple[FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3]:
         vp = (self._transform @ self._projection).inverse()
+
+        def unproject(x: float, y: float, z: float) -> FVector3:
+            clip = vp @ FVector4(x, y, z, 1)
+            return clip.xyz / clip.w
+
         return (
-            vp @ FVector3(-1, -1, -1),
-            vp @ FVector3(1, -1, -1),
-            vp @ FVector3(-1, 1, -1),
-            vp @ FVector3(-1, -1, 1),
-            vp @ FVector3(1, 1, 1),
-            vp @ FVector3(-1, 1, 1),
-            vp @ FVector3(1, -1, 1),
-            vp @ FVector3(1, 1, -1),
+            unproject(-1, -1, -1),
+            unproject(1, -1, -1),
+            unproject(-1, 1, -1),
+            unproject(-1, -1, 1),
+            unproject(1, 1, 1),
+            unproject(-1, 1, 1),
+            unproject(1, -1, 1),
+            unproject(1, 1, -1),
+        )
+
+    @property
+    def edges(
+        self,
+    ) -> tuple[
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+    ]:
+        p0, p1, p2, p3, p4, p5, p6, p7 = self.points
+        return (
+            # near face edges
+            FLineSegment3d(p0, p1),
+            FLineSegment3d(p1, p7),
+            FLineSegment3d(p7, p2),
+            FLineSegment3d(p2, p0),
+            # far face edges
+            FLineSegment3d(p3, p6),
+            FLineSegment3d(p6, p4),
+            FLineSegment3d(p4, p5),
+            FLineSegment3d(p5, p3),
+            # connecting edges
+            FLineSegment3d(p0, p3),
+            FLineSegment3d(p1, p6),
+            FLineSegment3d(p7, p4),
+            FLineSegment3d(p2, p5),
         )
 
 

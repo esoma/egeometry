@@ -22,6 +22,7 @@ from emath import DMatrix4
 from emath import DVector3
 
 from ._dlinesegment3d import DLineSegment3d
+from ._dplane import DPlane
 
 try:
     import pydantic_core
@@ -210,6 +211,10 @@ class DBoundingBox3d:
         return self._size
 
     @property
+    def center(self) -> DVector3:
+        return self._position + self._size * 0.5
+
+    @property
     def points(
         self,
     ) -> tuple[DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3]:
@@ -258,6 +263,17 @@ class DBoundingBox3d:
             DLineSegment3d(p1, p5),
             DLineSegment3d(p4, p7),
             DLineSegment3d(p2, p6),
+        )
+
+    @property
+    def planes(self) -> tuple[DPlane, DPlane, DPlane, DPlane, DPlane, DPlane]:
+        return (
+            DPlane(self._position.x, DVector3(-1, 0, 0)),
+            DPlane(-self._extent.x, DVector3(1, 0, 0)),
+            DPlane(self._position.y, DVector3(0, -1, 0)),
+            DPlane(-self._extent.y, DVector3(0, 1, 0)),
+            DPlane(self._position.z, DVector3(0, 0, -1)),
+            DPlane(-self._extent.z, DVector3(0, 0, 1)),
         )
 
     def raycast(

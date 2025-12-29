@@ -22,6 +22,7 @@ from emath import FMatrix4
 from emath import FVector3
 
 from ._flinesegment3d import FLineSegment3d
+from ._fplane import FPlane
 
 try:
     import pydantic_core
@@ -210,6 +211,10 @@ class FBoundingBox3d:
         return self._size
 
     @property
+    def center(self) -> FVector3:
+        return self._position + self._size * 0.5
+
+    @property
     def points(
         self,
     ) -> tuple[FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3]:
@@ -258,6 +263,17 @@ class FBoundingBox3d:
             FLineSegment3d(p1, p5),
             FLineSegment3d(p4, p7),
             FLineSegment3d(p2, p6),
+        )
+
+    @property
+    def planes(self) -> tuple[FPlane, FPlane, FPlane, FPlane, FPlane, FPlane]:
+        return (
+            FPlane(self._position.x, FVector3(-1, 0, 0)),
+            FPlane(-self._extent.x, FVector3(1, 0, 0)),
+            FPlane(self._position.y, FVector3(0, -1, 0)),
+            FPlane(-self._extent.y, FVector3(0, 1, 0)),
+            FPlane(self._position.z, FVector3(0, 0, -1)),
+            FPlane(-self._extent.z, FVector3(0, 0, 1)),
         )
 
     def raycast(

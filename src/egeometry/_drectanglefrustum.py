@@ -12,6 +12,7 @@ from emath import DMatrix4
 from emath import DVector3
 from emath import DVector4
 
+from ._dlinesegment3d import DLineSegment3d
 from ._dplane import DPlane
 
 if TYPE_CHECKING:
@@ -158,15 +159,56 @@ class DRectangleFrustum:
         self,
     ) -> tuple[DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3]:
         vp = (self._transform @ self._projection).inverse()
+
+        def unproject(x: float, y: float, z: float) -> DVector3:
+            clip = vp @ DVector4(x, y, z, 1)
+            return clip.xyz / clip.w
+
         return (
-            vp @ DVector3(-1, -1, -1),
-            vp @ DVector3(1, -1, -1),
-            vp @ DVector3(-1, 1, -1),
-            vp @ DVector3(-1, -1, 1),
-            vp @ DVector3(1, 1, 1),
-            vp @ DVector3(-1, 1, 1),
-            vp @ DVector3(1, -1, 1),
-            vp @ DVector3(1, 1, -1),
+            unproject(-1, -1, -1),
+            unproject(1, -1, -1),
+            unproject(-1, 1, -1),
+            unproject(-1, -1, 1),
+            unproject(1, 1, 1),
+            unproject(-1, 1, 1),
+            unproject(1, -1, 1),
+            unproject(1, 1, -1),
+        )
+
+    @property
+    def edges(
+        self,
+    ) -> tuple[
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+    ]:
+        p0, p1, p2, p3, p4, p5, p6, p7 = self.points
+        return (
+            # near face edges
+            DLineSegment3d(p0, p1),
+            DLineSegment3d(p1, p7),
+            DLineSegment3d(p7, p2),
+            DLineSegment3d(p2, p0),
+            # far face edges
+            DLineSegment3d(p3, p6),
+            DLineSegment3d(p6, p4),
+            DLineSegment3d(p4, p5),
+            DLineSegment3d(p5, p3),
+            # connecting edges
+            DLineSegment3d(p0, p3),
+            DLineSegment3d(p1, p6),
+            DLineSegment3d(p7, p4),
+            DLineSegment3d(p2, p5),
         )
 
 

@@ -6,6 +6,7 @@ __all__ = ["{{ name }}"]
 
 from emath import {{ data_type }}Vector3, {{ data_type }}Vector4, {{ data_type }}Matrix4
 from ._{{ data_type.lower() }}plane import {{ data_type }}Plane
+from ._{{ data_type.lower() }}linesegment3d import {{ data_type }}LineSegment3d
 from typing import overload, TYPE_CHECKING
 from typing import Protocol
 
@@ -185,15 +186,52 @@ class {{ name }}:
         {{ data_type }}Vector3
     ]:
         vp = (self._transform @ self._projection).inverse()
+        def unproject(x: float, y: float, z: float) -> {{ data_type }}Vector3:
+            clip = vp @ {{ data_type }}Vector4(x, y, z, 1)
+            return clip.xyz / clip.w
         return (
-            vp @ {{ data_type }}Vector3(-1, -1, -1),
-            vp @ {{ data_type }}Vector3(1, -1, -1),
-            vp @ {{ data_type }}Vector3(-1, 1, -1),
-            vp @ {{ data_type }}Vector3(-1, -1, 1),
-            vp @ {{ data_type }}Vector3(1, 1, 1),
-            vp @ {{ data_type }}Vector3(-1, 1, 1),
-            vp @ {{ data_type }}Vector3(1, -1, 1),
-            vp @ {{ data_type }}Vector3(1, 1, -1),
+            unproject(-1, -1, -1),
+            unproject(1, -1, -1),
+            unproject(-1, 1, -1),
+            unproject(-1, -1, 1),
+            unproject(1, 1, 1),
+            unproject(-1, 1, 1),
+            unproject(1, -1, 1),
+            unproject(1, 1, -1),
+        )
+
+    @property
+    def edges(self) -> tuple[
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d,
+        {{ data_type }}LineSegment3d
+    ]:
+        p0, p1, p2, p3, p4, p5, p6, p7 = self.points
+        return (
+            # near face edges
+            {{ data_type }}LineSegment3d(p0, p1),
+            {{ data_type }}LineSegment3d(p1, p7),
+            {{ data_type }}LineSegment3d(p7, p2),
+            {{ data_type }}LineSegment3d(p2, p0),
+            # far face edges
+            {{ data_type }}LineSegment3d(p3, p6),
+            {{ data_type }}LineSegment3d(p6, p4),
+            {{ data_type }}LineSegment3d(p4, p5),
+            {{ data_type }}LineSegment3d(p5, p3),
+            # connecting edges
+            {{ data_type }}LineSegment3d(p0, p3),
+            {{ data_type }}LineSegment3d(p1, p6),
+            {{ data_type }}LineSegment3d(p7, p4),
+            {{ data_type }}LineSegment3d(p2, p5),
         )
 
 def _create_transformed_plane(
