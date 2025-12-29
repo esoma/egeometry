@@ -30,6 +30,8 @@ __all__ = [
     "FCircleOverlappable",
     "ICircle",
     "ICircleOverlappable",
+    "DLineSegment3d",
+    "FLineSegment3d",
     "DPlane",
     "DPlaneRaycastResult",
     "FPlane",
@@ -65,6 +67,7 @@ from ._dboundingbox3d import DBoundingBox3dRaycastResult
 from ._dboundingbox3d import HasDBoundingBox3d
 from ._dcircle import DCircle
 from ._dcircle import DCircleOverlappable
+from ._dlinesegment3d import DLineSegment3d
 from ._dplane import DPlane
 from ._dplane import DPlaneRaycastResult
 from ._drectangle import DRectangle
@@ -84,6 +87,7 @@ from ._fboundingbox3d import FBoundingBox3dRaycastResult
 from ._fboundingbox3d import HasFBoundingBox3d
 from ._fcircle import FCircle
 from ._fcircle import FCircleOverlappable
+from ._flinesegment3d import FLineSegment3d
 from ._fplane import FPlane
 from ._fplane import FPlaneRaycastResult
 from ._frectangle import FRectangle

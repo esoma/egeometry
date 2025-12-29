@@ -56,6 +56,11 @@ def plane_cls(float_data_type):
 
 
 @pytest.fixture
+def linesegment3d_cls(float_data_type):
+    return getattr(egeometry, f"{float_data_type}LineSegment3d")
+
+
+@pytest.fixture
 def rectangle_cls(data_type):
     return getattr(egeometry, f"{data_type}Rectangle")
 

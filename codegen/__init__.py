@@ -7,6 +7,7 @@ from typing import Sequence
 from codegen.bounding_box_2d import generate_bounding_box_2d_files
 from codegen.bounding_box_3d import generate_bounding_box_3d_files
 from codegen.circle import generate_circle_files
+from codegen.linesegment3d import generate_linesegment3d_files
 from codegen.plane import generate_plane_files
 from codegen.rectangle import generate_rectangle_files
 from codegen.rectangle_frustum import generate_rectangle_frustum_files
@@ -22,6 +23,7 @@ def generate_geometry_files(build_dir: Path) -> None:
     )
     bounding_box_3d_types = list(generate_bounding_box_3d_files(build_dir))
     circle_types = list(generate_circle_files(build_dir))
+    linesegment3d_types = list(generate_linesegment3d_files(build_dir))
     plane_types = list(generate_plane_files(build_dir))
     rectangle_types = list(generate_rectangle_files(build_dir))
     rectangle_frustum_types = list(generate_rectangle_frustum_files(build_dir))
@@ -36,6 +38,7 @@ def generate_geometry_files(build_dir: Path) -> None:
             *bounding_box_2d_types,
             *bounding_box_3d_types,
             *circle_types,
+            *linesegment3d_types,
             *plane_types,
             *rectangle_types,
             *rectangle_frustum_types,
