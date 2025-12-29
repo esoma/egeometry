@@ -21,6 +21,8 @@ from typing import overload
 from emath import FMatrix4
 from emath import FVector3
 
+from ._flinesegment3d import FLineSegment3d
+
 try:
     import pydantic_core
 except ImportError:
@@ -220,6 +222,42 @@ class FBoundingBox3d:
             self._position + self._size.xoz,
             self._position + self._size.oyz,
             self._extent,
+        )
+
+    @property
+    def edges(
+        self,
+    ) -> tuple[
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+        FLineSegment3d,
+    ]:
+        p0, p1, p2, p3, p4, p5, p6, p7 = self.points
+        return (
+            # bottom face edges
+            FLineSegment3d(p0, p1),
+            FLineSegment3d(p1, p4),
+            FLineSegment3d(p4, p2),
+            FLineSegment3d(p2, p0),
+            # top face edges
+            FLineSegment3d(p3, p5),
+            FLineSegment3d(p5, p7),
+            FLineSegment3d(p7, p6),
+            FLineSegment3d(p6, p3),
+            # vertical edges
+            FLineSegment3d(p0, p3),
+            FLineSegment3d(p1, p5),
+            FLineSegment3d(p4, p7),
+            FLineSegment3d(p2, p6),
         )
 
     def raycast(

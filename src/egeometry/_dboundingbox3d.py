@@ -21,6 +21,8 @@ from typing import overload
 from emath import DMatrix4
 from emath import DVector3
 
+from ._dlinesegment3d import DLineSegment3d
+
 try:
     import pydantic_core
 except ImportError:
@@ -220,6 +222,42 @@ class DBoundingBox3d:
             self._position + self._size.xoz,
             self._position + self._size.oyz,
             self._extent,
+        )
+
+    @property
+    def edges(
+        self,
+    ) -> tuple[
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+        DLineSegment3d,
+    ]:
+        p0, p1, p2, p3, p4, p5, p6, p7 = self.points
+        return (
+            # bottom face edges
+            DLineSegment3d(p0, p1),
+            DLineSegment3d(p1, p4),
+            DLineSegment3d(p4, p2),
+            DLineSegment3d(p2, p0),
+            # top face edges
+            DLineSegment3d(p3, p5),
+            DLineSegment3d(p5, p7),
+            DLineSegment3d(p7, p6),
+            DLineSegment3d(p6, p3),
+            # vertical edges
+            DLineSegment3d(p0, p3),
+            DLineSegment3d(p1, p5),
+            DLineSegment3d(p4, p7),
+            DLineSegment3d(p2, p6),
         )
 
     def raycast(
