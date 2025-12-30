@@ -264,7 +264,7 @@ def test_points(
     frustum = rectangle_frustum_cls(**transform_kwargs, **projection_kwargs)
     points = frustum.points
 
-    vp = (transform @ projection).inverse()
+    vp = (projection @ transform).inverse()
 
     def unproject(x: float, y: float, z: float):
         clip = vp @ vector_4_cls(x, y, z, 1)

@@ -185,7 +185,7 @@ class {{ name }}:
         {{ data_type }}Vector3,
         {{ data_type }}Vector3
     ]:
-        vp = (self._transform @ self._projection).inverse()
+        vp = (self._projection @ self._transform).inverse()
         def unproject(x: float, y: float, z: float) -> {{ data_type }}Vector3:
             clip = vp @ {{ data_type }}Vector4(x, y, z, 1)
             return clip.xyz / clip.w

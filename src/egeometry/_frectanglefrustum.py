@@ -158,7 +158,7 @@ class FRectangleFrustum:
     def points(
         self,
     ) -> tuple[FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3, FVector3]:
-        vp = (self._transform @ self._projection).inverse()
+        vp = (self._projection @ self._transform).inverse()
 
         def unproject(x: float, y: float, z: float) -> FVector3:
             clip = vp @ FVector4(x, y, z, 1)

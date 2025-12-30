@@ -158,7 +158,7 @@ class DRectangleFrustum:
     def points(
         self,
     ) -> tuple[DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3, DVector3]:
-        vp = (self._transform @ self._projection).inverse()
+        vp = (self._projection @ self._transform).inverse()
 
         def unproject(x: float, y: float, z: float) -> DVector3:
             clip = vp @ DVector4(x, y, z, 1)
