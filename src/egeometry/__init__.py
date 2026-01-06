@@ -24,6 +24,10 @@ __all__ = [
     "IBoundingBox3d",
     "IBoundingBox3dOverlappable",
     "HasIBoundingBox3d",
+    "U8BoundedVolumeHierarchy",
+    "U16BoundedVolumeHierarchy",
+    "U32BoundedVolumeHierarchy",
+    "UBoundedVolumeHierarchy",
     "DCircle",
     "DCircleOverlappable",
     "FCircle",
@@ -111,3 +115,7 @@ from ._irectangle import IRectangleOverlappable
 from ._itriangle2d import ITriangle2d
 from ._itriangle2d import ITriangle2dOverlappable
 from ._separating_axis_theorem import separating_axis_theorem
+from ._u8boundedvolumehierarchy import U8BoundedVolumeHierarchy
+from ._u16boundedvolumehierarchy import U16BoundedVolumeHierarchy
+from ._u32boundedvolumehierarchy import U32BoundedVolumeHierarchy
+from ._uboundedvolumehierarchy import UBoundedVolumeHierarchy

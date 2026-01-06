@@ -7,7 +7,7 @@ from typing import Generator
 from typing import Sequence
 
 from .template import get_template
-from .types import TYPES
+from .types import SIGNED_TYPES
 from .types import type_to_c_type
 
 
@@ -18,7 +18,7 @@ def generate_bounding_box_2d_files(
     c_types = []
     py_types = []
 
-    for data_type, _ in TYPES:
+    for data_type, _ in SIGNED_TYPES:
         generate_bouncing_box_2d_type_hpp(b, data_type)
         c_types.extend(generate_bouncing_box_2d_hpp(b, data_type))
         py_types.extend(generate_bouncing_box_2d_py(b, data_type))
@@ -48,7 +48,9 @@ def generate_bouncing_box_2d_hpp(build_dir: Path, data_type: str) -> Generator[s
             template.render(
                 data_type=data_type,
                 c_type=type_to_c_type(data_type),
-                other_data_types=[(dt, type_to_c_type(dt)) for dt, _ in TYPES if dt != data_type],
+                other_data_types=[
+                    (dt, type_to_c_type(dt)) for dt, _ in SIGNED_TYPES if dt != data_type
+                ],
                 name=name,
                 when=datetime.utcnow(),
             )
@@ -65,7 +67,7 @@ def generate_bouncing_box_2d_py(
         f.write(
             template.render(
                 data_type=data_type,
-                other_data_types=[dt for dt, _ in TYPES if dt != data_type],
+                other_data_types=[dt for dt, _ in SIGNED_TYPES if dt != data_type],
                 name=name,
                 when=datetime.utcnow(),
             )

@@ -13,6 +13,14 @@
 
     #include "_iboundingbox2d.hpp"
 
+    #include "_u8boundedvolumehierarchy.hpp"
+
+    #include "_u16boundedvolumehierarchy.hpp"
+
+    #include "_u32boundedvolumehierarchy.hpp"
+
+    #include "_uboundedvolumehierarchy.hpp"
+
 #include "emath.h"
 
 
@@ -82,6 +90,34 @@ PyInit__egeometry()
         if (!type){ goto error; }
         Py_INCREF(type);
         state->IBoundingBox2d_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_U8BoundedVolumeHierarchy_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->U8BoundedVolumeHierarchy_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_U16BoundedVolumeHierarchy_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->U16BoundedVolumeHierarchy_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_U32BoundedVolumeHierarchy_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->U32BoundedVolumeHierarchy_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_UBoundedVolumeHierarchy_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->UBoundedVolumeHierarchy_PyTypeObject = type;
     }
 
 

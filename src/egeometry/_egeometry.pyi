@@ -1,6 +1,14 @@
-# generated from codegen/templates/_boundingbox2d.pyi
+# generated from codegen/templates/_egeometry.pyi
 
-__all__ = ["DBoundingBox2d", "FBoundingBox2d", "IBoundingBox2d"]
+__all__ = [
+    "DBoundingBox2d",
+    "FBoundingBox2d",
+    "IBoundingBox2d",
+    "U8BoundedVolumeHierarchy",
+    "U16BoundedVolumeHierarchy",
+    "U32BoundedVolumeHierarchy",
+    "UBoundedVolumeHierarchy",
+]
 
 from typing import Iterable
 from typing import overload
@@ -137,3 +145,15 @@ class IBoundingBox2d:
     def points(self) -> tuple[IVector2, IVector2, IVector2, IVector2]: ...
     def to_d(self) -> DBoundingBox2d: ...
     def to_f(self) -> FBoundingBox2d: ...
+
+class U8BoundedVolumeHierarchy:
+    pass
+
+class U16BoundedVolumeHierarchy:
+    pass
+
+class U32BoundedVolumeHierarchy:
+    pass
+
+class UBoundedVolumeHierarchy:
+    pass

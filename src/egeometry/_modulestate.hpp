@@ -19,6 +19,14 @@ struct ModuleState
 
     PyTypeObject *IBoundingBox2d_PyTypeObject;
 
+    PyTypeObject *U8BoundedVolumeHierarchy_PyTypeObject;
+
+    PyTypeObject *U16BoundedVolumeHierarchy_PyTypeObject;
+
+    PyTypeObject *U32BoundedVolumeHierarchy_PyTypeObject;
+
+    PyTypeObject *UBoundedVolumeHierarchy_PyTypeObject;
+
 };
 
 
@@ -35,6 +43,14 @@ ModuleState_traverse(
     Py_VISIT(self->FBoundingBox2d_PyTypeObject);
 
     Py_VISIT(self->IBoundingBox2d_PyTypeObject);
+
+    Py_VISIT(self->U8BoundedVolumeHierarchy_PyTypeObject);
+
+    Py_VISIT(self->U16BoundedVolumeHierarchy_PyTypeObject);
+
+    Py_VISIT(self->U32BoundedVolumeHierarchy_PyTypeObject);
+
+    Py_VISIT(self->UBoundedVolumeHierarchy_PyTypeObject);
 
     return 0;
 }
@@ -55,6 +71,14 @@ ModuleState_clear(ModuleState *self)
     Py_CLEAR(self->FBoundingBox2d_PyTypeObject);
 
     Py_CLEAR(self->IBoundingBox2d_PyTypeObject);
+
+    Py_CLEAR(self->U8BoundedVolumeHierarchy_PyTypeObject);
+
+    Py_CLEAR(self->U16BoundedVolumeHierarchy_PyTypeObject);
+
+    Py_CLEAR(self->U32BoundedVolumeHierarchy_PyTypeObject);
+
+    Py_CLEAR(self->UBoundedVolumeHierarchy_PyTypeObject);
 
     return 0;
 }

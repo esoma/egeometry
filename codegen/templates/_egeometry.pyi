@@ -1,7 +1,10 @@
-# generated from codegen/templates/_boundingbox2d.pyi
+# generated from codegen/templates/_egeometry.pyi
 
 __all__ = [
 {% for name in bounding_box_2d_types %}
+    "{{ name }}",
+{% endfor %}
+{% for name in bounded_volume_hierarchy_types %}
     "{{ name }}",
 {% endfor %}
 ]
@@ -12,7 +15,7 @@ from emath import *
 
 {% for name in bounding_box_2d_types %}
 {% with data_type=name[0] %}
-{% with other_data_types=set(types) - set([data_type]) %}
+{% with other_data_types=set(signed_types) - set([data_type]) %}
 
 from ._{{ name.lower() }} import {{ name }}Overlappable, Has{{ name }}
 from ._{{ data_type.lower() }}circle import {{ data_type }}Circle
@@ -125,4 +128,12 @@ class {{ name }}:
 
 {% endwith %}
 {% endwith %}
+{% endfor %}
+
+
+{% for name in bounded_volume_hierarchy_types %}
+
+class {{ name }}:
+    pass
+
 {% endfor %}

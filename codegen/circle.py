@@ -6,12 +6,12 @@ from pathlib import Path
 from typing import Generator
 
 from .template import get_template
-from .types import TYPES
+from .types import SIGNED_TYPES
 
 
 def generate_circle_files(build_dir: Path) -> Generator[tuple[str, str], None, None]:
     b = build_dir
-    for data_type, component_data_type in TYPES:
+    for data_type, component_data_type in SIGNED_TYPES:
         yield from generate_circle_file(b, data_type, component_data_type)
 
 

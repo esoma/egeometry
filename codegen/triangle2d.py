@@ -7,12 +7,12 @@ from pathlib import Path
 from typing import Generator
 
 from .template import get_template
-from .types import TYPES
+from .types import SIGNED_TYPES
 
 
 def generate_triangle_2d_files(build_dir: Path) -> Generator[tuple[str, str], None, None]:
     b = build_dir
-    for data_type, _ in TYPES:
+    for data_type, _ in SIGNED_TYPES:
         yield from generate_triangle_2d_file(b, data_type)
 
 
