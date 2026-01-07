@@ -19,13 +19,53 @@ struct ModuleState
 
     PyTypeObject *IBoundingBox2d_PyTypeObject;
 
-    PyTypeObject *U8BoundedVolumeHierarchy_PyTypeObject;
+    PyTypeObject *DU8BoundedVolumeHierarchy2_PyTypeObject;
 
-    PyTypeObject *U16BoundedVolumeHierarchy_PyTypeObject;
+    PyTypeObject *DU8BoundedVolumeHierarchy4_PyTypeObject;
 
-    PyTypeObject *U32BoundedVolumeHierarchy_PyTypeObject;
+    PyTypeObject *DU8BoundedVolumeHierarchy8_PyTypeObject;
 
-    PyTypeObject *UBoundedVolumeHierarchy_PyTypeObject;
+    PyTypeObject *DU16BoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *DU16BoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *DU16BoundedVolumeHierarchy8_PyTypeObject;
+
+    PyTypeObject *DU32BoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *DU32BoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *DU32BoundedVolumeHierarchy8_PyTypeObject;
+
+    PyTypeObject *DUBoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *DUBoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *DUBoundedVolumeHierarchy8_PyTypeObject;
+
+    PyTypeObject *FU8BoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *FU8BoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *FU8BoundedVolumeHierarchy8_PyTypeObject;
+
+    PyTypeObject *FU16BoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *FU16BoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *FU16BoundedVolumeHierarchy8_PyTypeObject;
+
+    PyTypeObject *FU32BoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *FU32BoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *FU32BoundedVolumeHierarchy8_PyTypeObject;
+
+    PyTypeObject *FUBoundedVolumeHierarchy2_PyTypeObject;
+
+    PyTypeObject *FUBoundedVolumeHierarchy4_PyTypeObject;
+
+    PyTypeObject *FUBoundedVolumeHierarchy8_PyTypeObject;
 
 };
 
@@ -44,13 +84,53 @@ ModuleState_traverse(
 
     Py_VISIT(self->IBoundingBox2d_PyTypeObject);
 
-    Py_VISIT(self->U8BoundedVolumeHierarchy_PyTypeObject);
+    Py_VISIT(self->DU8BoundedVolumeHierarchy2_PyTypeObject);
 
-    Py_VISIT(self->U16BoundedVolumeHierarchy_PyTypeObject);
+    Py_VISIT(self->DU8BoundedVolumeHierarchy4_PyTypeObject);
 
-    Py_VISIT(self->U32BoundedVolumeHierarchy_PyTypeObject);
+    Py_VISIT(self->DU8BoundedVolumeHierarchy8_PyTypeObject);
 
-    Py_VISIT(self->UBoundedVolumeHierarchy_PyTypeObject);
+    Py_VISIT(self->DU16BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->DU16BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->DU16BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_VISIT(self->DU32BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->DU32BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->DU32BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_VISIT(self->DUBoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->DUBoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->DUBoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_VISIT(self->FU8BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->FU8BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->FU8BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_VISIT(self->FU16BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->FU16BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->FU16BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_VISIT(self->FU32BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->FU32BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->FU32BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_VISIT(self->FUBoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_VISIT(self->FUBoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_VISIT(self->FUBoundedVolumeHierarchy8_PyTypeObject);
 
     return 0;
 }
@@ -72,13 +152,53 @@ ModuleState_clear(ModuleState *self)
 
     Py_CLEAR(self->IBoundingBox2d_PyTypeObject);
 
-    Py_CLEAR(self->U8BoundedVolumeHierarchy_PyTypeObject);
+    Py_CLEAR(self->DU8BoundedVolumeHierarchy2_PyTypeObject);
 
-    Py_CLEAR(self->U16BoundedVolumeHierarchy_PyTypeObject);
+    Py_CLEAR(self->DU8BoundedVolumeHierarchy4_PyTypeObject);
 
-    Py_CLEAR(self->U32BoundedVolumeHierarchy_PyTypeObject);
+    Py_CLEAR(self->DU8BoundedVolumeHierarchy8_PyTypeObject);
 
-    Py_CLEAR(self->UBoundedVolumeHierarchy_PyTypeObject);
+    Py_CLEAR(self->DU16BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->DU16BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->DU16BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_CLEAR(self->DU32BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->DU32BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->DU32BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_CLEAR(self->DUBoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->DUBoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->DUBoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_CLEAR(self->FU8BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->FU8BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->FU8BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_CLEAR(self->FU16BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->FU16BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->FU16BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_CLEAR(self->FU32BoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->FU32BoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->FU32BoundedVolumeHierarchy8_PyTypeObject);
+
+    Py_CLEAR(self->FUBoundedVolumeHierarchy2_PyTypeObject);
+
+    Py_CLEAR(self->FUBoundedVolumeHierarchy4_PyTypeObject);
+
+    Py_CLEAR(self->FUBoundedVolumeHierarchy8_PyTypeObject);
 
     return 0;
 }

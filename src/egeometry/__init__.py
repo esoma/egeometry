@@ -24,10 +24,30 @@ __all__ = [
     "IBoundingBox3d",
     "IBoundingBox3dOverlappable",
     "HasIBoundingBox3d",
-    "U8BoundedVolumeHierarchy",
-    "U16BoundedVolumeHierarchy",
-    "U32BoundedVolumeHierarchy",
-    "UBoundedVolumeHierarchy",
+    "DU8BoundedVolumeHierarchy2",
+    "DU8BoundedVolumeHierarchy4",
+    "DU8BoundedVolumeHierarchy8",
+    "DU16BoundedVolumeHierarchy2",
+    "DU16BoundedVolumeHierarchy4",
+    "DU16BoundedVolumeHierarchy8",
+    "DU32BoundedVolumeHierarchy2",
+    "DU32BoundedVolumeHierarchy4",
+    "DU32BoundedVolumeHierarchy8",
+    "DUBoundedVolumeHierarchy2",
+    "DUBoundedVolumeHierarchy4",
+    "DUBoundedVolumeHierarchy8",
+    "FU8BoundedVolumeHierarchy2",
+    "FU8BoundedVolumeHierarchy4",
+    "FU8BoundedVolumeHierarchy8",
+    "FU16BoundedVolumeHierarchy2",
+    "FU16BoundedVolumeHierarchy4",
+    "FU16BoundedVolumeHierarchy8",
+    "FU32BoundedVolumeHierarchy2",
+    "FU32BoundedVolumeHierarchy4",
+    "FU32BoundedVolumeHierarchy8",
+    "FUBoundedVolumeHierarchy2",
+    "FUBoundedVolumeHierarchy4",
+    "FUBoundedVolumeHierarchy8",
     "DCircle",
     "DCircleOverlappable",
     "FCircle",
@@ -82,6 +102,18 @@ from ._dtriangle2d import DTriangle2d
 from ._dtriangle2d import DTriangle2dOverlappable
 from ._dtrianglemesh3d import DTriangleMesh3d
 from ._dtrianglemesh3d import DTriangleMesh3dRaycastResult
+from ._du8boundedvolumehierarchy2 import DU8BoundedVolumeHierarchy2
+from ._du8boundedvolumehierarchy4 import DU8BoundedVolumeHierarchy4
+from ._du8boundedvolumehierarchy8 import DU8BoundedVolumeHierarchy8
+from ._du16boundedvolumehierarchy2 import DU16BoundedVolumeHierarchy2
+from ._du16boundedvolumehierarchy4 import DU16BoundedVolumeHierarchy4
+from ._du16boundedvolumehierarchy8 import DU16BoundedVolumeHierarchy8
+from ._du32boundedvolumehierarchy2 import DU32BoundedVolumeHierarchy2
+from ._du32boundedvolumehierarchy4 import DU32BoundedVolumeHierarchy4
+from ._du32boundedvolumehierarchy8 import DU32BoundedVolumeHierarchy8
+from ._duboundedvolumehierarchy2 import DUBoundedVolumeHierarchy2
+from ._duboundedvolumehierarchy4 import DUBoundedVolumeHierarchy4
+from ._duboundedvolumehierarchy8 import DUBoundedVolumeHierarchy8
 from ._fboundingbox2d import FBoundingBox2d
 from ._fboundingbox2d import FBoundingBox2dOverlappable
 from ._fboundingbox2d import HasFBoundingBox2d
@@ -102,6 +134,18 @@ from ._ftriangle2d import FTriangle2d
 from ._ftriangle2d import FTriangle2dOverlappable
 from ._ftrianglemesh3d import FTriangleMesh3d
 from ._ftrianglemesh3d import FTriangleMesh3dRaycastResult
+from ._fu8boundedvolumehierarchy2 import FU8BoundedVolumeHierarchy2
+from ._fu8boundedvolumehierarchy4 import FU8BoundedVolumeHierarchy4
+from ._fu8boundedvolumehierarchy8 import FU8BoundedVolumeHierarchy8
+from ._fu16boundedvolumehierarchy2 import FU16BoundedVolumeHierarchy2
+from ._fu16boundedvolumehierarchy4 import FU16BoundedVolumeHierarchy4
+from ._fu16boundedvolumehierarchy8 import FU16BoundedVolumeHierarchy8
+from ._fu32boundedvolumehierarchy2 import FU32BoundedVolumeHierarchy2
+from ._fu32boundedvolumehierarchy4 import FU32BoundedVolumeHierarchy4
+from ._fu32boundedvolumehierarchy8 import FU32BoundedVolumeHierarchy8
+from ._fuboundedvolumehierarchy2 import FUBoundedVolumeHierarchy2
+from ._fuboundedvolumehierarchy4 import FUBoundedVolumeHierarchy4
+from ._fuboundedvolumehierarchy8 import FUBoundedVolumeHierarchy8
 from ._iboundingbox2d import HasIBoundingBox2d
 from ._iboundingbox2d import IBoundingBox2d
 from ._iboundingbox2d import IBoundingBox2dOverlappable
@@ -115,7 +159,3 @@ from ._irectangle import IRectangleOverlappable
 from ._itriangle2d import ITriangle2d
 from ._itriangle2d import ITriangle2dOverlappable
 from ._separating_axis_theorem import separating_axis_theorem
-from ._u8boundedvolumehierarchy import U8BoundedVolumeHierarchy
-from ._u16boundedvolumehierarchy import U16BoundedVolumeHierarchy
-from ._u32boundedvolumehierarchy import U32BoundedVolumeHierarchy
-from ._uboundedvolumehierarchy import UBoundedVolumeHierarchy

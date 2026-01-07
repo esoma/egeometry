@@ -13,13 +13,53 @@
 
     #include "_iboundingbox2d.hpp"
 
-    #include "_u8boundedvolumehierarchy.hpp"
+    #include "_du8boundedvolumehierarchy2.hpp"
 
-    #include "_u16boundedvolumehierarchy.hpp"
+    #include "_du8boundedvolumehierarchy4.hpp"
 
-    #include "_u32boundedvolumehierarchy.hpp"
+    #include "_du8boundedvolumehierarchy8.hpp"
 
-    #include "_uboundedvolumehierarchy.hpp"
+    #include "_du16boundedvolumehierarchy2.hpp"
+
+    #include "_du16boundedvolumehierarchy4.hpp"
+
+    #include "_du16boundedvolumehierarchy8.hpp"
+
+    #include "_du32boundedvolumehierarchy2.hpp"
+
+    #include "_du32boundedvolumehierarchy4.hpp"
+
+    #include "_du32boundedvolumehierarchy8.hpp"
+
+    #include "_duboundedvolumehierarchy2.hpp"
+
+    #include "_duboundedvolumehierarchy4.hpp"
+
+    #include "_duboundedvolumehierarchy8.hpp"
+
+    #include "_fu8boundedvolumehierarchy2.hpp"
+
+    #include "_fu8boundedvolumehierarchy4.hpp"
+
+    #include "_fu8boundedvolumehierarchy8.hpp"
+
+    #include "_fu16boundedvolumehierarchy2.hpp"
+
+    #include "_fu16boundedvolumehierarchy4.hpp"
+
+    #include "_fu16boundedvolumehierarchy8.hpp"
+
+    #include "_fu32boundedvolumehierarchy2.hpp"
+
+    #include "_fu32boundedvolumehierarchy4.hpp"
+
+    #include "_fu32boundedvolumehierarchy8.hpp"
+
+    #include "_fuboundedvolumehierarchy2.hpp"
+
+    #include "_fuboundedvolumehierarchy4.hpp"
+
+    #include "_fuboundedvolumehierarchy8.hpp"
 
 #include "emath.h"
 
@@ -93,31 +133,171 @@ PyInit__egeometry()
     }
 
     {
-        PyTypeObject *type = define_U8BoundedVolumeHierarchy_type(module);
+        PyTypeObject *type = define_DU8BoundedVolumeHierarchy2_type(module);
         if (!type){ goto error; }
         Py_INCREF(type);
-        state->U8BoundedVolumeHierarchy_PyTypeObject = type;
+        state->DU8BoundedVolumeHierarchy2_PyTypeObject = type;
     }
 
     {
-        PyTypeObject *type = define_U16BoundedVolumeHierarchy_type(module);
+        PyTypeObject *type = define_DU8BoundedVolumeHierarchy4_type(module);
         if (!type){ goto error; }
         Py_INCREF(type);
-        state->U16BoundedVolumeHierarchy_PyTypeObject = type;
+        state->DU8BoundedVolumeHierarchy4_PyTypeObject = type;
     }
 
     {
-        PyTypeObject *type = define_U32BoundedVolumeHierarchy_type(module);
+        PyTypeObject *type = define_DU8BoundedVolumeHierarchy8_type(module);
         if (!type){ goto error; }
         Py_INCREF(type);
-        state->U32BoundedVolumeHierarchy_PyTypeObject = type;
+        state->DU8BoundedVolumeHierarchy8_PyTypeObject = type;
     }
 
     {
-        PyTypeObject *type = define_UBoundedVolumeHierarchy_type(module);
+        PyTypeObject *type = define_DU16BoundedVolumeHierarchy2_type(module);
         if (!type){ goto error; }
         Py_INCREF(type);
-        state->UBoundedVolumeHierarchy_PyTypeObject = type;
+        state->DU16BoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DU16BoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DU16BoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DU16BoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DU16BoundedVolumeHierarchy8_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DU32BoundedVolumeHierarchy2_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DU32BoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DU32BoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DU32BoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DU32BoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DU32BoundedVolumeHierarchy8_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DUBoundedVolumeHierarchy2_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DUBoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DUBoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DUBoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_DUBoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->DUBoundedVolumeHierarchy8_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU8BoundedVolumeHierarchy2_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU8BoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU8BoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU8BoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU8BoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU8BoundedVolumeHierarchy8_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU16BoundedVolumeHierarchy2_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU16BoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU16BoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU16BoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU16BoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU16BoundedVolumeHierarchy8_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU32BoundedVolumeHierarchy2_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU32BoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU32BoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU32BoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FU32BoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FU32BoundedVolumeHierarchy8_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FUBoundedVolumeHierarchy2_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FUBoundedVolumeHierarchy2_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FUBoundedVolumeHierarchy4_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FUBoundedVolumeHierarchy4_PyTypeObject = type;
+    }
+
+    {
+        PyTypeObject *type = define_FUBoundedVolumeHierarchy8_type(module);
+        if (!type){ goto error; }
+        Py_INCREF(type);
+        state->FUBoundedVolumeHierarchy8_PyTypeObject = type;
     }
 
 

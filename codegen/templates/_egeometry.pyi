@@ -9,8 +9,9 @@ __all__ = [
 {% endfor %}
 ]
 
-from typing import overload, Iterable
-
+from typing import overload, Iterable, Generator, Sequence
+from ._dboundingbox3d import DBoundingBox3d
+from ._fboundingbox3d import FBoundingBox3d
 from emath import *
 
 {% for name in bounding_box_2d_types %}
@@ -130,10 +131,27 @@ class {{ name }}:
 {% endwith %}
 {% endfor %}
 
-
 {% for name in bounded_volume_hierarchy_types %}
+{% with space_type=name[0] %}
 
 class {{ name }}:
-    pass
+    def __init__(self, items: Sequence[{{ space_type }}BoundingBox3d], /) -> None:
+        ...
 
+    @property
+    def nodes(self) -> tuple[
+        tuple[int | tuple[{{ space_type }}BoundingBox3d, int], ...],
+        ...
+    ]:
+        ...
+
+    def raycast(
+        self,
+        eye: {{ space_type }}Vector3,
+        direction: {{ space_type }}Vector3,
+        /
+    ) -> Generator[int, None, None]:
+        ...
+
+{% endwith %}
 {% endfor %}
