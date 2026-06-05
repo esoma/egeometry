@@ -52,28 +52,31 @@ DU8BoundedVolumeHierarchy4_alloc_items_from_py_sequence_bounding_box_3d(
         PyErr_SetString(PyExc_TypeError, "expected a sequence for items argument");
         goto error;
     }
-    Py_ssize_t item_count = PySequence_Size(py_items);
-    if (item_count < 0){ goto error; }
 
-    if (item_count == 0)
+    {
+        Py_ssize_t item_count = PySequence_Size(py_items);
+        if (items.count < 0){ goto error; }
+        items.count = (size_t)item_count;
+    }
+
+    if (items.count == 0)
     {
         item_data = (char *)malloc(1);
     }
     else
     {
-        item_data = (char *)malloc(sizeof(double) * 6 * item_count);
+        item_data = (char *)malloc(sizeof(double) * 6 * items.count);
     }
     if (!item_data){ PyErr_NoMemory(); goto error; }
 
-    items.count = (size_t)item_count;
-    items.min_x = (double*)(item_data + (size_t)(sizeof(double) * item_count * 0));
-    items.min_y = (double*)(item_data + (size_t)(sizeof(double) * item_count * 1));
-    items.min_z = (double*)(item_data + (size_t)(sizeof(double) * item_count * 2));
-    items.max_x = (double*)(item_data + (size_t)(sizeof(double) * item_count * 3));
-    items.max_y = (double*)(item_data + (size_t)(sizeof(double) * item_count * 4));
-    items.max_z = (double*)(item_data + (size_t)(sizeof(double) * item_count * 5));
+    items.min_x = (double*)(item_data + (size_t)(sizeof(double) * items.count * 0));
+    items.min_y = (double*)(item_data + (size_t)(sizeof(double) * items.count * 1));
+    items.min_z = (double*)(item_data + (size_t)(sizeof(double) * items.count * 2));
+    items.max_x = (double*)(item_data + (size_t)(sizeof(double) * items.count * 3));
+    items.max_y = (double*)(item_data + (size_t)(sizeof(double) * items.count * 4));
+    items.max_z = (double*)(item_data + (size_t)(sizeof(double) * items.count * 5));
 
-    for (Py_ssize_t i = 0; i < item_count; i++)
+    for (size_t i = 0; i < items.count; i++)
     {
         py_item = PySequence_GetItem(py_items, i);
         if (!py_item){ goto error; }
@@ -132,6 +135,12 @@ DU8BoundedVolumeHierarchy4_alloc_nodes(
     size_t *node_count
 )
 {
+    // estimate max nodes: for n items with branching factor b, max nodes ~ n/(b-1) + 1
+    // use a conservative estimate
+    size_t node_array_count = items.count + 1;
+    // if item count fits, node count must too (nodes <= items)
+    assert(node_array_count <= (size_t)std::numeric_limits<uint8_t>::max() + 1);
+
     if (items.count == 0)
     {
         *nodes = (DU8BoundedVolumeHierarchy4Node *)malloc(1);
@@ -197,16 +206,9 @@ DU8BoundedVolumeHierarchy4_alloc_nodes(
         center_z[i] = (items.min_z[i] + items.max_z[i]) * double(0.5);
     }
 
-    // estimate max nodes: for n items with branching factor b, max nodes ~ n/(b-1) + 1
-    // use a conservative estimate
-    size_t node_array_count = items.count + 1;
-    // if item count fits, node count must too (nodes <= items)
-    assert(node_array_count <= (size_t)std::numeric_limits<uint8_t>::max() + 1);
-    {
-        node_array = (DU8BoundedVolumeHierarchy4Node *)malloc(sizeof(DU8BoundedVolumeHierarchy4Node) * node_array_count);
-        if (!node_array){ PyErr_NoMemory(); goto error; }
-        memset(node_array, 0, sizeof(DU8BoundedVolumeHierarchy4Node) * node_array_count);
-    }
+    node_array = (DU8BoundedVolumeHierarchy4Node *)malloc(sizeof(DU8BoundedVolumeHierarchy4Node) * node_array_count);
+    if (!node_array){ PyErr_NoMemory(); goto error; }
+    memset(node_array, 0, sizeof(DU8BoundedVolumeHierarchy4Node) * node_array_count);
 
     stack = (BuildTask *)malloc(sizeof(BuildTask) * stack_capacity);
     if (!stack){ PyErr_NoMemory(); goto error; }

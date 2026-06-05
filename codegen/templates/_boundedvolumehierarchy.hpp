@@ -52,28 +52,31 @@ static {{ name }}Items
         PyErr_SetString(PyExc_TypeError, "expected a sequence for items argument");
         goto error;
     }
-    Py_ssize_t item_count = PySequence_Size(py_items);
-    if (item_count < 0){ goto error; }
 
-    if (item_count == 0)
+    {
+        Py_ssize_t item_count = PySequence_Size(py_items);
+        if (items.count < 0){ goto error; }
+        items.count = (size_t)item_count;
+    }
+
+    if (items.count == 0)
     {
         item_data = (char *)malloc(1);
     }
     else
     {
-        item_data = (char *)malloc(sizeof({{ space_c_type }}) * 6 * item_count);
+        item_data = (char *)malloc(sizeof({{ space_c_type }}) * 6 * items.count);
     }
     if (!item_data){ PyErr_NoMemory(); goto error; }
 
-    items.count = (size_t)item_count;
-    items.min_x = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * item_count * 0));
-    items.min_y = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * item_count * 1));
-    items.min_z = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * item_count * 2));
-    items.max_x = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * item_count * 3));
-    items.max_y = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * item_count * 4));
-    items.max_z = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * item_count * 5));
+    items.min_x = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * items.count * 0));
+    items.min_y = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * items.count * 1));
+    items.min_z = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * items.count * 2));
+    items.max_x = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * items.count * 3));
+    items.max_y = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * items.count * 4));
+    items.max_z = ({{ space_c_type }}*)(item_data + (size_t)(sizeof({{ space_c_type }}) * items.count * 5));
 
-    for (Py_ssize_t i = 0; i < item_count; i++)
+    for (size_t i = 0; i < items.count; i++)
     {
         py_item = PySequence_GetItem(py_items, i);
         if (!py_item){ goto error; }
@@ -132,6 +135,12 @@ static void
     size_t *node_count
 )
 {
+    // estimate max nodes: for n items with branching factor b, max nodes ~ n/(b-1) + 1
+    // use a conservative estimate
+    size_t node_array_count = items.count + 1;
+    // if item count fits, node count must too (nodes <= items)
+    assert(node_array_count <= (size_t)std::numeric_limits<{{ object_c_type }}>::max() + 1);
+
     if (items.count == 0)
     {
         *nodes = ({{ name }}Node *)malloc(1);
@@ -197,16 +206,9 @@ static void
         center_z[i] = (items.min_z[i] + items.max_z[i]) * {{ space_c_type }}(0.5);
     }
 
-    // estimate max nodes: for n items with branching factor b, max nodes ~ n/(b-1) + 1
-    // use a conservative estimate
-    size_t node_array_count = items.count + 1;
-    // if item count fits, node count must too (nodes <= items)
-    assert(node_array_count <= (size_t)std::numeric_limits<{{ object_c_type }}>::max() + 1);
-    {
-        node_array = ({{ name }}Node *)malloc(sizeof({{ name }}Node) * node_array_count);
-        if (!node_array){ PyErr_NoMemory(); goto error; }
-        memset(node_array, 0, sizeof({{ name }}Node) * node_array_count);
-    }
+    node_array = ({{ name }}Node *)malloc(sizeof({{ name }}Node) * node_array_count);
+    if (!node_array){ PyErr_NoMemory(); goto error; }
+    memset(node_array, 0, sizeof({{ name }}Node) * node_array_count);
 
     stack = (BuildTask *)malloc(sizeof(BuildTask) * stack_capacity);
     if (!stack){ PyErr_NoMemory(); goto error; }
