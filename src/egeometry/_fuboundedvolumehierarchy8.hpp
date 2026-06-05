@@ -16,7 +16,7 @@
 #include "_fuboundedvolumehierarchy8type.hpp"
 #include "_modulestate.hpp"
 
-static const unsigned int FUBoundedVolumeHierarchy8_LEAF_MASK (unsigned int(1) << (sizeof(unsigned int) * 8 - 1));
+static const unsigned int FUBoundedVolumeHierarchy8_LEAF_MASK (((unsigned int)1) << (sizeof(unsigned int) * 8 - 1));
 
 struct FUBoundedVolumeHierarchy8Items
 {

@@ -16,7 +16,7 @@
 #include "_du16boundedvolumehierarchy8type.hpp"
 #include "_modulestate.hpp"
 
-static const uint16_t DU16BoundedVolumeHierarchy8_LEAF_MASK (uint16_t(1) << (sizeof(uint16_t) * 8 - 1));
+static const uint16_t DU16BoundedVolumeHierarchy8_LEAF_MASK (((uint16_t)1) << (sizeof(uint16_t) * 8 - 1));
 
 struct DU16BoundedVolumeHierarchy8Items
 {

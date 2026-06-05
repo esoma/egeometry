@@ -16,7 +16,7 @@
 #include "_fu16boundedvolumehierarchy2type.hpp"
 #include "_modulestate.hpp"
 
-static const uint16_t FU16BoundedVolumeHierarchy2_LEAF_MASK (uint16_t(1) << (sizeof(uint16_t) * 8 - 1));
+static const uint16_t FU16BoundedVolumeHierarchy2_LEAF_MASK (((uint16_t)1) << (sizeof(uint16_t) * 8 - 1));
 
 struct FU16BoundedVolumeHierarchy2Items
 {

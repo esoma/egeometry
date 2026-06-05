@@ -16,7 +16,7 @@
 #include "_{{ name.lower() }}type.hpp"
 #include "_modulestate.hpp"
 
-static const {{ object_c_type }} {{ name }}_LEAF_MASK ({{ object_c_type }}(1) << (sizeof({{ object_c_type }}) * 8 - 1));
+static const {{ object_c_type }} {{ name }}_LEAF_MASK ((({{ object_c_type }})1) << (sizeof({{ object_c_type }}) * 8 - 1));
 
 struct {{ name }}Items
 {
