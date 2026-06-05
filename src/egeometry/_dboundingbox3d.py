@@ -230,39 +230,28 @@ class DBoundingBox3d:
         )
 
     @property
-    def edges(
-        self,
-    ) -> tuple[
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-        DLineSegment3d,
-    ]:
+    def edges(self) -> tuple[DLineSegment3d, ...]:
         p0, p1, p2, p3, p4, p5, p6, p7 = self.points
-        return (
-            # bottom face edges
-            DLineSegment3d(p0, p1),
-            DLineSegment3d(p1, p4),
-            DLineSegment3d(p4, p2),
-            DLineSegment3d(p2, p0),
-            # top face edges
-            DLineSegment3d(p3, p5),
-            DLineSegment3d(p5, p7),
-            DLineSegment3d(p7, p6),
-            DLineSegment3d(p6, p3),
-            # vertical edges
-            DLineSegment3d(p0, p3),
-            DLineSegment3d(p1, p5),
-            DLineSegment3d(p4, p7),
-            DLineSegment3d(p2, p6),
+        return tuple(
+            DLineSegment3d(a, b)
+            for a, b in (
+                # bottom face edges
+                (p0, p1),
+                (p1, p4),
+                (p4, p2),
+                (p2, p0),
+                # top face edges
+                (p3, p5),
+                (p5, p7),
+                (p7, p6),
+                (p6, p3),
+                # vertical edges
+                (p0, p3),
+                (p1, p5),
+                (p4, p7),
+                (p2, p6),
+            )
+            if a != b
         )
 
     @property

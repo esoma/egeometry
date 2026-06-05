@@ -189,44 +189,49 @@ def test_raycast(bounding_box_3d_cls, vector_3_cls, float_data_type):
 
 
 @pytest.mark.parametrize("position_args", [(0, 0, 0), (1, 2, 3)])
-@pytest.mark.parametrize("size_args", [(1, 1, 1), (2, 3, 4), (5, 5, 5)])
+@pytest.mark.parametrize(
+    "size_args",
+    [
+        (1, 1, 1),
+        (2, 3, 4),
+        (5, 5, 5),
+        (0, 0, 0),
+        (1, 0, 0),
+        (0, 1, 0),
+        (0, 0, 1),
+        (1, 1, 0),
+        (1, 0, 1),
+        (0, 1, 1),
+    ],
+)
 def test_edges(vector_3_cls, linesegment3d_cls, float_data_type, position_args, size_args):
     bb_cls = getattr(egeometry, f"{float_data_type}BoundingBox3d")
     bb = bb_cls(vector_3_cls(*position_args), vector_3_cls(*size_args))
     p0, p1, p2, p3, p4, p5, p6, p7 = bb.points
     edges = bb.edges
 
-    assert len(edges) == 12
-
-    # bottom face edges
-    assert edges[0].a == p0
-    assert edges[0].b == p1
-    assert edges[1].a == p1
-    assert edges[1].b == p4
-    assert edges[2].a == p4
-    assert edges[2].b == p2
-    assert edges[3].a == p2
-    assert edges[3].b == p0
-
-    # top face edges
-    assert edges[4].a == p3
-    assert edges[4].b == p5
-    assert edges[5].a == p5
-    assert edges[5].b == p7
-    assert edges[6].a == p7
-    assert edges[6].b == p6
-    assert edges[7].a == p6
-    assert edges[7].b == p3
-
-    # vertical edges
-    assert edges[8].a == p0
-    assert edges[8].b == p3
-    assert edges[9].a == p1
-    assert edges[9].b == p5
-    assert edges[10].a == p4
-    assert edges[10].b == p7
-    assert edges[11].a == p2
-    assert edges[11].b == p6
+    expected_edges = tuple(
+        linesegment3d_cls(a, b)
+        for a, b in (
+            # bottom face edges
+            (p0, p1),
+            (p1, p4),
+            (p4, p2),
+            (p2, p0),
+            # top face edges
+            (p3, p5),
+            (p5, p7),
+            (p7, p6),
+            (p6, p3),
+            # vertical edges
+            (p0, p3),
+            (p1, p5),
+            (p4, p7),
+            (p2, p6),
+        )
+        if a != b
+    )
+    assert edges == expected_edges
 
 
 @pytest.mark.parametrize("position_args", [(0, 0, 0), (1, 2, 3)])

@@ -258,37 +258,28 @@ class {{ name }}:
 
 {% if data_type in "DF" %}
     @property
-    def edges(self) -> tuple[
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d,
-        {{ data_type }}LineSegment3d
-    ]:
+    def edges(self) -> tuple[{{ data_type }}LineSegment3d, ...]:
         p0, p1, p2, p3, p4, p5, p6, p7 = self.points
-        return (
-            # bottom face edges
-            {{ data_type }}LineSegment3d(p0, p1),
-            {{ data_type }}LineSegment3d(p1, p4),
-            {{ data_type }}LineSegment3d(p4, p2),
-            {{ data_type }}LineSegment3d(p2, p0),
-            # top face edges
-            {{ data_type }}LineSegment3d(p3, p5),
-            {{ data_type }}LineSegment3d(p5, p7),
-            {{ data_type }}LineSegment3d(p7, p6),
-            {{ data_type }}LineSegment3d(p6, p3),
-            # vertical edges
-            {{ data_type }}LineSegment3d(p0, p3),
-            {{ data_type }}LineSegment3d(p1, p5),
-            {{ data_type }}LineSegment3d(p4, p7),
-            {{ data_type }}LineSegment3d(p2, p6),
+        return tuple(
+            {{ data_type }}LineSegment3d(a, b)
+            for a, b in (
+                # bottom face edges
+                (p0, p1),
+                (p1, p4),
+                (p4, p2),
+                (p2, p0),
+                # top face edges
+                (p3, p5),
+                (p5, p7),
+                (p7, p6),
+                (p6, p3),
+                # vertical edges
+                (p0, p3),
+                (p1, p5),
+                (p4, p7),
+                (p2, p6),
+            )
+            if a != b
         )
 
     @property
