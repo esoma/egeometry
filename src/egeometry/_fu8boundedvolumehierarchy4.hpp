@@ -35,6 +35,7 @@ FU8BoundedVolumeHierarchy4_alloc_items_from_py_sequence_bounding_box_3d(
     PyObject *py_items
 )
 {
+    EMathApi_GetFVector3ValuePointer get_vector_ptr = 0;
     char *item_data = 0;
     PyObject *py_item = 0;
     PyObject *py_position = 0;
@@ -45,7 +46,7 @@ FU8BoundedVolumeHierarchy4_alloc_items_from_py_sequence_bounding_box_3d(
 
     ModuleState *module_state = get_module_state();
     if (!module_state){ goto error; }
-    auto get_vector_ptr = module_state->emath_api->FVector3_GetValuePointer;
+    get_vector_ptr = module_state->emath_api->FVector3_GetValuePointer;
 
     if (!PySequence_Check(py_items))
     {
@@ -559,14 +560,14 @@ FU8BoundedVolumeHierarchy4_nodes(FU8BoundedVolumeHierarchy4 *self, void *closure
     ModuleState *module_state = get_module_state();
     if (!module_state){ return 0; }
 
+    auto vector_create = module_state->emath_api->FVector3_Create;
+
     PyObject *egeometry = PyImport_ImportModule("egeometry");
     if (!egeometry){ return 0; }
 
     bbox_cls = PyObject_GetAttrString(egeometry, "FBoundingBox3d");
     Py_DECREF(egeometry);
     if (!bbox_cls){ goto error; }
-
-    auto vector_create = module_state->emath_api->FVector3_Create;
 
     result = PyTuple_New((Py_ssize_t)self->node_count);
     if (!result){ goto error; }

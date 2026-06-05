@@ -35,6 +35,7 @@ static {{ name }}Items
     PyObject *py_items
 )
 {
+    EMathApi_Get{{ space_type }}Vector3ValuePointer get_vector_ptr = 0;
     char *item_data = 0;
     PyObject *py_item = 0;
     PyObject *py_position = 0;
@@ -45,7 +46,7 @@ static {{ name }}Items
 
     ModuleState *module_state = get_module_state();
     if (!module_state){ goto error; }
-    auto get_vector_ptr = module_state->emath_api->{{ space_type }}Vector3_GetValuePointer;
+    get_vector_ptr = module_state->emath_api->{{ space_type }}Vector3_GetValuePointer;
 
     if (!PySequence_Check(py_items))
     {
@@ -563,14 +564,14 @@ static PyObject *
     ModuleState *module_state = get_module_state();
     if (!module_state){ return 0; }
 
+    auto vector_create = module_state->emath_api->{{ space_type }}Vector3_Create;
+
     PyObject *egeometry = PyImport_ImportModule("egeometry");
     if (!egeometry){ return 0; }
 
     bbox_cls = PyObject_GetAttrString(egeometry, "{{ space_type }}BoundingBox3d");
     Py_DECREF(egeometry);
     if (!bbox_cls){ goto error; }
-
-    auto vector_create = module_state->emath_api->{{ space_type }}Vector3_Create;
 
     result = PyTuple_New((Py_ssize_t)self->node_count);
     if (!result){ goto error; }
